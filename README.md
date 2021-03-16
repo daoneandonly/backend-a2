@@ -26,7 +26,7 @@ Add the topic you're working on here!
 
 * Steven:
 * Tess: 
-* Jenny:
+* Jenny: #8 Rate-limiter
 * Jeroen:
 * Pepijn: #7 Helmet
 * Max: 
