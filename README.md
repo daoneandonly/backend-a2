@@ -28,5 +28,6 @@ Add the topic you're working on here!
 * Tess: 
 * Jenny:
 * Jeroen:
+#10 - Fetch a public external API from the server and render that data
 * Pepijn:
 * Max: 
