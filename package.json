@@ -1,0 +1,19 @@
+{
+  "name": "backend-a2",
+  "version": "0.1.0",
+  "description": "A2 assignment for Backend at CMDA",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daoneandonly/backend-a2.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daoneandonly/backend-a2/issues"
+  },
+  "homepage": "https://github.com/daoneandonly/backend-a2#readme"
+}
