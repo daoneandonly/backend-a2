@@ -26,8 +26,12 @@ Add the topic you're working on here!
 
 * Steven:
 * Tess: 
-* Jenny:
+* Jenny: #8 Rate-limiter
 * Jeroen:
+<<<<<<< HEAD
 #10 - Fetch a public external API from the server and render that data
 * Pepijn:
+=======
+* Pepijn: #7 Helmet
+>>>>>>> develop
 * Max: 
