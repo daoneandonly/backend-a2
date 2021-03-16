@@ -28,5 +28,5 @@ Add the topic you're working on here!
 * Tess: 
 * Jenny:
 * Jeroen:
-* Pepijn:
+* Pepijn: #7 Helmet
 * Max: 
