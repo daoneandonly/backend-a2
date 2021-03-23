@@ -24,7 +24,8 @@
   "dependencies": {
     "concurrently": "^6.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "sass": "^1.32.8"
   },
   "devDependencies": {
     "node-sass": "^5.0.0",
