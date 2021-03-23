@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.set('view engine', 'ejs');
+app.use(express.static('static'));
+
 // Resolve GET request
 app.get('/', (req, res) => {
-  res.send('Hello world!! 👋')
+  res.render('pages/index.ejs')
 });
 
 // Listen to port 3000
