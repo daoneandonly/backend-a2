@@ -25,8 +25,8 @@ Do your code and don't forget to commit often
 Add the topic you're working on here!
 
 * Steven:
-* Tess: #7  Use helmet to set HTTP Headers
+* Tess: #9 - Hash the passwords you store in the database
 * Jenny: #8 Rate-limiter
 * Jeroen: #10 - Fetch a public external API from the server and render that data
 * Pepijn: #14 Use Mongoose to object model your database
-* Max: #7 - Helmet
+* Max: #7 - Use helmet to set HTTP Headers
