@@ -4,6 +4,8 @@
   "description": "A2 assignment for Backend at CMDA",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon ./server.js localhost 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/daoneandonly/backend-a2/issues"
   },
-  "homepage": "https://github.com/daoneandonly/backend-a2#readme"
+  "homepage": "https://github.com/daoneandonly/backend-a2#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
