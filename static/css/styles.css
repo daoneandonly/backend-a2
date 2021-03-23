@@ -3,24 +3,3 @@ html {
   background-color: white;
 }
 
-#keuzes-form {
-  height: 200px;
-  border: 0;
-  text-align: center;
-}
-
-#keuzes-form label {
-  color: black;
-}
-
-#keuzes-form input {
-  display: inline-flex;
-}
-
-#keuzes-form [type="checkbox"] {
-  margin-right: 1.5em;
-}
-
-#keuzes-form [type="submit"] {
-  padding: 1em;
-}
