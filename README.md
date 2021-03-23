@@ -28,5 +28,5 @@ Add the topic you're working on here!
 * Tess: 
 * Jenny: #8 Rate-limiter
 * Jeroen: #10 - Fetch a public external API from the server and render that data
-* Pepijn: #7 Helmet
+* Pepijn: #14 Use Mongoose to object model your database
 * Max: 
