@@ -4,19 +4,23 @@ html {
 }
 
 #keuzes-form {
-  background-color: grey;
   height: 200px;
-  width: 100%;
+  border: 0;
+  text-align: center;
 }
 
 #keuzes-form label {
-  color: white;
+  color: black;
 }
 
-#keuzes-form input{
+#keuzes-form input {
   display: inline-flex;
-  flex-wrap: nowrap;
-  background-color: white;
 }
 
+#keuzes-form [type="checkbox"] {
+  margin-right: 1.5em;
+}
 
+#keuzes-form [type="submit"] {
+  padding: 1em;
+}
