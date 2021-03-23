@@ -2,3 +2,21 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background-color: white;
 }
+
+#keuzes-form {
+  background-color: grey;
+  height: 200px;
+  width: 100%;
+}
+
+#keuzes-form label {
+  color: white;
+}
+
+#keuzes-form input{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  background-color: white;
+}
+
+
