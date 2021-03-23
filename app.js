@@ -18,13 +18,6 @@ app.get('/register', (req, res) => {
   })
 });
 
-// If there is no page found give an error page as page
-app.get('*', (req, res) => {
-  res.status(404).render('pages/404', {
-      url: req.url,
-      title: 'Error 404',
-  })
-});
 
 //bucketlist
 app.get('/bucketlist', showBucketlistOverzicht);
@@ -39,6 +32,14 @@ function showBucketlistOverzicht(req, res) {
 function showBucketlistResultaat(req, res) {
     res.render('pages/bucketlist/bucketlistResultaat');
   };
+
+// If there is no page found give an error page as page
+app.get('*', (req, res) => {
+  res.status(404).render('pages/404', {
+      url: req.url,
+      title: 'Error 404',
+  })
+});
 
 // Listen to port 3000
 app.listen(port, () => {
