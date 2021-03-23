@@ -18,6 +18,21 @@ app.get('/register', (req, res) => {
   })
 });
 
+
+//bucketlist
+app.get('/bucketlist', showBucketlistOverzicht);
+app.get('/bucketlistResultaat', showBucketlistResultaat);
+
+//function render bucketlistOvezicht page
+function showBucketlistOverzicht(req, res) {
+    res.render('pages/bucketlist/bucketlistOverzicht');
+  };
+
+  //function render bucketlistResultaat page
+function showBucketlistResultaat(req, res) {
+    res.render('pages/bucketlist/bucketlistResultaat');
+  };
+
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
   res.status(404).render('pages/404', {
@@ -30,5 +45,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log(`App.js starting at http://localhost:${port}`);
 });
-
-
