@@ -88,7 +88,7 @@ client.connect()
       photo: req.file ? req.file.filename : null,
       age: req.body.age,
       bio: req.body.bio
-    }, done)
+    }, done);
 
     function done(err, data) {
       if (err) {
