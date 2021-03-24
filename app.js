@@ -8,7 +8,7 @@ const upload = multer({
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
-app.get('/add', profileform)
+app.get('/add', profileForm)
 app.post('/add', upload.single('photo'), add)
 
 // Resolve GET request
