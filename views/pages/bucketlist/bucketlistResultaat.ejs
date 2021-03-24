@@ -4,6 +4,12 @@
 <main>
   <h1>RESULTATEN BUCKETLIST</h1>
   <p>Welcome to Backend A2 Assignment</p>
+
+  <% for (var index = 0; index < data.length; index++) { %>
+  <h2><%= data[index].countryOne %> <%= data[index].CountryTwo %> </h2>
+  <p><%= data[index].plot %></p>
+  <% } %>
+
 </main>
 
 <%- include('../../partials/footer'); %>
