@@ -1,0 +1,103 @@
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image:url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-size: 1em;
+}
+
+h1 {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 2 / 3;
+  font-size: 8vw;
+  font-family: catamaran;
+  color: white;
+  z-index: 1;
+  text-align: center;
+}
+
+p {
+  font-size: 2em;
+  color: white;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+
+/* form */
+
+form {
+  max-width: 35em;
+  margin: auto;
+  padding: 2em;
+
+  display: grid;
+  grid-gap: 1em;
+
+  background-color:white;
+
+  border-radius: 1em;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+
+  border: none;
+}
+
+
+legend {
+  padding: 0 0 1.5rem 0;
+
+  font-weight: bold;
+  font-size: 2em;
+  color: #0D0D0D;
+}
+
+label {
+  color: #0D0D0D;
+  display: block;
+  padding: 0 0 .5rem 0;
+}
+
+
+input,
+textarea {
+  width: 94%;
+  padding: 1em;
+  margin: 0 0 1.5em;
+
+  border-color: #3654a5;
+  border-radius: 2em;
+
+  outline: none;
+}
+
+button {
+  color: white;
+  height: 2.5em;
+  display: block;
+
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 1.1em;
+  outline: none;
+
+  border: none;
+  border-radius: 1em;
+
+  background-color: #3654a5;
+}
