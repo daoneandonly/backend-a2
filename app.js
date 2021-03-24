@@ -1,9 +1,15 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const multer = require('multer')
+const upload = multer({
+  dest: 'static/img/'
+})
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.get('/add', profileForm)
+app.post('/add', upload.single('photo'), add)
 
 // Resolve GET request
 app.get('/', (req, res) => {
@@ -19,29 +25,60 @@ app.get('/register', (req, res) => {
 });
 
 //bucketlist
-app.get('/bucketlist', showBucketlistOverzicht);
-app.get('/bucketlistResultaat', showBucketlistResultaat);
+app.get('/bucketlist', showBucketlistOverview);
+app.get('/bucketlistResults', showBucketlistResults);
 
-app.post('/bucketlistResultaat', function(req, res, next){
-    res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {data: data});  
+app.post('/bucketlistResults', function(req, res, next) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistoverview'
+  }, {
+    data: data
+  });
 });
 
-//function render bucketlistOvezicht page
-function showBucketlistOverzicht(req, res) {
-    res.render('pages/bucketlist/bucketlistOverzicht', {title: 'bucketlist'});
-  };
+//function render bucketlistOverview page
+function showBucketlistOverview(req, res) {
+  res.render('pages/bucketlist/bucketlistOverview', {
+    title: 'bucketlist'
+  });
+};
 
-  //function render bucketlistResultaat page
-function showBucketlistResultaat(req, res) {
-    res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {interestView: data});
-  };
-  
+//function render bucketlistResultaat page
+function showBucketlistResults(req, res) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistoverview'
+  }, {
+    interestView: data
+  });
+};
+
+function profileform(req, res) {
+  res.render('add.ejs')
+}
+
+function add(req, res, next) {
+  db.collection('profiles').insertOne({
+    name: req.body.name,
+    photo: req.file ? req.file.filename : null,
+    age: req.body.age,
+    bio: req.body.bio
+  }, done)
+
+  function done(err, data) {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect('/' + data.insertedId)
+    }
+  }
+}
+
 
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
   res.status(404).render('pages/404', {
-      url: req.url,
-      title: 'Error 404',
+    url: req.url,
+    title: 'Error 404',
   })
 });
 
