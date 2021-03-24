@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Resolve GET request
 app.get('/', (req, res) => {
@@ -20,6 +22,7 @@ app.get('/register', (req, res) => {
 
 //bucketlist
 app.get('/bucketlist', showBucketlistOverzicht);
+app.post('/bucketlist', saveBucketlist);
 app.get('/bucketlistResultaat', showBucketlistResultaat);
 
 app.post('/bucketlistResultaat', function(req, res, next){
@@ -31,11 +34,15 @@ function showBucketlistOverzicht(req, res) {
     res.render('pages/bucketlist/bucketlistOverzicht', {title: 'bucketlist'});
   };
 
+
   //function render bucketlistResultaat page
 function showBucketlistResultaat(req, res) {
     res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {interestView: data});
   };
-  
+
+function saveBucketlist(req, res) { 
+  console.log(req.body);
+}
 
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
