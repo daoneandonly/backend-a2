@@ -9,7 +9,7 @@ const upload = multer({
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 app.get('/add', profileform)
-app.post('/add', upload.single('foto'), add)
+app.post('/add', upload.single('photo'), add)
 
 // Resolve GET request
 app.get('/', (req, res) => {
@@ -25,28 +25,28 @@ app.get('/register', (req, res) => {
 });
 
 //bucketlist
-app.get('/bucketlist', showBucketlistOverzicht);
-app.get('/bucketlistResultaat', showBucketlistResultaat);
+app.get('/bucketlist', showBucketlistOverview);
+app.get('/bucketlistResults', showBucketlistResults);
 
-app.post('/bucketlistResultaat', function(req, res, next) {
-  res.render('pages/bucketlist/bucketlistResultaat', {
-    title: 'bucketlistoverzicht'
+app.post('/bucketlistResults', function(req, res, next) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistoverview'
   }, {
     data: data
   });
 });
 
-//function render bucketlistOvezicht page
-function showBucketlistOverzicht(req, res) {
-  res.render('pages/bucketlist/bucketlistOverzicht', {
+//function render bucketlistOverview page
+function showBucketlistOverview(req, res) {
+  res.render('pages/bucketlist/bucketlistOverview', {
     title: 'bucketlist'
   });
 };
 
 //function render bucketlistResultaat page
-function showBucketlistResultaat(req, res) {
-  res.render('pages/bucketlist/bucketlistResultaat', {
-    title: 'bucketlistoverzicht'
+function showBucketlistResults(req, res) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistoverview'
   }, {
     interestView: data
   });
@@ -58,9 +58,9 @@ function profileform(req, res) {
 
 function add(req, res, next) {
   db.collection('profiles').insertOne({
-    naam: req.body.naam,
-    foto: req.file ? req.file.filename : null,
-    leeftijd: req.body.leeftijd,
+    name: req.body.name,
+    photo: req.file ? req.file.filename : null,
+    age: req.body.age,
     bio: req.body.bio
   }, done)
 
