@@ -24,19 +24,32 @@ app.get('/register', (req, res) => {
   })
 });
 
-
 //bucketlist
 app.get('/bucketlist', showBucketlistOverzicht);
 app.get('/bucketlistResultaat', showBucketlistResultaat);
 
+app.post('/bucketlistResultaat', function(req, res, next) {
+  res.render('pages/bucketlist/bucketlistResultaat', {
+    title: 'bucketlistoverzicht'
+  }, {
+    data: data
+  });
+});
+
 //function render bucketlistOvezicht page
 function showBucketlistOverzicht(req, res) {
-  res.render('pages/bucketlist/bucketlistOverzicht');
+  res.render('pages/bucketlist/bucketlistOverzicht', {
+    title: 'bucketlist'
+  });
 };
 
 //function render bucketlistResultaat page
 function showBucketlistResultaat(req, res) {
-  res.render('pages/bucketlist/bucketlistResultaat');
+  res.render('pages/bucketlist/bucketlistResultaat', {
+    title: 'bucketlistoverzicht'
+  }, {
+    interestView: data
+  });
 };
 
 function profileform(req, res) {
