@@ -1,0 +1,15 @@
+<%- include('../../partials/head'); %>
+<%- include('../../partials/header'); %>
+
+<title>Inloggen</title>
+<h1>Inloggen</h1>
+ 
+<form action=/login method=post>
+ <label>Naam <input name=naam></label>
+ <label>Wachtwoord <input name=wachtwoord type=password></label>
+ <button>Inloggen</button>
+</form>
+ 
+<a href="registreren">Nog geen account?</a>
+
+<%- include('../../partials/footer'); %>
