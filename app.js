@@ -52,7 +52,7 @@ function showBucketlistResults(req, res) {
   });
 };
 
-function profileform(req, res) {
+function profileForm(req, res) {
   res.render('add.ejs')
 }
 
