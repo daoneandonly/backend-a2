@@ -1,10 +1,19 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const multer = require('multer');
+const upload = multer({
+  dest: 'static/img/'
+});
 
 // dotenv
 const dotenv = require('dotenv');
 dotenv.config();
+
+
+app.set('view engine', 'ejs');
+app.use(express.static('static'));
+
 
 // Mongodb
 const MongoClient = require('mongodb').MongoClient;
@@ -33,14 +42,15 @@ client.connect()
       title: 'register'
     })
   });
+
+  app.get('/add', profileForm)
+  app.post('/add', upload.single('photo'), add)
   
   //bucketlist
-  app.get('/bucketlist', showBucketlistOverzicht);
-  app.get('/bucketlistResultaat', showBucketlistResultaat);
-  
-  app.post('/bucketlistResultaat', function(req, res, next){
-      res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {data: data});  
-  });
+  app.get('/bucketlist', showBucketlistOverview);
+  app.get('/bucketlistResults', showBucketlistResults);
+
+  app.post('/bucketlistResults', showBucketlistResults);
   
   
   // If there is no page found give an error page as page
@@ -52,20 +62,46 @@ client.connect()
   });
   
   
-  //function render bucketlistOvezicht page
-  function showBucketlistOverzicht(req, res) {
-    res.render('pages/bucketlist/bucketlistOverzicht', {title: 'bucketlist'});
+    //function render bucketlistOverview page
+  function showBucketlistOverview(req, res) {
+    res.render('pages/bucketlist/bucketlistOverview', {
+      title: 'bucketlist'
+    });
   };
-  
+
   //function render bucketlistResultaat page
-  function showBucketlistResultaat(req, res) {
-    res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {interestView: data});
+  function showBucketlistResults(req, res) {
+    res.render('pages/bucketlist/bucketlistResults', {
+      title: 'bucketlistoverview'
+    }, {
+      interestView: data
+    });
   };
+
+  function profileForm(req, res) {
+    res.render('add.ejs')
+  }
+
+  function add(req, res, next) {
+    db.collection('profiles').insertOne({
+      name: req.body.name,
+      photo: req.file ? req.file.filename : null,
+      age: req.body.age,
+      bio: req.body.bio
+    }, done)
+
+    function done(err, data) {
+      if (err) {
+        next(err)
+      } else {
+        res.redirect('/' + data.insertedId)
+      }
+    }
+  }
   
   // Listen to port 3000
   app.listen(port, () => {
     console.log(`App.js starting at http://localhost:${port}`);
   });
-    
 })
 .catch(console.error);
