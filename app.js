@@ -43,8 +43,8 @@ client.connect()
     })
   });
 
-  app.get('/add', profileForm)
-  app.post('/add', upload.single('photo'), add)
+  app.get('/add', profileForm);
+  app.post('/add', upload.single('photo'), add);
   
   //bucketlist
   app.get('/bucketlist', showBucketlistOverview);
