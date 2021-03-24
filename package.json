@@ -23,8 +23,10 @@
   "homepage": "https://github.com/daoneandonly/backend-a2#readme",
   "dependencies": {
     "concurrently": "^6.0.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "mongodb": "^3.6.5",
     "sass": "^1.32.8"
   },
   "devDependencies": {
