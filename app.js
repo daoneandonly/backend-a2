@@ -41,7 +41,7 @@ function showBucketlistResultaat(req, res) {
   };
 
 function saveBucketlist(req, res) { 
-  console.log(req.body);
+  // here we will save the bucketlist later on
 }
 
 // If there is no page found give an error page as page
