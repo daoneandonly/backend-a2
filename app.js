@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const mongoose = require('mongoose');
-const Inter = require('./models/countryModel'); //import schema
+const Prof = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
@@ -54,16 +54,7 @@ client.connect()
 
   app.post('/bucketlistResults', showBucketlistResults);
   
-  
-  // If there is no page found give an error page as page
-  app.get('*', (req, res) => {
-    res.status(404).render('pages/404', {
-      url: req.url,
-      title: 'Error 404',
-    })
-  });
-  
-  
+
     //function render bucketlistOverview page
   function showBucketlistOverview(req, res) {
     res.render('pages/bucketlist/bucketlistOverview', {
@@ -101,6 +92,14 @@ client.connect()
     }
   }
   
+ // If there is no page found give an error page as page
+ app.get('*', (req, res) => {
+  res.status(404).render('pages/404', {
+    url: req.url,
+    title: 'Error 404',
+  })
+});
+
   // Listen to port 3000
   app.listen(port, () => {
     console.log(`App.js starting at http://localhost:${port}`);
