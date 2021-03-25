@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const mongoose = require('mongoose');
+const Inter = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
