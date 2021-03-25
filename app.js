@@ -53,7 +53,7 @@ function showBucketlistResultaat(req, res) {
   };
 
 function saveBucketlist(req, res) { 
-  console.log(req.body);
+  // here we will save the bucketlist later on
 }
 =======
   app.get('/add', profileForm);
