@@ -20,6 +20,23 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.DB_URI;
 const client = new MongoClient(uri,{ useUnifiedTopology: true });
 
+// Mongoose
+const mongo = require('mongodb')
+const mongoose = require('mongoose')
+
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true
+})
+
+const db = mongoose.connection
+
+db.on('connected', () => { 
+  console.log('Mongoose connected')
+})
+
+
+// ejs
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
@@ -42,6 +59,30 @@ client.connect()
       title: 'register'
     })
   });
+  
+
+// Create user collection with schema
+const User = mongoose.model('User',{name: String,email:String,password:String});
+
+app.post('/registerUser', (req, res) => {
+   
+  try {
+     const newUser  = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+     })
+     newUser.save().then(() =>{
+        console.log('Added User');
+        res.redirect('/login')
+        return;
+        
+  })
+     
+  } catch (error) {
+     console.log(error);
+  }
+})
 
   app.get('/add', profileForm);
   app.post('/add', upload.single('photo'), add);
