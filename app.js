@@ -61,19 +61,19 @@ client.connect()
   });
   
 
-// Create user collection with schema
-const User = mongoose.model('User',{name: String,email:String,password:String});
+// Create users collection with schema
+const Users = mongoose.model('Users',{name: String,email:String,password:String});
 
-app.post('/registerUser', (req, res) => {
+app.post('/registerUsers', (req, res) => {
    
   try {
-     const newUser  = new User({
+     const newUsers  = new Users({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
      })
-     newUser.save().then(() =>{
-        console.log('Added User');
+     newUsers.save().then(() =>{
+        console.log('Added Users');
         res.redirect('/login')
         return;
         
