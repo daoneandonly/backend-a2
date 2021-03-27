@@ -63,7 +63,6 @@ client.connect()
 
   app.post('/bucketlistResults', showBucketlistResults);
   
-
     //function render bucketlistOverview page
   function showBucketlistOverview(req, res) {
     res.render('pages/bucketlist/bucketlistOverview', {
