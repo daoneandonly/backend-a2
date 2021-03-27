@@ -23,5 +23,5 @@ const countrySchema = new Schema({
 
 //mongoose model, Find info, model is based on the Schema
 //export to use in app.js
-const Prof = mongoose.model('Prof', countrySchema);
-module.exports = Prof;
+const Countrydata = mongoose.model('Countrydata', countrySchema);
+module.exports = Countrydata;

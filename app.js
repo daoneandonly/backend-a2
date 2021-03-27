@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const mongoose = require('mongoose');
-const Prof = require('./models/countryModel'); //import schema
+const Countrydata = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
@@ -72,13 +72,13 @@ client.connect()
 
   //function render bucketlistResultaat page
   function showBucketlistResults(req, res) {
-    const prof = new Prof({
-      countryOne: 'japan',
-      countryTwo: 'Sweden',
-      countryThree: 'France'
+    const countrydata = new Countrydata({
+      countryOne: 'LJADSLKFJADJF',
+      countryTwo: '8884848',
+      countryThree: '8484848'
     });
 
-    prof.save()
+    countrydata.save()
       .then((result) =>{
         res.send(result)
       })
