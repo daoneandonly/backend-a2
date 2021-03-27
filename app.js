@@ -59,6 +59,7 @@ client.connect()
   app.get('/bucketlist', showBucketlistOverview);
   app.get('/bucketlistResults', showBucketlistResults);
   app.get('/bucketlistAll', bucketlistAll);
+  app.get('/one-country', singleCountry);
 
   app.post('/bucketlistResults', showBucketlistResults);
   
@@ -95,6 +96,16 @@ client.connect()
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  function singleCountry(req, res){
+    Countrydata.findById('605f043afea38e0de3c5b44d')
+      .then ((result) => {
+        res.send(result)
+      })
+      .catch((err) =>{
+        console.log(err);
+      })
   };
 
   function profileForm(req, res) {
