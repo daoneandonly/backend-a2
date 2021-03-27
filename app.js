@@ -10,30 +10,29 @@ const upload = multer({
 const dotenv = require('dotenv');
 dotenv.config();
 
-
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
-
-
-// Mongodb
-const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.DB_URI;
-const client = new MongoClient(uri,{ useUnifiedTopology: true });
 
 // Mongoose
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
+const db = mongoose.connection
+
+// Connect mongoose with the database
 mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true, 
   useUnifiedTopology: true
 })
 
-const db = mongoose.connection
-
 db.on('connected', () => { 
   console.log('Mongoose connected')
 })
+
+// Mongodb
+const MongoClient = require('mongodb').MongoClient;
+const uri = process.env.DB_URI;
+const client = new MongoClient(uri,{ useUnifiedTopology: true });
 
 
 // ejs
@@ -59,7 +58,9 @@ client.connect()
       title: 'register'
     })
   });
-  
+
+  // Telling app to take the forms and acces them inside of the request variable inside of the post method
+app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
 const Users = mongoose.model('Users',{name: String,email:String,password:String});
