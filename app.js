@@ -17,7 +17,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
 // mongoose
-
 mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -59,6 +58,7 @@ client.connect()
   //bucketlist
   app.get('/bucketlist', showBucketlistOverview);
   app.get('/bucketlistResults', showBucketlistResults);
+  app.get('/bucketlistAll', bucketlistAll);
 
   app.post('/bucketlistResults', showBucketlistResults);
   
@@ -85,6 +85,16 @@ client.connect()
       .catch((err) =>{
         console.log(err);
       })
+  };
+
+  function bucketlistAll(req, res){
+    Countrydata.find()
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   function profileForm(req, res) {
