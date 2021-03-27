@@ -78,6 +78,7 @@ client.connect()
       countryThree: '8484848'
     });
 
+    //function save the model to the database
     countrydata.save()
       .then((result) =>{
         res.send(result)
@@ -87,6 +88,7 @@ client.connect()
       })
   };
 
+    //function to show all bucketlist locations
   function bucketlistAll(req, res){
     Countrydata.find()
       .then((result) => {
@@ -97,6 +99,7 @@ client.connect()
       });
   };
 
+  //function to show one bucketlist locations
   function singleCountry(req, res){
     Countrydata.findById('605f043afea38e0de3c5b44d')
       .then ((result) => {
