@@ -16,6 +16,14 @@ dotenv.config();
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
+// mongoose
+
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+})
 
 // Mongodb
 const MongoClient = require('mongodb').MongoClient;
@@ -64,11 +72,19 @@ client.connect()
 
   //function render bucketlistResultaat page
   function showBucketlistResults(req, res) {
-    res.render('pages/bucketlist/bucketlistResults', {
-      title: 'bucketlistoverview'
-    }, {
-      interestView: data
+    const prof = new Prof({
+      countryOne: 'japan',
+      countryTwo: 'Sweden',
+      countryThree: 'France'
     });
+
+    prof.save()
+      .then((result) =>{
+        res.send(result)
+      })
+      .catch((err) =>{
+        console.log(err);
+      })
   };
 
   function profileForm(req, res) {
