@@ -8,16 +8,13 @@ const Schema = mongoose.Schema;
 //Objects with a string and all are required
 const countrySchema = new Schema({
     countryOne: {
-        type: String,
-        required: true
+        type: String
     },
     countryTwo: {
-        type: String,
-        required: true
+        type: String
     },
     countryThree: {
-        type: String,
-        required: true
+        type: String
     }
 });
 

@@ -15,6 +15,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.use(express.urlencoded({ extended: true}));
 
 // mongoose
 mongoose.connect(process.env.DB_URI, {
@@ -58,10 +59,8 @@ client.connect()
   //bucketlist
   app.get('/bucketlist', showBucketlistOverview);
   app.get('/bucketlistResults', showBucketlistResults);
-  app.get('/bucketlistAll', bucketlistAll);
-  app.get('/one-country', singleCountry);
 
-  app.post('/bucketlistResults', showBucketlistResults);
+  app.post('/bucketlistOverview', saveBucketlistResults);
   
     //function render bucketlistOverview page
   function showBucketlistOverview(req, res) {
@@ -70,42 +69,20 @@ client.connect()
     });
   };
 
-  //function render bucketlistResultaat page
   function showBucketlistResults(req, res) {
-    const countrydata = new Countrydata({
-      countryOne: 'LJADSLKFJADJF',
-      countryTwo: '8884848',
-      countryThree: '8484848'
+    res.render('pages/bucketlist/bucketlistResults', {
+      title: 'bucketlistResults'
     });
+  };
 
-    //function save the model to the database
+  function saveBucketlistResults(req, res){
+    const countrydata = new Countrydata(req.body);
+
     countrydata.save()
-      .then((result) =>{
-        res.send(result)
+      .then((result)=> {
+        res.redirect('bucketlistResults')
       })
-      .catch((err) =>{
-        console.log(err);
-      })
-  };
-
-    //function to show all bucketlist locations
-  function bucketlistAll(req, res){
-    Countrydata.find()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  //function to show one bucketlist locations
-  function singleCountry(req, res){
-    Countrydata.findById('605f043afea38e0de3c5b44d')
-      .then ((result) => {
-        res.send(result)
-      })
-      .catch((err) =>{
+      .catch((err)=> {
         console.log(err);
       })
   };
