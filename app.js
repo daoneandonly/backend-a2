@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const mongoose = require('mongoose');
-const Countrydata = require('./models/countryModel'); //import schema
+const Country = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
@@ -68,9 +68,9 @@ client.connect()
     app.post('/bucketlistOverview', saveBucketlistResults);
 
     function saveBucketlistResults(req, res) {
-      const countrydata = new Countrydata(req.body);
+      const country = new Country(req.body);
 
-      countrydata.save()
+      country.save()
         .then((result) => {
           res.redirect('bucketlistOverview')
         })
@@ -87,9 +87,9 @@ client.connect()
     };
 
     function informatieShow(req, res) {
-      Countrydata.find()
+      Country.find()
         .then((result) => {
-          res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', interestView: result})
+          res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
         })
     };
 

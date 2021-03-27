@@ -7,23 +7,23 @@
 
   <div class="countryResults">
     <div>
-        <!-- loop trough the schema object -->
-       
-        <% if (interestView.length > 0) { %>
-        <% interestView.forEach(view => { %>
+      <!-- loop trough the schema object -->
 
-       
-            <p class='oneCountry'> <%= view.countryOne %></p>
-            <p class='oneCountry'> <%= view.countryTwo %></p>
-            <p class='oneCountry'> <%= view.countryThree %></p>
-        </a>
+      <% if (countryView.length > 0) { %>
+      <% countryView.forEach(view => { %>
 
-        <% }) %>
-        <% } else {%>
-        <p>nog geen interesses toegevoegd</p>
-        <% }%>
+
+      <p class='oneCountry'> <%= view.countryOne %></p>
+      <p class='oneCountry'> <%= view.countryTwo %></p>
+      <p class='oneCountry'> <%= view.countryThree %></p>
+      </a>
+
+      <% }) %>
+      <% } else {%>
+      <p>nog geen interesses toegevoegd</p>
+      <% }%>
     </div>
-</div>
+  </div>
 
 </main>
 
