@@ -75,7 +75,7 @@ app.post('/registerUsers', (req, res) => {
   }
 })
 
-    //bucketlist
+    //bucketlist 
     app.get('/bucketlist', showBucketlistOverview);
     app.get('/bucketlistResults', showBucketlistResults);
     app.get('/bucketlistOverview', showInformation);
@@ -133,15 +133,6 @@ app.post('/registerUsers', (req, res) => {
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
 
-// If there is no page found give an error page as page
-app.get('*', (req, res) => {
-  res.status(404).render('pages/404', {
-    url: req.url,
-    title: 'Error 404',
-  })
-});
-
-
 function profileForm(req, res) {
   res.render('add.ejs')
 }
@@ -162,6 +153,14 @@ function add(req, res, next) {
     }
   }
 }
+
+// If there is no page found give an error page as page
+app.get('*', (req, res) => {
+  res.status(404).render('pages/404', {
+    url: req.url,
+    title: 'Error 404',
+  })
+});
 
 // Listen to port 3000
 app.listen(port, () => {
