@@ -80,6 +80,7 @@ app.post('/registerUsers', (req, res) => {
     app.get('/bucketlistResults', showBucketlistResults);
     app.get('/bucketlistOverview', showInformation);
     app.get('/bucketlistOverview/:id', singleCountryInfo);
+    app.get('/imagesGrid', showImages);
 
     app.post('/bucketlistOverview', saveBucketlistResults);
 
@@ -128,6 +129,10 @@ app.post('/registerUsers', (req, res) => {
         res.render('pages/404.ejs');
       });
     
+    };
+
+    function showImages (req, res){
+      res.render("pages/bucketlist/imagesGrid", {title: 'imagesAPI'})
     };
 
 app.get('/add', profileForm);
