@@ -141,7 +141,7 @@ function singleCountryInfo(req, res) {
 
 };
 
-// profile feature 
+// profile feature
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
 
@@ -167,7 +167,7 @@ function add(req, res, next) {
     if (err) {
       next(err)
     } else {
-      res.redirect('/')
+      res.redirect('/bucketlist')
     }
   };
 };
