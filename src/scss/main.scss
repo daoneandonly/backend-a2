@@ -1,3 +1,5 @@
+/* main */
+
 html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -17,11 +19,12 @@ h1 {
   display: grid;
   grid-column: 1 / -1;
   grid-row: 2 / 3;
-  font-size: 8vw;
+  font-size: 4vw;
   font-family: catamaran;
   color: white;
   z-index: 1;
   text-align: center;
+  margin-bottom: .2em;
 }
 
 p {
@@ -42,13 +45,14 @@ form {
   max-width: 35em;
   margin: auto;
   padding: 2em;
+  margin-bottom: 2em;
 
   display: grid;
   grid-gap: 1em;
 
-  background-color:white;
+  background-color:rgba(255, 255, 255, .9);
 
-  border-radius: 1em;
+  border-radius: 0.1em;
 }
 
 fieldset {
@@ -57,7 +61,6 @@ fieldset {
 
   border: none;
 }
-
 
 legend {
   padding: 0 0 1.5rem 0;
@@ -73,7 +76,6 @@ label {
   padding: 0 0 .5rem 0;
 }
 
-
 input,
 textarea {
   width: 94%;
@@ -86,18 +88,56 @@ textarea {
   outline: none;
 }
 
+
+/* buttons */ 
+
 button {
-  color: white;
+  font-family: catamaran;
+  font-size: 1.1em;
+ 
+  width: 32em;
   height: 2.5em;
+
   display: block;
 
-  font-family: Roboto;
-  font-weight: 400;
-  font-size: 1.1em;
   outline: none;
-
   border: none;
-  border-radius: 1em;
 
+  border-radius: 1em;
+  
+  color: white;
   background-color: #3654a5;
+}
+
+.buttonLogin1 {
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2em;
+  display: block;
+  width: 32em;
+
+  background-color: #252525;
+}
+
+.buttonLogin2 {
+  margin-left: auto;
+  margin-right: 2em;
+  margin-bottom: 2em;
+
+  display: block;
+
+  background-color: #252525;
+
+  width: 7%;
+}
+
+.buttonSignup {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4em;
+
+  display: block;
+
+  width: 15em;
 }
