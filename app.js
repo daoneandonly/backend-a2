@@ -179,19 +179,47 @@ function saveBucketlistResults(req, res) {
     })
 };
 
+// profile feature
+app.get('/add', profileForm);
+app.post('/add', upload.single('photo'), add);
+
+function profileForm(req, res) {
+  res.render('pages/add-profile.ejs', {
+    title: 'addprofile'
+  });
+};
+
+function add(req, res, next) {
+  const profile = new Profile({
+    name: req.body.name,
+    photo: req.file ? req.file.filename : null,
+    age: req.body.age,
+    bio: req.body.bio
+  });
+
+  profile.save()
+    .then((result) => {
+      res.redirect('/bucketlist')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
 //function to find the saved data en show
 function showInformation(req, res) {
+  let id = '6060fd39b06f6e474c926323'
   Country.find()
-  Profiel.find()
+  Profile.findbyId(id)
 
-  function done(err, data, result) {
+  function done(err, result) {
     if (err) {
       next(err)
     } else {
       res.render('pages/bucketlist/bucketlistResults', {
         title: 'Bucketlist',
         countryView: result,
-        data: data
+        profileData: result
       })
     }
   }
@@ -211,35 +239,6 @@ function singleCountryInfo(req, res) {
       res.render('pages/404.ejs');
     });
 
-};
-
-// profile feature
-app.get('/add', profileForm);
-app.post('/add', upload.single('photo'), add);
-
-function profileForm(req, res) {
-  res.render('pages/add-profile.ejs', {
-    title: 'addprofile'
-  });
-};
-
-function add(req, res, next) {
-  const profile = new Profile({
-    name: req.body.name,
-    photo: req.file ? req.file.filename : null,
-    age: req.body.age,
-    bio: req.body.bio
-  });
-
-  profile.save(done);
-
-  function done(err, data) {
-    if (err) {
-      next(err)
-    } else {
-      res.redirect('/bucketlist')
-    }
-  };
 };
 
 // If there is no page found give an error page as page
