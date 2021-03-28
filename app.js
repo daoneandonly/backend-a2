@@ -49,7 +49,7 @@ app.get('/register', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String });
+const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
 
 app.post('/registerUsers', (req, res) => {
 
@@ -82,24 +82,29 @@ app.get('/login', (req, res) => {
 
 //checkt de ingegeven username en het wachtwoord met die uit de database 
 function checklogin(req, res, next) {
-  Users.findOne({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+  console.log('req.body.name: ', req.body.name)
+  Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
 
-  function done(err, users) {
-    // const name = req.body.name;
-    // const password = req.body.pasword;
-    if (err) {
-      next(err)
-    } else {
-      if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
-        console.log('Login geslaagd');
-        res.render('add-profile.ejs')
-    } else {
-        console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
-        res.render('loginFailed.ejs') //en wordt de pagina loginFailed terug gestuurd
-
-      }
-    }
+  function done(err, data) {
+    console.log('data: ', data)
   }
+
+  // async function done(err, users) {
+  //   await console.log(users)
+  //   // const name = req.body.name;
+  //   // const password = req.body.pasword;
+  //   if (err) {
+  //     next(err)
+  //   } else {
+  //     if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
+  //       console.log('Login geslaagd');
+  //       res.render('add-profile.ejs')
+  //   } else {
+  //       console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
+  //       res.render('loginFailed.ejs') //en wordt de pagina loginFailed terug gestuurd
+  //     }
+  //   }
+  // }
 };
 
 
