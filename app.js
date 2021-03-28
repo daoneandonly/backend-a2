@@ -37,12 +37,6 @@ const client = new MongoClient(uri, {
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
-client.connect()
-  .then(async client => {
-    let data = []
-    const db = client.db("dateApp");
-
-    data = await db.collection("users").find({}).toArray();
 
     // Resolve GET request
     app.get('/', (req, res) => {
@@ -149,5 +143,3 @@ client.connect()
     app.listen(port, () => {
       console.log(`App.js starting at http://localhost:${port}`);
     });
-  })
-  .catch(console.error);
