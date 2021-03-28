@@ -211,18 +211,13 @@ function showInformation(req, res) {
   let id = '6060fd39b06f6e474c926323'
   Country.find()
   Profile.findbyId(id)
-
-  function done(err, result) {
-    if (err) {
-      next(err)
-    } else {
+    .then(result => {
       res.render('pages/bucketlist/bucketlistResults', {
         title: 'Bucketlist',
         countryView: result,
         profileData: result
       })
-    }
-  }
+    })
 };
 
 // function to show detail page for each created ID
