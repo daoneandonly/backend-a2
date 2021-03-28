@@ -73,6 +73,8 @@ app.post('/registerUsers', (req, res) => {
 
 //login feature
 app.post('/login', checklogin);
+app.get('/loginFailed', checklogin);
+app.get('/add-profile', checklogin);
 
 app.get('/login', (req, res) => {
   res.render('pages/login/login', {
@@ -80,32 +82,34 @@ app.get('/login', (req, res) => {
   })
 });
 
+
 //checkt de ingegeven username en het wachtwoord met die uit de database 
 function checklogin(req, res, next) {
   console.log('req.body.name: ', req.body.name)
   Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
 
-  function done(err, data) {
-    console.log('data: ', data)
+  async function done(err, users) {
+     console.log(users)
+  
+    if (err) {
+      next(err)
+    } else {
+      if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
+        console.log('Login geslaagd');
+        res.redirect('/')
+    } else {
+        console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
+        res.redirect('/loginFailed') //en wordt de pagina loginFailed terug gestuurd
+      }
+    }
   }
-
-  // async function done(err, users) {
-  //   await console.log(users)
-  //   // const name = req.body.name;
-  //   // const password = req.body.pasword;
-  //   if (err) {
-  //     next(err)
-  //   } else {
-  //     if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
-  //       console.log('Login geslaagd');
-  //       res.render('add-profile.ejs')
-  //   } else {
-  //       console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
-  //       res.render('loginFailed.ejs') //en wordt de pagina loginFailed terug gestuurd
-  //     }
-  //   }
-  // }
 };
+
+app.get('/loginFailed', (req, res) => {
+  res.render('pages/login/loginFailed', {
+    title: 'Log in failed'
+  })
+});
 
 
 app.get('/add', profileForm);
