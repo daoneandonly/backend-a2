@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 //Objects with a string and all are required
 const countrySchema = new Schema({
     countryQuestionOne: {
-        type: String,
+        type: String
     },
     countryQuestionTwo: {
         type: String

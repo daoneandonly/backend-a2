@@ -63,7 +63,7 @@ client.connect()
     //bucketlist
     app.get('/bucketlist', showBucketlistOverview);
     app.get('/bucketlistResults', showBucketlistResults);
-    app.get('/bucketlistOverview', informatieShow);
+    app.get('/bucketlistOverview', showInformation);
     app.get('/bucketlistOverview/:id', singleCountryInfo);
 
     app.post('/bucketlistOverview', saveBucketlistResults);
@@ -95,7 +95,7 @@ client.connect()
     };
 
     //function to find the saved data en show
-    function informatieShow(req, res) {
+    function showInformation(req, res) {
       Country.find()
         .then((result) => {
           res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
@@ -110,7 +110,7 @@ client.connect()
         res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
       })
       .catch(error => {
-        res.render('pages/not-found.ejs');
+        res.render('pages/404.ejs');
       });
     
     };
