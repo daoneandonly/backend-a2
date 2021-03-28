@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', function() {
 
-    let secondsLeft = 60;
+    let secondsLeft = 300;
 
     setInterval(function() {
 

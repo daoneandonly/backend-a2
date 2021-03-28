@@ -9,7 +9,7 @@ const upload = multer({
 });
 
 const LoginLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, //1 min
+    windowMs: 5 * 60 * 1000, //1 min
     max: 3,
     handler: function(req, res /*, next*/) {
         res.render('pages/errors/login-rate-limit', {
@@ -19,7 +19,7 @@ const LoginLimiter = rateLimit({
 });
 
 const registerLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, //1 min
+    windowMs: 5 * 60 * 1000, //1 min
     max: 3,
     handler: function(req, res /*, next*/) {
         res.render('pages/errors/register-rate-limit', {
