@@ -132,6 +132,11 @@ app.post('/registerUsers', (req, res) => {
     };
 
     function showImages (req, res){
+  
+      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc", function (error, response, body){
+        res.render(body);
+      })
+
       res.render("pages/bucketlist/imagesGrid", {title: 'imagesAPI'})
     };
 
