@@ -146,10 +146,6 @@ app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
 
 function profileForm(req, res) {
-  res.render('add.ejs')
-}
-
-function profileForm(req, res) {
   res.render('pages/add-profile.ejs', {
     title: 'addprofile'
   });
