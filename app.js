@@ -29,22 +29,9 @@ db.on('connected', () => {
   console.log('Mongoose connected')
 })
 
-// Mongodb
-const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.DB_URI;
-const client = new MongoClient(uri,{ useUnifiedTopology: true });
-
-
 // ejs
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
-
-client.connect()
-.then(async client => {
-  let data = []
-  const db = client.db("dateApp");
-
-  data = await db.collection("users").find({}).toArray();
   
   // Resolve GET request
   app.get('/', (req, res) => {
@@ -103,7 +90,6 @@ app.post('/registerUsers', (req, res) => {
     })
   });
   
-  
     //function render bucketlistOverview page
   function showBucketlistOverview(req, res) {
     res.render('pages/bucketlist/bucketlistOverview', {
@@ -145,5 +131,3 @@ app.post('/registerUsers', (req, res) => {
   app.listen(port, () => {
     console.log(`App.js starting at http://localhost:${port}`);
   });
-})
-.catch(console.error);
