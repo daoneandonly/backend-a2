@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const Country = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
@@ -15,6 +16,9 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 const db = mongoose.connection
 
@@ -112,39 +116,63 @@ app.get('/loginFailed', (req, res) => {
 });
 
 
+    //bucketlist 
+    app.get('/bucketlist', showBucketlistOverview);
+    app.get('/bucketlistResults', showBucketlistResults);
+    app.get('/bucketlistOverview', showInformation);
+    app.get('/bucketlistOverview/:id', singleCountryInfo);
+
+    app.post('/bucketlistOverview', saveBucketlistResults);
+
+    function showBucketlistResults(req, res) {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'bucketlistResults'
+      });
+    };
+
+    //function render bucketlistOverview page
+    function showBucketlistOverview(req, res) {
+      res.render('pages/bucketlist/bucketlistOverview', {
+        title: 'bucketlist'
+      });
+    };
+
+    // save the form data to the database
+    function saveBucketlistResults(req, res) {
+      const country = new Country(req.body);
+
+      country.save()
+        .then((result) => {
+          res.redirect('bucketlistOverview')
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    };
+
+    //function to find the saved data en show
+    function showInformation(req, res) {
+      Country.find()
+        .then((result) => {
+          res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
+        })
+    };
+
+    // function to show detail page for each created ID
+    function singleCountryInfo (req, res) {
+      const id = req.params.id;
+      Country.findById(id)
+      .then(result => {
+        res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
+      })
+      .catch(error => {
+        res.render('pages/404.ejs');
+      });
+    
+    };
+
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
-
-//bucketlist
-app.get('/bucketlist', showBucketlistOverview);
-app.get('/bucketlistResults', showBucketlistResults);
-
-app.post('/bucketlistResults', showBucketlistResults);
-
-
-// If there is no page found give an error page as page
-app.get('*', (req, res) => {
-  res.status(404).render('pages/404', {
-    url: req.url,
-    title: 'Error 404',
-  })
-});
-
-//function render bucketlistOverview page
-function showBucketlistOverview(req, res) {
-  res.render('pages/bucketlist/bucketlistOverview', {
-    title: 'bucketlist'
-  });
-};
-
-//function render bucketlistResultaat page
-function showBucketlistResults(req, res) {
-  res.render('pages/bucketlist/bucketlistResults', {
-    title: 'bucketlistoverview'
-  }, {
-    interestView: data
-  });
-};
 
 function profileForm(req, res) {
   res.render('add.ejs')
@@ -166,6 +194,14 @@ function add(req, res, next) {
     }
   }
 }
+
+// If there is no page found give an error page as page
+app.get('*', (req, res) => {
+  res.status(404).render('pages/404', {
+    url: req.url,
+    title: 'Error 404',
+  })
+});
 
 // Listen to port 3000
 app.listen(port, () => {
