@@ -134,14 +134,12 @@ app.post('/registerUsers', (req, res) => {
 
   
     function showImages(req, res){
-      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc&page=3", function (error, response, body){
+      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc&page=4", function (error, response, body){
        if(error){
          console.log(error);
        }else{
-         res.send(JSON.parse(body));
+        res.render('pages/bucketlist/imagesGrid', {title: 'images grid', imagesGridData: JSON.parse(body)});
        }
-      
-      // res.render('pages/bucketlist/imagesGrid', {title: 'images grid'});
       });
     }
 
