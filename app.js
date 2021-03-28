@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const Country = require('./models/countryModel'); //import schema
+const request = require("request"); //package to handle http requests
 const upload = multer({
   dest: 'static/img/'
 });
@@ -80,7 +81,7 @@ app.post('/registerUsers', (req, res) => {
     app.get('/bucketlistResults', showBucketlistResults);
     app.get('/bucketlistOverview', showInformation);
     app.get('/bucketlistOverview/:id', singleCountryInfo);
-    app.get('/imagesGrid', showImages);
+    // app.get('/imagesGrid', showImages);
 
     app.post('/bucketlistOverview', saveBucketlistResults);
 
@@ -131,14 +132,16 @@ app.post('/registerUsers', (req, res) => {
     
     };
 
-    function showImages (req, res){
   
-      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc", function (error, response, body){
-        res.render(body);
-      })
+  
+      request("https://www.google.com", function (error, response, body){
+        if(error){
+          console.log("ERROR!!!");
+        } else{
+          console.log(body);
+        }
+      });
 
-      res.render("pages/bucketlist/imagesGrid", {title: 'imagesAPI'})
-    };
 
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
