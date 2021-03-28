@@ -141,6 +141,7 @@ function singleCountryInfo(req, res) {
 
 };
 
+// profile feature 
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
 
