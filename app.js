@@ -2,9 +2,30 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
+});
+
+const LoginLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/login-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
+});
+
+const registerLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/register-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
 });
 
 // Mongoose
@@ -55,7 +76,7 @@ app.use(express.urlencoded({ extended: false }))
 // Create users collection with schema
 const Users = mongoose.model('Users',{name: String,email:String,password:String});
 
-app.post('/registerUsers', (req, res) => {
+app.post('/registerUsers', registerLimiter, (req, res) => {
    
   try {
      const newUsers  = new Users({
@@ -74,6 +95,12 @@ app.post('/registerUsers', (req, res) => {
      console.log(error);
   }
 })
+
+app.post('/loginUser', LoginLimiter, (req, res) => {
+    // TODO: replace this code with login logic
+    console.log('login logic must be placed here');
+    res.send('temporary return message.');
+});
 
     //bucketlist 
     app.get('/bucketlist', showBucketlistOverview);
