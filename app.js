@@ -81,6 +81,7 @@ client.connect()
       });
     };
 
+    // save the form data to the database
     function saveBucketlistResults(req, res) {
       const country = new Country(req.body);
 
@@ -93,6 +94,7 @@ client.connect()
         })
     };
 
+    //function to find the saved data en show
     function informatieShow(req, res) {
       Country.find()
         .then((result) => {
@@ -100,6 +102,7 @@ client.connect()
         })
     };
 
+    // function to show detail page for each created ID
     function singleCountryInfo (req, res) {
       const id = req.params.id;
       Country.findById(id)
