@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
-const Country = require('./models/countryModel'); //import schema
+const Country = require('./models/countryModel'); //import schema bucketlist
+const Profile = require('./models/profileModel'); //import schema profile
 const upload = multer({
   dest: 'static/img/'
 });
@@ -117,12 +118,19 @@ function saveBucketlistResults(req, res) {
 //function to find the saved data en show
 function showInformation(req, res) {
   Country.find()
-    .then((result) => {
+  Profiel.find(done)
+
+  function done(err, data, result) {
+    if (err) {
+      next(err)
+    } else {
       res.render('pages/bucketlist/bucketlistResults', {
         title: 'Bucketlist',
-        countryView: result
+        countryView: result,
+        data: data
       })
-    })
+    }
+  }
 };
 
 // function to show detail page for each created ID
@@ -152,12 +160,9 @@ function profileForm(req, res) {
 };
 
 function add(req, res, next) {
-  db.collection('profs').insertOne({
-    name: req.body.name,
-    photo: req.file ? req.file.filename : null,
-    age: req.body.age,
-    bio: req.body.bio
-  }, done);
+  const profile = new Profile(req.body);
+
+  profile.save(done);
 
   function done(err, data) {
     if (err) {

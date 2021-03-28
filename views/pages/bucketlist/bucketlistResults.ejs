@@ -2,6 +2,19 @@
 <%- include('../../partials/header'); %>
 
 <main>
+  <h1>
+  <%= data.naam %>
+</h1>
+<% if (data.foto) { %>
+<img alt src="/upload/<%= data.foto %>">
+<% } %>
+<p>
+  <%= data.leeftijd %>
+</p>
+<p id="bio">
+  <%= data.bio %>
+</p>
+
   <h1>My bucketlist <br> locations</h1>
 
   <div class="countryResults">
@@ -13,7 +26,7 @@
 
       <a class='singleCountry' href="/bucketlistOverview/<%= view._id%>">
         <p class='oneCountry'> <%= view.countryQuestionOne %></p>
-        
+
       </a>
 
       <% }) %>

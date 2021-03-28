@@ -1,16 +1,16 @@
 <%- include('../partials/head'); %>
 <%- include('../partials/header'); %>
 <h1>Add profile</h1>
-<form action=/add method=post enctype=multipart/form-data> <label>
+<form id="profileForm" method="POST" action="/add" enctype=multipart/form-data> <label>
   photo
-  <input name=photo type=file accept=image/*> </label> <label>Naam<input name=name></label>
+  <input type="file" name="photo" accept=image/* required> </label> <label>Naam<input type="text" name="name" required></label>
   <label>
     age
-    <input name=age>
+    <input type="text" name=age required>
   </label>
   <label>
-    <textarea name=bio rows=5></textarea>
+    <textarea type="text" name=bio rows=5 required></textarea>
   </label>
-  <button>Add</button>
+  <input type="submit" value="submit"/>
 </form>
 <%- include('../partials/footer'); %>
