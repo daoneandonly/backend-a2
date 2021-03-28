@@ -7,13 +7,13 @@ const Schema = mongoose.Schema;
 //Schema structure how to save in the collection
 //Objects with a string and all are required
 const countrySchema = new Schema({
-    countryOne: {
+    countryQuestionOne: {
+        type: String,
+    },
+    countryQuestionTwo: {
         type: String
     },
-    countryTwo: {
-        type: String
-    },
-    countryThree: {
+    countryQuestionThree: {
         type: String
     }
 });

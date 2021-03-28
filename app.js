@@ -104,7 +104,7 @@ client.connect()
       const id = req.params.id;
       Country.findById(id)
       .then(result => {
-        res.render('pages/bucketlist/countryDetails',{title: 'country details', Xinfo: result})
+        res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
       })
       .catch(error => {
         res.render('pages/not-found.ejs');

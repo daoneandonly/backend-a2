@@ -2,8 +2,7 @@
 <%- include('../../partials/header'); %>
 
 <main>
-  <h1>RESULTATEN BUCKETLIST test</h1>
-  <p>Welcome to Backend A2 Assignment</p>
+  <h1>My bucketlist <br> locations</h1>
 
   <div class="countryResults">
     <div>
@@ -13,15 +12,15 @@
       <% countryView.forEach(view => { %>
 
       <a class='singleCountry' href="/bucketlistOverview/<%= view._id%>">
-        <p class='oneCountry'> <%= view.countryOne %></p>
-        <p class='oneCountry'> <%= view.countryTwo %></p>
-        <p class='oneCountry'> <%= view.countryThree %></p>
+        <p class='oneCountry'> <%= view.countryQuestionOne %></p>
+        
       </a>
 
       <% }) %>
       <% } else {%>
-      <p>nog geen interesses toegevoegd</p>
+      <p>no bucketlist locations added yet</p>
       <% }%>
+
     </div>
   </div>
 

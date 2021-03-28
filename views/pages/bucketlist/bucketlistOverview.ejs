@@ -2,40 +2,19 @@
 <%- include('../../partials/header'); %>
 
 <main>
-    <h1>BUCKETLIST OVERZICHT</h1>
-    <p>Choose your bucketlist locations</p>
+    <h1>Bucketlist Locations</h1>
+    <p>What are your bucketlist locations and why</p>
 
     <!-- Form with post method including 10 locations -->
     <form id="location-form" method="POST" action="/bucketlistOverview">
-        <label for="interesse">Japan</label>
-        <input type="checkbox" id="countryOne" name="countryOne">
+        <label for="countryChoice">What Country?</label>
+        <input type="text" id="countryQuestionOne" name="countryQuestionOne" required>
 
-        <label for="waarom">Russia</label>
-        <input type="checkbox" id="countryTwo" name="countryTwo">
+        <label for="countryReason">Why this Country?</label>
+        <input type="text" id="countryQuestionTwo" name="countryQuestionTwo" required>
 
-        <label for="vermaken">Canada</label>
-        <input type="checkbox" id="countryThree" name="countryThree">
-
-        <label for="vermaken">Australia</label>
-        <input type="checkbox" id="countryFour" name="countryFour">
-
-        <label for="vermaken">China</label>
-        <input type="checkbox" id="countryFive" name="countryFive">
-
-        <label for="vermaken">Brazil</label>
-        <input type="checkbox" id="countrySix" name="countrySix">
-
-        <label for="vermaken">Italy</label>
-        <input type="checkbox" id="countrySeven" name="countrySeven">
-
-        <label for="vermaken">Spain</label>
-        <input type="checkbox" id="countryEight" name="countryEight">
-
-        <label for="vermaken">Thailand</label>
-        <input type="checkbox" id="countryNine" name="countryNine">
-
-        <label for="vermaken">Qatar</label>
-        <input type="checkbox" id="countryTen" name="countryTen">
+        <label for="vermaken">With who would you like to go there?</label>
+        <input type="text" id="countryQuestionThree" name="countryQuestionThree" required>
 
         <input type="submit" value="submit"/>
     </form>
