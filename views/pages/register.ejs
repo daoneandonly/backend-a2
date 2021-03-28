@@ -2,17 +2,16 @@
 <%- include('../partials/header'); %>
 
 <main>
+  <h1>Register</h1>
+  <p>Register for TravelBuddy</p>
 
-  <title>Register</title>
-  <h1>Sign up now!</h1>
-  
-  <form action="/registerUsers" method="POST">
+  <form action="/register" method="POST">
     <div>
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
     </div>
     <div>
-      <label for="email">Email</label>
+      <label for="email">E-mail</label>
       <input type="email" id="email" name="email" required>
     </div>
     <div>
@@ -20,8 +19,10 @@
       <input type="password" id="password" name="password" required>
     </div>
     <button type="submit">Register</button>
+    <button type="submit"> <a href="/login">Login</a></button>
   </form>
-  <button type="submit" class="buttonLogin1"><a href="/login">Already have an account? Login!</a></button>
+
+ 
 
 </main>
 
