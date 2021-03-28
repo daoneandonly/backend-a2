@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/daoneandonly/backend-a2#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "concurrently": "^6.0.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",

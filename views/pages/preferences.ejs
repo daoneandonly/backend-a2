@@ -1,0 +1,48 @@
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+<h1>Your preferences</h1>
+<form action="/preferences" method="post"> 
+
+  <label for="genderSelect">Choose your gender:</label>
+
+  <select name="genderSelect" id="genderSelect">
+      <option value="">--Please choose an option--</option>
+      <option value="He" <%= user.preferences.genderSelect == 'He' ? 'selected' : '' %> >He</option>
+      <option value="She" <%= user.preferences.genderSelect == 'She' ? 'selected' : '' %> >She</option>
+      <option value="none" <%= user.preferences.genderSelect == 'none' ? 'selected' : '' %> >non-binary</option>
+  </select>
+  
+  <label for="genderPreference">Choose a preferred gender:</label>
+
+  <select name="genderPreference" id="genderPreference">
+      <option value="">--Please choose an option--</option>
+      <option value="He" <%= user.preferences.genderPreference == 'He' ? 'selected' : '' %> >He</option>
+      <option value="She" <%= user.preferences.genderPreference == 'She' ? 'selected' : '' %> >She</option>
+      <option value="both" <%= user.preferences.genderPreference == 'both' ? 'selected' : '' %> >both</option>
+  </select>
+
+  <div>
+
+    <label for="distance">Distance</label>
+    <input type="number" id="distance" name="distance" min="0" max="200" step="1" value="<%= user.preferences.distance %>">
+
+  </div>
+
+  <div>
+
+    <label for="distance">Minimum age</label>
+    <input type="number" id="minAge" name="minAge" min="18" max="100" step="1" value="<%= user.preferences.minimumAge %>">
+
+  </div>
+
+  <div>
+
+    <label for="distance">Maximum age</label>
+    <input type="number" id="maxAge" name="maxAge" min="18" max="100" step="1" value="<%= user.preferences.maximumAge %>">
+
+  </div>
+
+
+  <button>Add</button>
+</form>
+<%- include('../partials/footer'); %>

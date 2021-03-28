@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser= require ('body-parser');
 const multer = require('multer');
 const upload = multer({
   dest: 'static/img/'
@@ -13,10 +14,11 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
-
+app.use(bodyParser.urlencoded({extended:false}))
 
 // Mongodb
-const MongoClient = require('mongodb').MongoClient;
+const mongo = require('mongodb');
+const MongoClient = mongo.MongoClient;
 const uri = process.env.DB_URI;
 const client = new MongoClient(uri,{ useUnifiedTopology: true });
 
@@ -49,9 +51,11 @@ client.connect()
   //bucketlist
   app.get('/bucketlist', showBucketlistOverview);
   app.get('/bucketlistResults', showBucketlistResults);
-
   app.post('/bucketlistResults', showBucketlistResults);
   
+  //preferences
+  app.get('/preferences', showPreferences);
+  app.post('/preferences', submitPreferences);
   
   // If there is no page found give an error page as page
   app.get('*', (req, res) => {
@@ -76,6 +80,53 @@ client.connect()
     }, {
       interestView: data
     });
+  };
+
+  function showPreferences(req, res) {
+  
+    const id = '606093b37dffc346d27fbfb2'; //Insert the user ID here of the logged in user here
+
+    db.collection('users').findOne({
+        _id: mongo.ObjectID(id)
+    }, done);
+
+    function done(err, data) {
+        if (err) {
+            next(err);
+        } else {
+          console.log(data);
+          res.render('pages/preferences', {
+            user: data,
+            title: 'change preferences'
+          });
+        }
+    }
+
+  
+  };
+
+  function submitPreferences(req, res) {
+   
+    const id = '606093b37dffc346d27fbfb2'; //Insert the user ID here of the logged in user here
+  
+    db.collection('users').updateOne({
+
+      _id: mongo.ObjectID(id)},
+      {
+          $set: {
+              
+              preferences: {
+                genderSelect: req.body.genderSelect,
+                genderPreference: req.body.genderPreference,
+                distance: req.body.distance, 
+                minimumAge: req.body.minAge,
+                maximumAge: req.body.maxAge
+              }
+          }
+      });
+
+      res.redirect('/preferences');
+
   };
 
   function profileForm(req, res) {
