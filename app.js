@@ -64,8 +64,22 @@ client.connect()
     app.get('/bucketlist', showBucketlistOverview);
     app.get('/bucketlistResults', showBucketlistResults);
     app.get('/bucketlistOverview', informatieShow);
+    app.get('/bucketlistOverview/:id', singleCountryInfo);
 
     app.post('/bucketlistOverview', saveBucketlistResults);
+
+    function showBucketlistResults(req, res) {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'bucketlistResults'
+      });
+    };
+
+    //function render bucketlistOverview page
+    function showBucketlistOverview(req, res) {
+      res.render('pages/bucketlist/bucketlistOverview', {
+        title: 'bucketlist'
+      });
+    };
 
     function saveBucketlistResults(req, res) {
       const country = new Country(req.body);
@@ -79,13 +93,6 @@ client.connect()
         })
     };
 
-    //function render bucketlistOverview page
-    function showBucketlistOverview(req, res) {
-      res.render('pages/bucketlist/bucketlistOverview', {
-        title: 'bucketlist'
-      });
-    };
-
     function informatieShow(req, res) {
       Country.find()
         .then((result) => {
@@ -93,14 +100,17 @@ client.connect()
         })
     };
 
-    function showBucketlistResults(req, res) {
-      res.render('pages/bucketlist/bucketlistResults', {
-        title: 'bucketlistResults'
+    function singleCountryInfo (req, res) {
+      const id = req.params.id;
+      Country.findById(id)
+      .then(result => {
+        res.render('pages/bucketlist/countryDetails',{title: 'country details', Xinfo: result})
+      })
+      .catch(error => {
+        res.render('pages/not-found.ejs');
       });
-    };
-
     
-
+    };
     
 
     function profileForm(req, res) {

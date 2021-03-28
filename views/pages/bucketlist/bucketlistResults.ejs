@@ -2,7 +2,7 @@
 <%- include('../../partials/header'); %>
 
 <main>
-  <h1>RESULTATEN BUCKETLIST</h1>
+  <h1>RESULTATEN BUCKETLIST test</h1>
   <p>Welcome to Backend A2 Assignment</p>
 
   <div class="countryResults">
@@ -12,10 +12,10 @@
       <% if (countryView.length > 0) { %>
       <% countryView.forEach(view => { %>
 
-
-      <p class='oneCountry'> <%= view.countryOne %></p>
-      <p class='oneCountry'> <%= view.countryTwo %></p>
-      <p class='oneCountry'> <%= view.countryThree %></p>
+      <a class='singleCountry' href="/bucketlistOverview/<%= view._id%>">
+        <p class='oneCountry'> <%= view.countryOne %></p>
+        <p class='oneCountry'> <%= view.countryTwo %></p>
+        <p class='oneCountry'> <%= view.countryThree %></p>
       </a>
 
       <% }) %>
