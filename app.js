@@ -224,7 +224,12 @@ function profileForm(req, res) {
 };
 
 function add(req, res, next) {
-  const profile = new Profile(req.body);
+  const profile = new Profile({
+    name: req.body.name,
+    photo: req.file ? req.file.filename : null,
+    age: req.body.age,
+    bio: req.body.bio
+  });
 
   profile.save(done);
 
