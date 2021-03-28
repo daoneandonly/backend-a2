@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser = require ('body-parser');
 const multer = require('multer');
 const Country = require('./models/countryModel'); //import schema
 const upload = multer({
@@ -19,6 +20,7 @@ app.use(express.static('static'));
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(bodyParser.urlencoded({extended:false}));
 
 const db = mongoose.connection
 
@@ -53,7 +55,7 @@ app.get('/register', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
+const Users = mongoose.model('Users', { name: String, email: String, password: String, preferences: Object}, 'users' );
 
 app.post('/registerUsers', (req, res) => {
 
@@ -61,7 +63,14 @@ app.post('/registerUsers', (req, res) => {
     const newUsers = new Users({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      preferences: {
+        genderSelect: 'She',
+        genderPreference: 'He',
+        distance: 10,
+        minimumAge: 25,
+        maximumAge: 35
+      }
     })
     newUsers.save().then(() => {
       console.log('Added Users');
@@ -193,6 +202,44 @@ function add(req, res, next) {
       res.redirect('/' + data.insertedId)
     }
   }
+}
+
+//preferences
+app.get('/preferences', showPreferences);
+app.post('/preferences', submitPreferences);
+
+function showPreferences(req, res) {
+
+  const email = 'sjonnie@gmail.com'; //Insert the user email of the logged in user here
+
+  Users.findOne({
+    'email': email
+  }, function (err, user) {
+    res.render('pages/preferences', {
+      user: user,
+      title: 'change preferences'
+    });
+  }).exec();
+}
+
+function submitPreferences(req, res) {
+
+  const email = 'sjonnie@gmail.com'; //Insert the user email of the logged in user here
+
+  Users.findOneAndUpdate({
+    'email': email
+  }, {
+    preferences: {
+      genderSelect: req.body.genderSelect,
+      genderPreference: req.body.genderPreference,
+      distance: req.body.distance,
+      minimumAge: req.body.minAge,
+      maximumAge: req.body.maxAge
+    }
+  }).exec();
+
+  res.redirect('/preferences');
+
 }
 
 // If there is no page found give an error page as page
