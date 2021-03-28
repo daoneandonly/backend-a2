@@ -98,7 +98,7 @@ client.connect()
         if (err) {
           next(err)
         } else {
-          res.redirect('/' + data.insertedId)
+          res.redirect('/')
         }
       };
     };
