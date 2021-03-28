@@ -2,10 +2,31 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema
 const request = require("request"); //package to handle http requests
 const upload = multer({
   dest: 'static/img/'
+});
+
+const LoginLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/login-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
+});
+
+const registerLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/register-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
 });
 
 // Mongoose
@@ -25,56 +46,97 @@ const db = mongoose.connection
 
 // Connect mongoose with the database
 mongoose.connect(process.env.DB_URI, {
-  useNewUrlParser: true, 
+  useNewUrlParser: true,
   useUnifiedTopology: true
 })
 
-db.on('connected', () => { 
+db.on('connected', () => {
   console.log('Mongoose connected')
 })
 
 // ejs
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
-  
-  // Resolve GET request
-  app.get('/', (req, res) => {
-    res.render('pages/index', {
-      title: 'home'
-    })
-  });
-  
-  app.get('/register', (req, res) => {
-    res.render('pages/register', {
-      title: 'register'
-    })
-  });
 
-  // Telling app to take the forms and acces them inside of the request variable inside of the post method
+// Resolve GET request
+app.get('/', (req, res) => {
+  res.render('pages/index', {
+    title: 'home'
+  })
+});
+
+app.get('/register', (req, res) => {
+  res.render('pages/register', {
+    title: 'register'
+  })
+});
+
+// Telling app to take the forms and acces them inside of the request variable inside of the post method
 app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
-const Users = mongoose.model('Users',{name: String,email:String,password:String});
+const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
 
-app.post('/registerUsers', (req, res) => {
-   
+app.post('/registerUsers', registerLimiter, (req, res) => {
+
   try {
-     const newUsers  = new Users({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-     })
-     newUsers.save().then(() =>{
-        console.log('Added Users');
-        res.redirect('/login')
-        return;
-        
-  })
-     
+    const newUsers = new Users({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    })
+    newUsers.save().then(() => {
+      console.log('Added Users');
+      res.redirect('/login')
+      return;
+
+    })
+
   } catch (error) {
-     console.log(error);
+    console.log(error);
   }
-})
+});
+
+//login feature
+app.post('/login', LoginLimiter, checklogin);
+app.get('/loginFailed', checklogin);
+app.get('/add-profile', checklogin);
+
+app.get('/login', (req, res) => {
+  res.render('pages/login/login', {
+    title: 'Log in'
+  })
+});
+
+
+//checkt de ingegeven username en het wachtwoord met die uit de database
+function checklogin(req, res, next) {
+  console.log('req.body.name: ', req.body.name)
+  Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+
+  async function done(err, users) {
+     console.log(users)
+
+    if (err) {
+      next(err)
+    } else {
+      if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
+        console.log('Login geslaagd');
+        res.redirect('/')
+    } else {
+        console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
+        res.redirect('/loginFailed') //en wordt de pagina loginFailed terug gestuurd
+      }
+    }
+  }
+};
+
+app.get('/loginFailed', (req, res) => {
+  res.render('pages/login/loginFailed', {
+    title: 'Log in failed'
+  })
+});
+
 
     //bucketlist 
     app.get('/bucketlist', showBucketlistOverview);
