@@ -3,16 +3,16 @@
 
 <main>
   <h1>
-  <%= data.name %>
+  <%= profileData.name %>
 </h1>
-<% if (data.photo) { %>
-<img alt src="/upload/<%= data.photo %>">
+<% if (profileData.photo) { %>
+<img alt src="/upload/<%= profileData.photo %>">
 <% } %>
 <p>
-  <%= data.age %>
+  <%= profileData.age %>
 </p>
 <p id="bio">
-  <%= data.bio %>
+  <%= profileData.bio %>
 </p>
 
   <h1>My bucketlist <br> locations</h1>
