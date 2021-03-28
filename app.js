@@ -3,8 +3,23 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const upload = multer({
   dest: 'static/img/'
+});
+
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, //1 min
+  max: 3,
+  handler: function(req, res /*, next*/) {
+
+    res.render('pages/errors/register-rate-limit', {
+      title: 'Sorry Broski te veel van het goeie',
+
+    })
+  },
+
 });
 
 // dotenv
@@ -14,6 +29,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.use('/register', limiter);
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
@@ -45,24 +61,12 @@ client.connect()
     })
   });
 
-<<<<<<< HEAD
-
-  //function render bucketlistResultaat page
-function showBucketlistResultaat(req, res) {
-    res.render('pages/bucketlist/bucketlistResultaat', {title: 'bucketlistoverzicht'}, {interestView: data});
-  };
-
-function saveBucketlist(req, res) { 
-  // here we will save the bucketlist later on
-}
-=======
   app.get('/add', profileForm);
   app.post('/add', upload.single('photo'), add);
   
   //bucketlist
   app.get('/bucketlist', showBucketlistOverview);
   app.get('/bucketlistResults', showBucketlistResults);
->>>>>>> develop
 
   app.post('/bucketlistResults', showBucketlistResults);
   
