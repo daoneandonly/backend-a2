@@ -132,9 +132,9 @@ app.post('/registerUsers', (req, res) => {
     
     };
 
-  
+    // function to show the images from the unsplash API on the imagesGrid page
     function showImages(req, res){
-      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc&page=4", function (error, response, body){
+      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc", function (error, response, body){
        if(error){
          console.log(error);
        }else{
