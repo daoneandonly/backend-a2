@@ -81,7 +81,7 @@ app.post('/registerUsers', (req, res) => {
     app.get('/bucketlistResults', showBucketlistResults);
     app.get('/bucketlistOverview', showInformation);
     app.get('/bucketlistOverview/:id', singleCountryInfo);
-    // app.get('/imagesGrid', showImages);
+    app.get('/imagesGrid', showImages);
 
     app.post('/bucketlistOverview', saveBucketlistResults);
 
@@ -133,15 +133,17 @@ app.post('/registerUsers', (req, res) => {
     };
 
   
-  
-      request("https://www.google.com", function (error, response, body){
-        if(error){
-          console.log("ERROR!!!");
-        } else{
-          console.log(body);
-        }
+    function showImages(req, res){
+      request("https://api.unsplash.com/photos?client_id=RsyiavOTOKJ65Sgr3PECQZ97VYTWbzAwEbHAVoR62Oc&page=3", function (error, response, body){
+       if(error){
+         console.log(error);
+       }else{
+         res.send(JSON.parse(body));
+       }
+      
+      // res.render('pages/bucketlist/imagesGrid', {title: 'images grid'});
       });
-
+    }
 
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
