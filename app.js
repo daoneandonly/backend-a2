@@ -182,7 +182,7 @@ function saveBucketlistResults(req, res) {
 //function to find the saved data en show
 function showInformation(req, res) {
   Country.find()
-  Profiel.find(done)
+  Profiel.find()
 
   function done(err, data, result) {
     if (err) {
