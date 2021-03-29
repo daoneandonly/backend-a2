@@ -10,6 +10,8 @@ const upload = multer({
 // Mongoose
 const mongoose = require('mongoose')
 
+const validator = require('validator')
+
 // dotenv
 const dotenv = require('dotenv');
 dotenv.config();
@@ -53,7 +55,7 @@ app.get('/register', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
+const Users = mongoose.Schema ('Users', { name: String, email: String, password: String, }, 'users' );
 
 app.post('/registerUsers', (req, res) => {
 
