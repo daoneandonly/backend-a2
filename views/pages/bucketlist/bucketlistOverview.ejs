@@ -1,0 +1,24 @@
+<%- include('../../partials/head'); %>
+<%- include('../../partials/header'); %>
+
+<main>
+    <h1>Bucketlist Locations</h1>
+    <p>What are your bucketlist locations and why</p>
+
+    <!-- Form with post method including 10 locations -->
+    <form id="location-form" method="POST" action="/bucketlistOverview">
+        <label for="countryChoice">What Country?</label>
+        <input type="text" id="countryQuestionOne" name="countryQuestionOne" required>
+
+        <label for="countryReason">Why this Country?</label>
+        <input type="text" id="countryQuestionTwo" name="countryQuestionTwo" required>
+
+        <label for="vermaken">With who would you like to go there?</label>
+        <input type="text" id="countryQuestionThree" name="countryQuestionThree" required>
+
+        <input type="submit" value="submit"/>
+    </form>
+
+</main>
+
+<%- include('../../partials/footer'); %>

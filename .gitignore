@@ -1,0 +1,7 @@
+node_modules/
+.vscode/
+.npm
+.DS_Store
+dist/
+.env
+.idea/

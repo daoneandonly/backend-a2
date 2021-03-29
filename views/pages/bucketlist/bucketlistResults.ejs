@@ -1,0 +1,30 @@
+<%- include('../../partials/head'); %>
+<%- include('../../partials/header'); %>
+
+<main>
+
+  <h1>My bucketlist <br> locations</h1>
+  <button class="buttonLogin1"><a href="/bucketlist">Add new bucketlist</a></button>
+  <div class="countryResults">
+    <div>
+      <!-- loop trough the schema object -->
+
+      <% if (countryView.length > 0) { %>
+      <% countryView.forEach(view => { %>
+
+      <a class='singleCountry' href="/bucketlistOverview/<%= view._id%>">
+        <p class='oneCountry'> <%= view.countryQuestionOne %></p>
+
+      </a>
+
+      <% }) %>
+      <% } else {%>
+      <p>no bucketlist locations added yet</p>
+      <% }%>
+
+    </div>
+  </div>
+
+</main>
+
+<%- include('../../partials/footer'); %>
