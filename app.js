@@ -7,25 +7,26 @@ const Country = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
 });
+const bcrypt = require('bcrypt');
 
 const LoginLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, //1 min
-    max: 3,
-    handler: function(req, res /*, next*/) {
-        res.render('pages/errors/login-rate-limit', {
-            title: 'Please try again later',
-        })
-    },
+  windowMs: 5 * 60 * 1000, //1 min
+  max: 3,
+  handler: function (req, res /*, next*/) {
+    res.render('pages/errors/login-rate-limit', {
+      title: 'Please try again later',
+    })
+  },
 });
 
 const registerLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, //1 min
-    max: 3,
-    handler: function(req, res /*, next*/) {
-        res.render('pages/errors/register-rate-limit', {
-            title: 'Please try again later',
-        })
-    },
+  windowMs: 5 * 60 * 1000, //1 min
+  max: 3,
+  handler: function (req, res /*, next*/) {
+    res.render('pages/errors/register-rate-limit', {
+      title: 'Please try again later',
+    })
+  },
 });
 
 // Mongoose
@@ -74,15 +75,16 @@ app.get('/register', (req, res) => {
 app.use(express.urlencoded({ extended: false }))
 
 // Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
+const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users');
 
-app.post('/registerUsers', registerLimiter, (req, res) => {
+app.post('/registerUsers', registerLimiter, async (req, res) => {
 
   try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const newUsers = new Users({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      password: hashedPassword
     })
     newUsers.save().then(() => {
       console.log('Added Users');
@@ -110,19 +112,19 @@ app.get('/login', (req, res) => {
 //checkt de ingegeven username en het wachtwoord met die uit de database
 function checklogin(req, res, next) {
   console.log('req.body.name: ', req.body.name)
-  Users.find({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
+  Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
   async function done(err, users) {
-     console.log(users)
+    //  console.log(users)
 
     if (err) {
       next(err)
     } else {
-      if (users.password == req.body.password) { //If the name is connected to the password then the login is succesfull
+      const validPassword = await bcrypt.compare(req.body.password, users.password);
+      if (validPassword) { //If the name is connected to the password then the login is succesfull
         console.log('Login geslaagd');
         res.redirect('/')
-    } else {
-        console.log('Login mislukt'); //If these are not the same the login is failed 
+      } else { //If these are not the same the login is failed 
         res.redirect('/loginFailed') //and the user will be redirected to the login failed page
       }
     }
@@ -136,60 +138,60 @@ app.get('/loginFailed', (req, res) => {
 });
 
 
-    //bucketlist 
-    app.get('/bucketlist', showBucketlistOverview);
-    app.get('/bucketlistResults', showBucketlistResults);
-    app.get('/bucketlistOverview', showInformation);
-    app.get('/bucketlistOverview/:id', singleCountryInfo);
+//bucketlist 
+app.get('/bucketlist', showBucketlistOverview);
+app.get('/bucketlistResults', showBucketlistResults);
+app.get('/bucketlistOverview', showInformation);
+app.get('/bucketlistOverview/:id', singleCountryInfo);
 
-    app.post('/bucketlistOverview', saveBucketlistResults);
+app.post('/bucketlistOverview', saveBucketlistResults);
 
-    function showBucketlistResults(req, res) {
-      res.render('pages/bucketlist/bucketlistResults', {
-        title: 'bucketlistResults'
-      });
-    };
+function showBucketlistResults(req, res) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistResults'
+  });
+};
 
-    //function render bucketlistOverview page
-    function showBucketlistOverview(req, res) {
-      res.render('pages/bucketlist/bucketlistOverview', {
-        title: 'bucketlist'
-      });
-    };
+//function render bucketlistOverview page
+function showBucketlistOverview(req, res) {
+  res.render('pages/bucketlist/bucketlistOverview', {
+    title: 'bucketlist'
+  });
+};
 
-    // save the form data to the database
-    function saveBucketlistResults(req, res) {
-      const country = new Country(req.body);
+// save the form data to the database
+function saveBucketlistResults(req, res) {
+  const country = new Country(req.body);
 
-      country.save()
-        .then((result) => {
-          res.redirect('bucketlistOverview')
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    };
+  country.save()
+    .then((result) => {
+      res.redirect('bucketlistOverview')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
 
-    //function to find the saved data en show
-    function showInformation(req, res) {
-      Country.find()
-        .then((result) => {
-          res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
-        })
-    };
+//function to find the saved data en show
+function showInformation(req, res) {
+  Country.find()
+    .then((result) => {
+      res.render('pages/bucketlist/bucketlistResults', { title: 'Bucketlist', countryView: result })
+    })
+};
 
-    // function to show detail page for each created ID
-    function singleCountryInfo (req, res) {
-      const id = req.params.id;
-      Country.findById(id)
-      .then(result => {
-        res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
-      })
-      .catch(error => {
-        res.render('pages/404.ejs');
-      });
-    
-    };
+// function to show detail page for each created ID
+function singleCountryInfo(req, res) {
+  const id = req.params.id;
+  Country.findById(id)
+    .then(result => {
+      res.render('pages/bucketlist/countryDetails', { title: 'country details', countryInfo: result })
+    })
+    .catch(error => {
+      res.render('pages/404.ejs');
+    });
+
+};
 
 app.get('/add', profileForm);
 app.post('/add', upload.single('photo'), add);
