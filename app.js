@@ -12,7 +12,6 @@ const upload = multer({
 	dest: 'static/img/'
 });
 const bcrypt = require('bcrypt');
-const express = require("express");
 const helmet = require("helmet");
 
 const LoginLimiter = rateLimit({
