@@ -195,9 +195,10 @@ app.get('/loginFailed', (req, res) => {
     };
 
     const api_key = process.env.API_KEY;
+    const api_url = "https://api.unsplash.com/photos?client_id=";
     // function to show the images from the unsplash API on the imagesGrid page
     function showImages(req, res){
-      request("https://api.unsplash.com/photos?client_id=" + api_key, function (error, response, body){
+      request(api_url + api_key, function (error, response, body){
        if(error){
          console.log(error);
        }else{
