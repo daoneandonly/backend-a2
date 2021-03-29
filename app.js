@@ -5,6 +5,7 @@ const multer = require('multer');
 const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema bucketlist
 const Profile = require('./models/profileModel'); //import schema profile
+const Users = require('./models/usersModel');  //import schema for users
 const upload = multer({
   dest: 'static/img/'
 });
@@ -31,6 +32,7 @@ const registerLimiter = rateLimit({
 
 // Mongoose
 const mongoose = require('mongoose')
+const validator = require('validator')
 
 // dotenv
 const dotenv = require('dotenv');
@@ -75,13 +77,6 @@ app.get('/register', (req, res) => {
 app.use(express.urlencoded({
   extended: false
 }))
-
-// Create users collection with schema
-const Users = mongoose.model('Users', {
-  name: String,
-  email: String,
-  password: String
-}, 'users');
 
 app.post('/registerUsers', registerLimiter, (req, res) => {
 
