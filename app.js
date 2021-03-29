@@ -4,6 +4,7 @@ const port = process.env.PORT || 3000;
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema
+const Users = require('./models/usersModel');  //import schema for users
 const upload = multer({
   dest: 'static/img/'
 });
@@ -30,7 +31,6 @@ const registerLimiter = rateLimit({
 
 // Mongoose
 const mongoose = require('mongoose')
-
 const validator = require('validator')
 
 // dotenv
@@ -74,9 +74,6 @@ app.get('/register', (req, res) => {
 
 // Telling app to take the forms and acces them inside of the request variable inside of the post method
 app.use(express.urlencoded({ extended: false }))
-
-// Create users collection with schema
-const Users = mongoose.Schema ('Users', { name: String, email: String, password: String, }, 'users' );
 
 app.post('/registerUsers', registerLimiter, (req, res) => {
 
