@@ -200,7 +200,7 @@ function add(req, res, next) {
 
   profile.save()
     .then((result) => {
-      res.redirect('/bucketlist')
+      res.redirect('/profile')
     })
     .catch((err) => {
       console.log(err);
