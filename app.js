@@ -48,7 +48,9 @@ app.use(express.static('static'));
 app.use(express.urlencoded({
 	extended: true
 }));
-app.use(helmet());
+app.use(helmet({
+  hsts: false
+}));
 
 const db = mongoose.connection;
 
