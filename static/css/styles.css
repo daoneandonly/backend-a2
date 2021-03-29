@@ -179,4 +179,24 @@ button {
   width: 15em;
 }
 
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+}
+
+.imagesGrid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagesGrid p {
+  font-size: 1.5em;
+  color: black;
+  text-align: left;
+  padding: 1em;
+  background-color: white;
+}
+
 /*# sourceMappingURL=styles.css.map */

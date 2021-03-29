@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema bucketlist
 const Profile = require('./models/profileModel'); //import schema profile
 const Users = require('./models/usersModel');  //import schema for users
+const request = require("request"); //package to handle http requests
 const upload = multer({
   dest: 'static/img/'
 });
@@ -146,6 +147,7 @@ app.get('/bucketlist', showBucketlistOverview);
 app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
 app.get('/bucketlistOverview/:id', singleCountryInfo);
+app.get('/imagesGrid', showImages);
 app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
@@ -161,6 +163,7 @@ function showBucketlistOverview(req, res) {
   });
 };
 
+
 // save the form data to the database
 function saveBucketlistResults(req, res) {
   const country = new Country(req.body);
@@ -173,6 +176,46 @@ function saveBucketlistResults(req, res) {
       console.log(err);
     })
 };
+
+//function to find the saved data and show it
+function showInformation(req, res) {
+  Country.find()
+    .then((result) => {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'Bucketlist',
+        countryView: result
+      })
+    })
+};
+
+// function to show detail page for each created ID
+function singleCountryInfo(req, res) {
+  const id = req.params.id;
+  Country.findById(id)
+    .then(result => {
+      res.render('pages/bucketlist/countryDetails', {
+        title: 'country details',
+        countryInfo: result
+      })
+    })
+    .catch(error => {
+      res.render('pages/404.ejs');
+    });
+
+};
+
+const api_key = process.env.API_KEY;
+const api_url = "https://api.unsplash.com/photos?client_id=";
+// function to show the images from the unsplash API on the imagesGrid page
+function showImages(req, res){
+  request(api_url + api_key, function (error, response, body){
+   if(error){
+     console.log(error);
+   }else{
+    res.render('pages/bucketlist/imagesGrid', {title: 'images grid', imagesGridData: JSON.parse(body)});
+   }
+  });
+}
 
 // profile feature
 app.get('/add', profileForm);
@@ -221,32 +264,7 @@ function showProfile(req, res) {
   }
 }
 
-//function to find the saved data and show it
-function showInformation(req, res) {
-  Country.find()
-    .then((result) => {
-      res.render('pages/bucketlist/bucketlistResults', {
-        title: 'Bucketlist',
-        countryView: result
-      })
-    })
-};
 
-// function to show detail page for each created ID
-function singleCountryInfo(req, res) {
-  const id = req.params.id;
-  Country.findById(id)
-    .then(result => {
-      res.render('pages/bucketlist/countryDetails', {
-        title: 'country details',
-        countryInfo: result
-      })
-    })
-    .catch(error => {
-      res.render('pages/404.ejs');
-    });
-
-};
 
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
