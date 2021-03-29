@@ -1,0 +1,19 @@
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+
+<main>
+<h1>
+<%= profileData.name %>
+</h1>
+<% if (profileData.photo) { %>
+<img alt src="../static/img/<%= profileData.photo %>">
+<% } %>
+<p>
+<%= profileData.age %>
+</p>
+<p id="bio">
+<%= profileData.bio %>
+</p>
+
+</main>
+<%- include('../partials/footer'); %>

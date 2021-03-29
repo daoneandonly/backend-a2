@@ -181,6 +181,7 @@ function saveBucketlistResults(req, res) {
 
 // profile feature
 app.get('/add', profileForm);
+app.get('/profile', showProfile);
 app.post('/add', upload.single('photo'), add);
 
 function profileForm(req, res) {
@@ -206,8 +207,37 @@ function add(req, res, next) {
     })
 };
 
+function showProfile(req, res) {
+  let id = '6061991c252f3b51a56f5337'
+  Profile.findOne({
+    _id: id
+  }, done)
+
+  function done(err, result) {
+    if (err) {
+      next(err)
+    } else {
+      res.render('pages/profile', {
+        title: 'Profile',
+        profileData: result
+      })
+      console.log(result.photo)
+    }
+  }
+}
+
 //function to find the saved data and show it
 function showInformation(req, res) {
+  Country.find()
+    .then((result) => {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'Bucketlist',
+        countryView: result
+      })
+    })
+};
+
+/*function showInformation(req, res) {
   let id = '6060fd39b06f6e474c926323'
   Country.find()
   Profile.findOne({
@@ -219,7 +249,7 @@ function showInformation(req, res) {
         countryView: result
       })
     })
-};
+}; */
 
 /* function showBucketlistInformation(req, res) {
   let id = '60606a2c3c518a2b4df31fc2'
