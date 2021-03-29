@@ -14,7 +14,8 @@ const profileSchema = new Schema({
     type: String
   },
   age: {
-    type: Number
+    type: Number,
+    min: 18
   },
   bio: {
     type: String
