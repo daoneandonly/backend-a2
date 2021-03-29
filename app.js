@@ -78,7 +78,6 @@ app.post('/registerUsers', (req, res) => {
 //login feature
 app.post('/login', checklogin);
 app.get('/loginFailed', checklogin);
-app.get('/add-profile', checklogin);
 
 app.get('/login', (req, res) => {
   res.render('pages/login/login', {
@@ -87,10 +86,10 @@ app.get('/login', (req, res) => {
 });
 
 
-//checkt de ingegeven username en het wachtwoord met die uit de database 
+//Checks if the given username and password are in the database
 function checklogin(req, res, next) {
   console.log('req.body.name: ', req.body.name)
-  Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+  Users.find({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
   async function done(err, users) {
      console.log(users)
@@ -98,12 +97,12 @@ function checklogin(req, res, next) {
     if (err) {
       next(err)
     } else {
-      if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
+      if (users.password == req.body.password) { //If the name is connected to the password then the login is succesfull
         console.log('Login geslaagd');
         res.redirect('/')
     } else {
-        console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
-        res.redirect('/loginFailed') //en wordt de pagina loginFailed terug gestuurd
+        console.log('Login mislukt'); //If these are not the same the login is failed 
+        res.redirect('/loginFailed') //and the user will be redirected to the login failed page
       }
     }
   }
