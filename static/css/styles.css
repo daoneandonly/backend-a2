@@ -91,6 +91,12 @@ a {
   color: white;
 }
 
+.profilePicture {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 /* form */
 form {
   max-width: 35em;
