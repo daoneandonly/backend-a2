@@ -2,9 +2,30 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); //import schema
 const upload = multer({
   dest: 'static/img/'
+});
+
+const LoginLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/login-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
+});
+
+const registerLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, //1 min
+    max: 3,
+    handler: function(req, res /*, next*/) {
+        res.render('pages/errors/register-rate-limit', {
+            title: 'Please try again later',
+        })
+    },
 });
 
 // Mongoose
@@ -55,7 +76,7 @@ app.use(express.urlencoded({ extended: false }))
 // Create users collection with schema
 const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
 
-app.post('/registerUsers', (req, res) => {
+app.post('/registerUsers', registerLimiter, (req, res) => {
 
   try {
     const newUsers = new Users({
@@ -76,7 +97,7 @@ app.post('/registerUsers', (req, res) => {
 });
 
 //login feature
-app.post('/login', checklogin);
+app.post('/login', LoginLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
@@ -86,14 +107,14 @@ app.get('/login', (req, res) => {
 });
 
 
-//Checks if the given username and password are in the database
+//checkt de ingegeven username en het wachtwoord met die uit de database
 function checklogin(req, res, next) {
   console.log('req.body.name: ', req.body.name)
   Users.find({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
   async function done(err, users) {
      console.log(users)
-  
+
     if (err) {
       next(err)
     } else {
