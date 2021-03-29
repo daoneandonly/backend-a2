@@ -279,6 +279,58 @@ function showProfile(req, res) {
 	}
 }
 
+//preferences
+app.get('/preferences', showPreferences);
+app.post('/preferences', submitPreferences);
+app.get('/yourpreferences/:id', yourPreferences)
+
+
+
+function showPreferences(req, res) {
+	res.render('pages/preferences-form', {
+		title: 'preferences'
+	});
+}
+
+function submitPreferences(req, res) {
+
+	db.collection('preferences').insertOne({
+		genderSelect: req.body.genderSelect,
+		genderPreference: req.body.genderPreference,
+		distance: req.body.distance,
+		minimumAge: req.body.minAge,
+		maximumAge: req.body.maxAge
+	}, done);
+
+	function done(err, data) {
+		if (err) {
+			next(err);
+		} else {
+			res.redirect('/yourpreferences/' + data.insertedId);
+		}
+	}
+}
+
+function yourPreferences(req, res) {
+
+	const ObjectId = require('mongodb').ObjectId;
+	const id = req.params.id;
+
+	db.collection('preferences').findOne({
+		_id: new ObjectId(id)
+	}, done);
+
+	function done(err, data) {
+		if (err) {
+			next(err);
+		} else {
+			res.render('pages/your-preferences', {
+				title: 'Your preferences',
+				preferences: data
+			});
+		}
+	}
+}
 
 // if there is no page found give an error page as page
 app.get('*', (req, res) => {
