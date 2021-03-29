@@ -208,7 +208,7 @@ function add(req, res, next) {
 };
 
 function showProfile(req, res) {
-  let id = '6061991c252f3b51a56f5337'
+  let id = '6061afeeb42e3d5664e276b8'
   Profile.findOne({
     _id: id
   }, done)
