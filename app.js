@@ -206,11 +206,13 @@ function add(req, res, next) {
     })
 };
 
-//function to find the saved data en show
+//function to find the saved data and show it
 function showInformation(req, res) {
   let id = '6060fd39b06f6e474c926323'
   Country.find()
-  Profile.findbyId(id)
+  Profile.findOne({
+      _id: mongo.ObjectID(id)
+    })
     .then(result => {
       res.render('pages/bucketlist/bucketlistResults', {
         title: 'Bucketlist',
@@ -219,6 +221,32 @@ function showInformation(req, res) {
       })
     })
 };
+
+/* function showBucketlistInformation(req, res) {
+  let id = '60606a2c3c518a2b4df31fc2'
+  Country.findOne({
+    _id: mongo.ObjectID(id)
+  }, showProfileInformation)
+
+  function showProfileInformation(req, res) {
+    let id = '6060fd39b06f6e474c926323'
+    Profiel.findOne({
+      _id: mongo.ObjectID(id)
+    }, done)
+  };
+
+  function done(err, result) {
+    if (err) {
+      next(err)
+    } else {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'Bucketlist',
+        countryView: result,
+        profileData: result
+      })
+    }
+  }
+}; */
 
 // function to show detail page for each created ID
 function singleCountryInfo(req, res) {
