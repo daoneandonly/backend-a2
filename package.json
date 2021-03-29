@@ -37,6 +37,7 @@
     "validator": "^13.5.2"
   },
   "devDependencies": {
+    "eslint": "^7.23.0",
     "node-sass": "^5.0.0",
     "nodemon": "^2.0.7"
   }
