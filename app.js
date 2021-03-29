@@ -3,29 +3,30 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
-const Country = require('./models/countryModel'); //import schema
+const Country = require('./models/countryModel'); //import schema bucketlist
+const Profile = require('./models/profileModel'); //import schema profile
 const upload = multer({
   dest: 'static/img/'
 });
 
 const LoginLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, //1 min
-    max: 3,
-    handler: function(req, res /*, next*/) {
-        res.render('pages/errors/login-rate-limit', {
-            title: 'Please try again later',
-        })
-    },
+  windowMs: 5 * 60 * 1000, //1 min
+  max: 3,
+  handler: function(req, res /*, next*/ ) {
+    res.render('pages/errors/login-rate-limit', {
+      title: 'Please try again later',
+    })
+  },
 });
 
 const registerLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, //1 min
-    max: 3,
-    handler: function(req, res /*, next*/) {
-        res.render('pages/errors/register-rate-limit', {
-            title: 'Please try again later',
-        })
-    },
+  windowMs: 5 * 60 * 1000, //1 min
+  max: 3,
+  handler: function(req, res /*, next*/ ) {
+    res.render('pages/errors/register-rate-limit', {
+      title: 'Please try again later',
+    })
+  },
 });
 
 // Mongoose
@@ -71,10 +72,16 @@ app.get('/register', (req, res) => {
 });
 
 // Telling app to take the forms and acces them inside of the request variable inside of the post method
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({
+  extended: false
+}))
 
 // Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
+const Users = mongoose.model('Users', {
+  name: String,
+  email: String,
+  password: String
+}, 'users');
 
 app.post('/registerUsers', registerLimiter, (req, res) => {
 
@@ -111,18 +118,20 @@ app.get('/login', (req, res) => {
 //checkt de ingegeven username en het wachtwoord met die uit de database
 function checklogin(req, res, next) {
   console.log('req.body.name: ', req.body.name)
-  Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+  Users.find({
+    name: req.body.name
+  }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
 
   async function done(err, users) {
-     console.log(users)
+    console.log(users)
 
     if (err) {
       next(err)
     } else {
       if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
         console.log('Login geslaagd');
-        res.redirect('/')
-    } else {
+        res.redirect('/add')
+      } else {
         console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
         res.redirect('/loginFailed') //en wordt de pagina loginFailed terug gestuurd
       }
@@ -137,84 +146,112 @@ app.get('/loginFailed', (req, res) => {
 });
 
 
-    //bucketlist 
-    app.get('/bucketlist', showBucketlistOverview);
-    app.get('/bucketlistResults', showBucketlistResults);
-    app.get('/bucketlistOverview', showInformation);
-    app.get('/bucketlistOverview/:id', singleCountryInfo);
+//bucketlist
+app.get('/bucketlist', showBucketlistOverview);
+app.get('/bucketlistResults', showBucketlistResults);
+app.get('/bucketlistOverview', showInformation);
+app.get('/bucketlistOverview/:id', singleCountryInfo);
+app.post('/bucketlistOverview', saveBucketlistResults);
 
-    app.post('/bucketlistOverview', saveBucketlistResults);
+function showBucketlistResults(req, res) {
+  res.render('pages/bucketlist/bucketlistResults', {
+    title: 'bucketlistResults'
+  });
+};
 
-    function showBucketlistResults(req, res) {
-      res.render('pages/bucketlist/bucketlistResults', {
-        title: 'bucketlistResults'
-      });
-    };
+//function render bucketlistOverview page
+function showBucketlistOverview(req, res) {
+  res.render('pages/bucketlist/bucketlistOverview', {
+    title: 'bucketlist'
+  });
+};
 
-    //function render bucketlistOverview page
-    function showBucketlistOverview(req, res) {
-      res.render('pages/bucketlist/bucketlistOverview', {
-        title: 'bucketlist'
-      });
-    };
+// save the form data to the database
+function saveBucketlistResults(req, res) {
+  const country = new Country(req.body);
 
-    // save the form data to the database
-    function saveBucketlistResults(req, res) {
-      const country = new Country(req.body);
+  country.save()
+    .then((result) => {
+      res.redirect('bucketlistOverview')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
 
-      country.save()
-        .then((result) => {
-          res.redirect('bucketlistOverview')
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    };
-
-    //function to find the saved data en show
-    function showInformation(req, res) {
-      Country.find()
-        .then((result) => {
-          res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
-        })
-    };
-
-    // function to show detail page for each created ID
-    function singleCountryInfo (req, res) {
-      const id = req.params.id;
-      Country.findById(id)
-      .then(result => {
-        res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
-      })
-      .catch(error => {
-        res.render('pages/404.ejs');
-      });
-    
-    };
-
+// profile feature
 app.get('/add', profileForm);
+app.get('/profile', showProfile);
 app.post('/add', upload.single('photo'), add);
 
 function profileForm(req, res) {
-  res.render('add.ejs')
-}
+  res.render('pages/add-profile.ejs', {
+    title: 'addprofile'
+  });
+};
 
 function add(req, res, next) {
-  db.collection('profiles').insertOne({
+  const profile = new Profile({
     name: req.body.name,
     photo: req.file ? req.file.filename : null,
     age: req.body.age,
     bio: req.body.bio
-  }, done);
+  });
 
-  function done(err, data) {
+  profile.save()
+    .then((result) => {
+      res.redirect('/profile')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
+function showProfile(req, res) {
+  let id = '6061afeeb42e3d5664e276b8'
+  Profile.findOne({
+    _id: id
+  }, done)
+
+  function done(err, result) {
     if (err) {
       next(err)
     } else {
-      res.redirect('/' + data.insertedId)
+      res.render('pages/profile', {
+        title: 'Profile',
+        profileData: result
+      })
+      console.log(result.photo)
     }
   }
 }
+
+//function to find the saved data and show it
+function showInformation(req, res) {
+  Country.find()
+    .then((result) => {
+      res.render('pages/bucketlist/bucketlistResults', {
+        title: 'Bucketlist',
+        countryView: result
+      })
+    })
+};
+
+// function to show detail page for each created ID
+function singleCountryInfo(req, res) {
+  const id = req.params.id;
+  Country.findById(id)
+    .then(result => {
+      res.render('pages/bucketlist/countryDetails', {
+        title: 'country details',
+        countryInfo: result
+      })
+    })
+    .catch(error => {
+      res.render('pages/404.ejs');
+    });
+
+};
 
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
