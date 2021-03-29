@@ -54,6 +54,9 @@ const db = mongoose.connection;
 
 // connect mongoose with the database
 // eslint-disable-next-line no-undef
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
