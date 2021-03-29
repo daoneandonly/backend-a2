@@ -4,10 +4,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
-const Country = require('./models/countryModel'); //import schema bucketlist
-const Profile = require('./models/profileModel'); //import schema profile
-const Users = require('./models/usersModel');  //import schema for users
-const request = require('request'); //package to handle http requests
+const Country = require('./models/countryModel'); // import schema bucketlist
+const Profile = require('./models/profileModel'); // import schema profile
+const Users = require('./models/usersModel');  // import schema for users
+const request = require('request'); // package to handle http requests
 const upload = multer({
 	dest: 'static/img/'
 });
@@ -32,7 +32,7 @@ const registerLimiter = rateLimit({
 	},
 });
 
-// Mongoose
+// mongoose
 const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const validator = require('validator');
@@ -49,7 +49,7 @@ app.use(express.urlencoded({
 
 const db = mongoose.connection;
 
-// Connect mongoose with the database
+// connect mongoose with the database
 // eslint-disable-next-line no-undef
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
@@ -64,7 +64,7 @@ db.on('connected', () => {
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
-// Resolve GET request
+// resolve GET request
 app.get('/', (req, res) => {
 	res.render('pages/index', {
 		title: 'home'
@@ -77,7 +77,7 @@ app.get('/register', (req, res) => {
 	});
 });
 
-// Telling app to take the forms and acces them inside of the request variable inside of the post method
+// telling app to take the forms and acces them inside of the request variable inside of the post method
 app.use(express.urlencoded({
 	extended: false
 }));
@@ -102,7 +102,7 @@ app.post('/registerUsers', registerLimiter, (req, res) => {
 	}
 });
 
-//login feature
+// login feature
 app.post('/login', LoginLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 app.get('/add-profile', checklogin);
@@ -114,12 +114,12 @@ app.get('/login', (req, res) => {
 });
 
 
-//checkt de ingegeven username en het wachtwoord met die uit de database
+// checks username and password with the database and if they agree
 function checklogin(req, res, next) {
 	console.log('req.body.name: ', req.body.name);
 	Users.find({
 		name: req.body.name
-	}, done); //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+	}, done); // searching for the name in the database, when its found it goes to functions done
 
 	async function done(err, users) {
 		console.log(users);
@@ -127,12 +127,12 @@ function checklogin(req, res, next) {
 		if (err) {
 			next(err);
 		} else {
-			if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
+			if (users.password == req.body.password) { //  if name agrees with password then the login succeeds
 				console.log('Login geslaagd');
 				res.redirect('/add');
 			} else {
-				console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
-				res.redirect('/loginFailed'); //en wordt de pagina loginFailed terug gestuurd
+				console.log('Login mislukt'); // if they dont agree then the login fails
+				res.redirect('/loginFailed'); // and the page loginFailed gets send to the user
 			}
 		}
 	}
@@ -145,7 +145,7 @@ app.get('/loginFailed', (req, res) => {
 });
 
 
-//bucketlist
+// bucketlist
 app.get('/bucketlist', showBucketlistOverview);
 app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
@@ -159,7 +159,7 @@ function showBucketlistResults(req, res) {
 	});
 }
 
-//function render bucketlistOverview page
+// function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
@@ -181,7 +181,7 @@ function saveBucketlistResults(req, res) {
 		});
 }
 
-//function to find the saved data and show it
+// function to find the saved data and show it
 function showInformation(req, res) {
 	Country.find()
 		.then((result) => {
@@ -274,7 +274,7 @@ function showProfile(req, res) {
 }
 
 
-// If there is no page found give an error page as page
+// if there is no page found give an error page as page
 app.get('*', (req, res) => {
 	res.status(404).render('pages/404', {
 		url: req.url,
@@ -282,7 +282,7 @@ app.get('*', (req, res) => {
 	});
 });
 
-// Listen to port 3000
+// listen to port 3000
 app.listen(port, () => {
 	console.log(`App.js starting at http://localhost:${port}`);
 });
