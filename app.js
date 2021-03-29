@@ -242,21 +242,26 @@ function profileForm(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
-	const profile = new Profile({
-		name: req.body.name,
-		photo: req.file ? req.file.filename : null,
-		age: req.body.age,
-		bio: req.body.bio
-	});
+  let id = '6061afeeb42e3d5664e276b8'
+	 Profile.updateOne({
+     _id: id
+   }, {
+     $set: {
+  		name: req.body.name,
+  		photo: req.file ? req.file.filename : null,
+  		age: req.body.age,
+  		bio: req.body.bio
+  	}
+}, done);
 
-	profile.save()
-		// eslint-disable-next-line no-unused-vars
-		.then((result) => {
-			res.redirect('/profile');
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+function done(err, result) {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect('/profile');
+    }
+  }
+
 }
 
 function showProfile(req, res) {
