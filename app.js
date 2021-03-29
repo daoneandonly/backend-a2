@@ -130,7 +130,7 @@ function checklogin(req, res, next) {
     } else {
       if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
         console.log('Login geslaagd');
-        res.redirect('/')
+        res.redirect('/add')
       } else {
         console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
         res.redirect('/loginFailed') //en wordt de pagina loginFailed terug gestuurd
