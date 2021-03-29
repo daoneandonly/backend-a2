@@ -38,6 +38,11 @@ a {
   color: white;
 }
 
+.profilePicture {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 
 /* form */
 
@@ -89,12 +94,12 @@ textarea {
 }
 
 
-/* buttons */ 
+/* buttons */
 
 button {
   font-family: catamaran;
   font-size: 1.1em;
- 
+
   width: 32em;
   height: 2.5em;
 
@@ -104,7 +109,7 @@ button {
   border: none;
 
   border-radius: 1em;
-  
+
   color: white;
   background-color: #3654a5;
 }

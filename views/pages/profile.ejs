@@ -1,0 +1,21 @@
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+
+<main>
+<h1>
+<%= profileData.name %>
+</h1>
+<% if (profileData.photo) { %>
+<img class="profilePicture" alt src="/img/<%= profileData.photo %>">
+<% } %>
+<p>
+<%= profileData.age %>
+</p>
+<p id="bio">
+<%= profileData.bio %>
+</p>
+
+<button class="buttonLogin1"><a href="/bucketlistOverview">My Bucketlist</a></button>
+
+</main>
+<%- include('../partials/footer'); %>
