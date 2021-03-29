@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+// eslint-disable-next-line no-undef
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
@@ -33,6 +34,7 @@ const registerLimiter = rateLimit({
 
 // Mongoose
 const mongoose = require('mongoose');
+// eslint-disable-next-line no-unused-vars
 const validator = require('validator');
 
 // dotenv
@@ -48,6 +50,7 @@ app.use(express.urlencoded({
 const db = mongoose.connection;
 
 // Connect mongoose with the database
+// eslint-disable-next-line no-undef
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
@@ -169,6 +172,7 @@ function saveBucketlistResults(req, res) {
 	const country = new Country(req.body);
 
 	country.save()
+		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
 			res.redirect('bucketlistOverview')
 		})
@@ -198,12 +202,14 @@ function singleCountryInfo(req, res) {
 				countryInfo: result
 			});
 		})
+		// eslint-disable-next-line no-unused-vars
 		.catch(error => {
 			res.render('pages/404.ejs');
 		});
 
 }
 
+// eslint-disable-next-line no-undef
 const api_key = process.env.API_KEY;
 const api_url = 'https://api.unsplash.com/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
@@ -228,6 +234,7 @@ function profileForm(req, res) {
 	});
 }
 
+// eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
 	const profile = new Profile({
 		name: req.body.name,
@@ -237,6 +244,7 @@ function add(req, res, next) {
 	});
 
 	profile.save()
+		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
 			res.redirect('/profile');
 		})
@@ -253,6 +261,7 @@ function showProfile(req, res) {
 
 	function done(err, result) {
 		if (err) {
+			// eslint-disable-next-line no-undef
 			next(err);
 		} else {
 			res.render('pages/profile', {
