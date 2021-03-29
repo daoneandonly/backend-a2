@@ -3,7 +3,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
-const Country = require('./models/countryModel'); //import schema
+const Country = require('./models/countryModel'); //import schema bucketlist
+const Profile = require('./models/profileModel'); //import schema profile
+const Users = require('./models/usersModel');  //import schema for users
+const request = require('request'); //package to handle http requests
 const upload = multer({
 	dest: 'static/img/'
 });
@@ -11,7 +14,7 @@ const upload = multer({
 const LoginLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, //1 min
 	max: 3,
-	handler: function(req, res /*, next*/) {
+	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
 			title: 'Please try again later',
 		});
@@ -21,7 +24,7 @@ const LoginLimiter = rateLimit({
 const registerLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, //1 min
 	max: 3,
-	handler: function(req, res /*, next*/) {
+	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
@@ -30,6 +33,7 @@ const registerLimiter = rateLimit({
 
 // Mongoose
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 // dotenv
 const dotenv = require('dotenv');
@@ -71,10 +75,9 @@ app.get('/register', (req, res) => {
 });
 
 // Telling app to take the forms and acces them inside of the request variable inside of the post method
-app.use(express.urlencoded({ extended: false }));
-
-// Create users collection with schema
-const Users = mongoose.model('Users', { name: String, email: String, password: String }, 'users' );
+app.use(express.urlencoded({
+	extended: false
+}));
 
 app.post('/registerUsers', registerLimiter, (req, res) => {
 
@@ -110,8 +113,10 @@ app.get('/login', (req, res) => {
 
 //checkt de ingegeven username en het wachtwoord met die uit de database
 function checklogin(req, res, next) {
-	console.log('req.body.name: ', req.body.name)
-	Users.find({ name: req.body.name }, done) //zoekt naar de naam in de database zodra deze gevonden is door naar function done
+	console.log('req.body.name: ', req.body.name);
+	Users.find({
+		name: req.body.name
+	}, done); //zoekt naar de naam in de database zodra deze gevonden is door naar function done
 
 	async function done(err, users) {
 		console.log(users);
@@ -121,14 +126,14 @@ function checklogin(req, res, next) {
 		} else {
 			if (users.password == req.body.password) { //als de naam overeenkomt met het wachtwoord dan is de login geslaagd
 				console.log('Login geslaagd');
-				res.redirect('/');
+				res.redirect('/add');
 			} else {
 				console.log('Login mislukt'); //zodra deze niet overeenkomen dan is de login mislukt.
 				res.redirect('/loginFailed'); //en wordt de pagina loginFailed terug gestuurd
 			}
 		}
 	}
-};
+}
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
@@ -137,12 +142,12 @@ app.get('/loginFailed', (req, res) => {
 });
 
 
-//bucketlist 
+//bucketlist
 app.get('/bucketlist', showBucketlistOverview);
 app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
 app.get('/bucketlistOverview/:id', singleCountryInfo);
-
+app.get('/imagesGrid', showImages);
 app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
@@ -158,6 +163,7 @@ function showBucketlistOverview(req, res) {
 	});
 }
 
+
 // save the form data to the database
 function saveBucketlistResults(req, res) {
 	const country = new Country(req.body);
@@ -171,50 +177,93 @@ function saveBucketlistResults(req, res) {
 		});
 }
 
-//function to find the saved data en show
+//function to find the saved data and show it
 function showInformation(req, res) {
 	Country.find()
 		.then((result) => {
-			res.render('pages/bucketlist/bucketlistResults', {title: 'Bucketlist', countryView: result})
+			res.render('pages/bucketlist/bucketlistResults', {
+				title: 'Bucketlist',
+				countryView: result
+			});
 		});
 }
 
 // function to show detail page for each created ID
-function singleCountryInfo (req, res) {
+function singleCountryInfo(req, res) {
 	const id = req.params.id;
 	Country.findById(id)
 		.then(result => {
-			res.render('pages/bucketlist/countryDetails',{title: 'country details', countryInfo: result})
+			res.render('pages/bucketlist/countryDetails', {
+				title: 'country details',
+				countryInfo: result
+			});
 		})
 		.catch(error => {
 			res.render('pages/404.ejs');
 		});
-    
+
 }
 
+const api_key = process.env.API_KEY;
+const api_url = 'https://api.unsplash.com/photos?client_id=';
+// function to show the images from the unsplash API on the imagesGrid page
+function showImages(req, res){
+	request(api_url + api_key, function (error, response, body){
+		if(error){
+			console.log(error);
+		}else{
+			res.render('pages/bucketlist/imagesGrid', {title: 'images grid', imagesGridData: JSON.parse(body)});
+		}
+	});
+}
+
+// profile feature
 app.get('/add', profileForm);
+app.get('/profile', showProfile);
 app.post('/add', upload.single('photo'), add);
 
 function profileForm(req, res) {
-	res.render('add.ejs');
+	res.render('pages/add-profile.ejs', {
+		title: 'addprofile'
+	});
 }
 
 function add(req, res, next) {
-	db.collection('profiles').insertOne({
+	const profile = new Profile({
 		name: req.body.name,
 		photo: req.file ? req.file.filename : null,
 		age: req.body.age,
 		bio: req.body.bio
+	});
+
+	profile.save()
+		.then((result) => {
+			res.redirect('/profile');
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+}
+
+function showProfile(req, res) {
+	let id = '6061afeeb42e3d5664e276b8'
+	Profile.findOne({
+		_id: id
 	}, done);
 
-	function done(err, data) {
+	function done(err, result) {
 		if (err) {
 			next(err);
 		} else {
-			res.redirect('/' + data.insertedId);
+			res.render('pages/profile', {
+				title: 'Profile',
+				profileData: result
+			});
+			console.log(result.photo);
 		}
 	}
 }
+
 
 // If there is no page found give an error page as page
 app.get('*', (req, res) => {
