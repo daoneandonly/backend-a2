@@ -216,8 +216,7 @@ function showInformation(req, res) {
     .then(result => {
       res.render('pages/bucketlist/bucketlistResults', {
         title: 'Bucketlist',
-        countryView: result,
-        profileData: result
+        countryView: result
       })
     })
 };

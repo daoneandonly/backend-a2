@@ -3,16 +3,16 @@
 
 <main>
   <h1>
-  <%= profileData.name %>
+  <%= countryView.name %>
 </h1>
-<% if (profileData.photo) { %>
-<img alt src="/static/img/<%= profileData.photo %>">
+<% if (countryView.photo) { %>
+<img alt src="/static/img/<%= countryView.photo %>">
 <% } %>
 <p>
-  <%= profileData.age %>
+  <%= countryView.age %>
 </p>
 <p id="bio">
-  <%= profileData.bio %>
+  <%= countryView.bio %>
 </p>
 
   <h1>My bucketlist <br> locations</h1>
