@@ -12,6 +12,8 @@ const upload = multer({
 	dest: 'static/img/'
 });
 const bcrypt = require('bcrypt');
+const express = require("express");
+const helmet = require("helmet");
 
 const LoginLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, //1 min
@@ -47,6 +49,7 @@ app.use(express.static('static'));
 app.use(express.urlencoded({
 	extended: true
 }));
+app.use(helmet());
 
 const db = mongoose.connection;
 
@@ -130,7 +133,7 @@ function checklogin(req, res, next) {
       if (validPassword) { //If the name is connected to the password then the login is succesfull
         console.log('Login geslaagd');
         res.redirect('/add')
-      } else { //If these are not the same the login is failed 
+      } else { //If these are not the same the login is failed
         res.redirect('/loginFailed') //and the user will be redirected to the login failed page
       }
     }
