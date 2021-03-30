@@ -1,0 +1,18 @@
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+
+
+    <h1>Your preferences</h1>
+
+<div class="preferences-view">
+    <section>
+        <h3>Gender: <%= preferences.genderSelect %> </h3>
+        <h3>Gender preference: <%= preferences.genderPreference %> </h3>
+        <h3>Distance: <%= preferences.distance %> </h3>
+        <h3>Minimum age: <%= preferences.minimumAge %> </h3>
+        <h3>Maximum age: <%= preferences.maximumAge %> </h3>
+
+    </section>
+</div>
+
+<%- include('../partials/footer'); %>
