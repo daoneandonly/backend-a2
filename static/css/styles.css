@@ -201,7 +201,8 @@ button {
 
 #bodyWelcome {
   background-image: none;
-  background-color: black;
+  background: #a5b4ff;
+  background: linear-gradient(90deg, #aab6f1 0%, #abb2f0 49%, #a4a1f5 100%);
 }
 
 .welcomeHeader {
@@ -224,6 +225,22 @@ button {
 .welcomeLinks a:nth-child(2) {
   margin-left: 2em;
   margin-right: 2em;
+}
+
+.countryResults {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.oneCountry {
+  background-color: #0365f8;
+  font-size: 1em;
+  border-radius: 50px;
+  margin-top: 0.5em;
+  padding: 1em;
 }
 
 .countryDetailTitel {
