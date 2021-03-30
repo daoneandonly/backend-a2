@@ -1,21 +1,27 @@
 <%- include('../../partials/head'); %>
 <%- include('../../partials/header'); %>
+<body id="bodyWelcome">
 <main>
+    <div class="welcomeLinks">
+        <a href="/bucketlistOverview">Go back</a>
+    </div>
+
     <div class="extraInformatie">
-        <h1>Your country!</h1>
+        <h1 class="countryDetailTitel">Your country!</h1>
         <p><%= countryInfo.countryQuestionOne %></p>
     </div>
 
     <div class="extraInformatie">
-        <h1>Your reason!</h1>
+        <h1 class="countryDetailTitel">Your reason!</h1>
         <p><%= countryInfo.countryQuestionTwo %></p>
     </div>
 
     <div class="extraInformatie">
-        <h1>With who?!</h1>
+        <h1 class="countryDetailTitel">With who?!</h1>
         <p><%= countryInfo.countryQuestionThree %></p>
     </div>
 
 </main>
 
 <%- include('../../partials/footer'); %>
+</body>

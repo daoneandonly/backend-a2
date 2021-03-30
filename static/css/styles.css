@@ -226,6 +226,11 @@ button {
   margin-right: 2em;
 }
 
+.countryDetailTitel {
+  font-size: 2em;
+  margin-top: 1em;
+}
+
 .preferences-view {
   max-width: 35em;
   margin: auto;
