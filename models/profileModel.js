@@ -7,19 +7,19 @@ const Schema = mongoose.Schema;
 //Schema structure how to save in the collection
 //Objects with a string and all are required
 const profileSchema = new Schema({
-  name: {
-    type: String
-  },
-  photo: {
-    type: String
-  },
-  age: {
-    type: Number,
-    min: 18
-  },
-  bio: {
-    type: String
-  }
+	name: {
+		type: String
+	},
+	photo: {
+		type: String
+	},
+	age: {
+		type: Number,
+		min: 18
+	},
+	bio: {
+		type: String
+	}
 });
 
 //mongoose model, Find info, model is based on the Schema

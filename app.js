@@ -174,7 +174,7 @@ function saveBucketlistResults(req, res) {
 	country.save()
 		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
-			res.redirect('bucketlistOverview')
+			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
 			console.log(err);
@@ -254,7 +254,7 @@ function add(req, res, next) {
 }
 
 function showProfile(req, res) {
-	let id = '6061afeeb42e3d5664e276b8'
+	let id = '6061afeeb42e3d5664e276b8';
 	Profile.findOne({
 		_id: id
 	}, done);
