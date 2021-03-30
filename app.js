@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const Country = require('./models/countryModel'); // import schema bucketlist
 const Profile = require('./models/profileModel'); // import schema profile
 const Users = require('./models/usersModel');  // import schema for users
+const NewProfile = require('./models/newProfileModel');  // import schema for users
 const request = require('request'); // package to handle http requests
 const upload = multer({
 	dest: 'static/img/'
@@ -85,23 +86,23 @@ app.use(express.urlencoded({
 
 app.post('/registerUsers', registerLimiter, async (req, res) => {
 
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const newUsers = new Users({
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
-    })
-    newUsers.save().then(() => {
-      console.log('Added Users');
-      res.redirect('/login')
-      return;
+	try {
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		const newUsers = new Users({
+			name: req.body.name,
+			email: req.body.email,
+			password: hashedPassword
+		});
+		newUsers.save().then(() => {
+			console.log('Added Users');
+			res.redirect('/login');
+			return;
 
-    })
+		});
 
-  } catch (error) {
-    console.log(error);
-  }
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 // login feature
@@ -117,25 +118,25 @@ app.get('/login', (req, res) => {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-  console.log('req.body.name: ', req.body.name)
-  Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
+	console.log('req.body.name: ', req.body.name);
+	Users.findOne({ email: req.body.name }, done); //Searching the name in the db, when this is found goes to done function
 
-  async function done(err, users) {
-    //  console.log(users)
+	async function done(err, users) {
+		//  console.log(users)
 
-    if (err) {
-      next(err)
-    } else {
-      const validPassword = await bcrypt.compare(req.body.password, users.password);
-      if (validPassword) { //If the name is connected to the password then the login is succesfull
-        console.log('Login geslaagd');
-        res.redirect('/add')
-      } else { //If these are not the same the login is failed 
-        res.redirect('/loginFailed') //and the user will be redirected to the login failed page
-      }
-    }
-  }
-};
+		if (err) {
+			next(err);
+		} else {
+			const validPassword = await bcrypt.compare(req.body.password, users.password);
+			if (validPassword) { //If the name is connected to the password then the login is succesfull
+				console.log('Login geslaagd');
+				res.redirect('/add');
+			} else { //If these are not the same the login is failed 
+				res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
+			}
+		}
+	}
+}
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
@@ -173,7 +174,7 @@ function saveBucketlistResults(req, res) {
 	country.save()
 		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
-			res.redirect('bucketlistOverview')
+			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
 			console.log(err);
@@ -253,7 +254,7 @@ function add(req, res, next) {
 }
 
 function showProfile(req, res) {
-	let id = '6061afeeb42e3d5664e276b8'
+	let id = '6061afeeb42e3d5664e276b8';
 	Profile.findOne({
 		_id: id
 	}, done);
@@ -275,7 +276,7 @@ function showProfile(req, res) {
 //preferences
 app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
-app.get('/yourpreferences/:id', yourPreferences)
+app.get('/yourpreferences/:id', yourPreferences);
 
 
 
