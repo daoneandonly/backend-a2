@@ -108,18 +108,19 @@ app.post('/registerUsers', registerLimiter, async (req, res) => {
 app.post('/login', LoginLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
-app.get('/welcome', (req, res) => {
-	res.render('pages/welcome', {
-		title: 'Welcome page'
-	});
-});
-
 app.get('/login', (req, res) => {
 	res.render('pages/login/login', {
 		title: 'Log in'
 	});
 });
 
+app.get('/welcome', loadWelcomePage);
+
+function loadWelcomePage(req, res) {
+  res.render('pages/welcome', {
+		title: 'Welcome page'
+	});
+};
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
