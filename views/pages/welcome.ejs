@@ -1,7 +1,17 @@
 <%- include('../partials/head'); %>
 <%- include('../partials/header'); %>
 
-<h1>Hey [name],<br> Welcome to travelbuddy</h1>
+<body id="bodyWelcome">
 
+    <main>
+        <h1 class="welcomeHeader">Hey [name],<br> Welcome to travelbuddy</h1>
+        <div class="welcomeLinks">
+            <a href="/add">Add your profile information</a>
+            <a href="/preferences">What are your preferences</a>
+            <a href="/bucketlistOverview">Add bucketlist locations</a>
+        </div>
 
-<%- include('../partials/footer'); %>
+    </main>
+
+    <%- include('../partials/footer'); %>
+</body>
