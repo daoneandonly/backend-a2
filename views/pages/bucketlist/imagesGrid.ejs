@@ -4,9 +4,11 @@
     <h1>Inspiration for your next trip </h1>
     <div class="imagesGrid">
 
-        <% for(var i=0; i<imagesGridData.length; i++) {%>
-        <img src="<%=imagesGridData[i].urls.small %>" alt="">
-        <p>Creator: <%=imagesGridData[i].user.name %> <br><br> Created on: <br> <%=imagesGridData[i].created_at %> </p>
+        
+
+        <% for(var i=0; i<imagesGridData.results.length; i++) {%>
+        <img src="<%=imagesGridData.results[i].urls.small %>" alt="">
+        
         
         <% } %>
 
