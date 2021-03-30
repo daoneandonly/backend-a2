@@ -13,21 +13,11 @@ const upload = multer({
 });
 const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
 	},
@@ -83,7 +73,7 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, async (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -105,7 +95,7 @@ app.post('/registerUsers', registerLimiter, async (req, res) => {
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
