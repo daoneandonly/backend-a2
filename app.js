@@ -108,6 +108,12 @@ app.post('/registerUsers', registerLimiter, async (req, res) => {
 app.post('/login', LoginLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
+app.get('/welcome', (req, res) => {
+	res.render('pages/welcome', {
+		title: 'Welcome page'
+	});
+});
+
 app.get('/login', (req, res) => {
 	res.render('pages/login/login', {
 		title: 'Log in'
@@ -129,7 +135,7 @@ function checklogin(req, res, next) {
       const validPassword = await bcrypt.compare(req.body.password, users.password);
       if (validPassword) { //If the name is connected to the password then the login is succesfull
         console.log('Login geslaagd');
-        res.redirect('/add')
+        res.redirect('/welcome')
       } else { //If these are not the same the login is failed 
         res.redirect('/loginFailed') //and the user will be redirected to the login failed page
       }
