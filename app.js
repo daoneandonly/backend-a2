@@ -34,6 +34,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
