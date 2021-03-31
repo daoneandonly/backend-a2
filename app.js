@@ -108,8 +108,8 @@ app.get('/login', (req, res) => {
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
-  res.render('pages/welcome', {title: 'Welcome page'});
-};
+	res.render('pages/welcome', {title: 'Welcome page'});
+}
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
@@ -213,7 +213,7 @@ const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
 //The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string.
 function showImages(req, res){
-const searchInspiration = req.query.searchinspiration;
+	const searchInspiration = req.query.searchinspiration;
 	request(api_url + api_key + 'query=' + searchInspiration, function (error, response, body){
 		if(error){
 			console.log(error);
