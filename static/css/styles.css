@@ -60,34 +60,71 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-image: url(/img/background.jpg);
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   font-size: 1em;
+  background-color: rgba(223, 223, 223, 0.8);
 }
-
-h1 {
+body h1 {
   display: grid;
   grid-column: 1/-1;
   grid-row: 2/3;
   font-size: 3vw;
   font-family: roboto;
-  color: white;
+  color: #0d0d0d;
   z-index: 1;
   text-align: center;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.5em;
 }
-
-p {
+body p {
   font-size: 2em;
-  color: white;
+  color: #0d0d0d;
   text-align: center;
+  margin-bottom: 1rem;
+}
+body a {
+  text-decoration: none;
+  color: white;
 }
 
-a {
-  text-decoration: none;
+/* background */
+.home-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.home-bg h1 {
+  color: white;
+}
+.home-bg p {
+  color: white;
+}
+
+.register-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.register-bg h1 {
+  color: white;
+}
+.register-bg p {
+  color: white;
+}
+
+.login-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.login-bg h1 {
+  color: white;
+}
+.login-bg p {
   color: white;
 }
 
@@ -166,6 +203,7 @@ button {
   border-radius: 0.2em;
   color: white;
   background-color: #3654a5;
+  border-radius: 0.6em;
 }
 
 button:hover {
@@ -188,19 +226,24 @@ button:hover {
 
 .buttonLogin2 {
   margin-left: auto;
-  margin-right: 2em;
-  margin-bottom: 2em;
-  display: block;
-  background-color: #252525;
-  width: 7%;
+  align-content: center;
+  border-radius: 0.6em;
+}
+
+.buttonBucketlist {
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.6em;
+  margin-top: 2rem;
 }
 
 .buttonSignup {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 4em;
+  margin-top: 2em;
   display: block;
   width: 15em;
+  border-radius: 0.6em;
 }
 
 .imagesGrid {
@@ -221,6 +264,81 @@ button:hover {
   text-align: left;
   padding: 1em;
   background-color: white;
+}
+
+/* headers */
+.headerNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-family: roboto;
+  font-size: 1.2em;
+  margin-bottom: 5rem;
+}
+.headerNav nav {
+  background-color: rgba(10, 10, 10, 0.4);
+}
+.headerNav ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.headerNav li {
+  display: flex;
+  align-items: center;
+}
+.headerNav li:first-child {
+  width: 70%;
+}
+
+.headerLogo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 3rem;
+}
+.headerLogo ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.headerLogin {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 13rem;
+}
+.headerLogin ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.headerLogin li {
+  display: flex;
+  align-items: center;
+}
+.headerLogin li:first-child {
+  margin-right: auto;
+}
+.headerLogin .buttonLogin2 {
+  margin-left: auto;
+  display: block;
+  background-color: white;
+  color: blue;
+  width: 5.5em;
+  height: 2.4em;
+  border-radius: 0.6em;
+}
+.headerLogin a {
+  color: #0d0d0d;
+}
+
+.oneCountry {
+  margin-bottom: 1.5rem;
 }
 
 .preferences-view {
