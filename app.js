@@ -117,6 +117,7 @@ app.get('/login', (req, res) => {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
+	
   console.log('req.body.name: ', req.body.name)
   Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
@@ -160,6 +161,7 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
