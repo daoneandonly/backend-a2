@@ -8,7 +8,6 @@ body {
   margin: 0;
   padding: 0;
   font-size: 1em;
-  background-color: rgba(223, 223, 223, 0.8);
 
   h1 {
     display: grid;
@@ -101,9 +100,11 @@ form {
   display: grid;
   grid-gap: 1em;
 
-  background-color: rgba(255, 255, 255);
-
+  background-color: rgb(249, 249, 249);
   border-radius: 0.3em;
+  -webkit-box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
+  -moz-box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
+  box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
 }
 
 fieldset {
@@ -138,7 +139,7 @@ textarea {
   border: 0;
   border-bottom: 2px solid #3654a5;
   border-radius: .2em;
-  background-color: #FCFCFC;
+  background-color: #FFFFFF;
 
   outline: none;
 }
