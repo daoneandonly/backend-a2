@@ -18,7 +18,7 @@ body {
     color: #0d0d0d;
     z-index: 1;
     text-align: center;
-    margin-bottom: .3em;
+    margin-bottom: .5em;
   }
   
   p {
@@ -43,11 +43,11 @@ body {
   background-repeat: no-repeat;
 
   h1{
-    color: #0d0d0d;
+    color: white;
   }
 
   p{
-    color:#0d0d0d;
+    color:white;
   }
 }
 
@@ -57,6 +57,14 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  h1{
+    color: white;
+  }
+
+  p{
+    color:white;
+  }
 }
 
 .login-bg {
@@ -65,6 +73,14 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  h1{
+    color: white;
+  }
+
+  p{
+    color:white;
+  }
 }
 
 .profilePicture {

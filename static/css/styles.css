@@ -71,7 +71,7 @@ body h1 {
   color: #0d0d0d;
   z-index: 1;
   text-align: center;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.5em;
 }
 body p {
   font-size: 2em;
@@ -93,10 +93,10 @@ body a {
   background-repeat: no-repeat;
 }
 .home-bg h1 {
-  color: #0d0d0d;
+  color: white;
 }
 .home-bg p {
-  color: #0d0d0d;
+  color: white;
 }
 
 .register-bg {
@@ -106,6 +106,12 @@ body a {
   background-position: center;
   background-repeat: no-repeat;
 }
+.register-bg h1 {
+  color: white;
+}
+.register-bg p {
+  color: white;
+}
 
 .login-bg {
   background-image: url(/img/background.jpg);
@@ -113,6 +119,12 @@ body a {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+.login-bg h1 {
+  color: white;
+}
+.login-bg p {
+  color: white;
 }
 
 .profilePicture {
