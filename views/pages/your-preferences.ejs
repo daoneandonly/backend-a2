@@ -2,24 +2,24 @@
 <%- include('../partials/header-nav'); %>
 
 
-    <h1>Your preferences</h1>
+    <h1>Your preferences <%= preferences.gender %></h1>
 
 <div class="preferences-view">
     <section>
         <h3>Gender </h3>
-        <p class="preference"><%= preferences.genderSelect %></p>
+        <p class="preference"><%= preferences.gender %></p>
 
         <h3>Gender preference</h3>
-        <p class="preference"><%= preferences.genderPreference %></p>
+        <p class="preference"><%= preferences.gender %></p>
 
         <h3>Distance</h3>
-        <p class="preference"><%= preferences.distance %></p>
+        <p class="preference"><%= preferences.maxDistance %></p>
         
         <h3>Minimum age</h3>
-        <p class="preference"><%= preferences.minimumAge %></p>
+        <p class="preference"><%= preferences.minAge %></p>
 
         <h3>Maximum age</h3>
-        <p class="preference"><%= preferences.maximumAge %></p>
+        <p class="preference"><%= preferences.maxAge %></p>
         <button type="submit"><a href="/profile">Go back</a></button>
     </section>
 </div>
