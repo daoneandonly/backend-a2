@@ -1,0 +1,31 @@
+
+#bodyWelcome {
+    background-image: none;
+    background: rgb(165, 180, 255);
+    background: linear-gradient(90deg, rgb(170, 182, 241) 0%, rgb(171, 178, 240) 49%, rgb(164, 161, 245) 100%);
+  
+  
+  .welcomeHeader {
+    margin-top: 1.5em;
+    font-size: 4em;
+  }
+  
+  .welcomeLinks {
+    margin-top: 3em;
+    margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .welcomeLinks a {
+    background-color: rgb(0, 132, 255);
+    border-radius: 25px;
+    padding: 1em;
+  }
+  
+  .welcomeLinks a:nth-child(2) {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+
+}
