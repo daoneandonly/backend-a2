@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validator = require('validator')
+const validator = require('validator');
 
 //Structure in the collection 
 const Schema = mongoose.Schema;
@@ -8,26 +8,26 @@ const Schema = mongoose.Schema;
 //Schema structure how to save in the collection
 //Objects with a string and all are required
 const usersSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
+	name: {
+		type: String,
+		required: true,
+		unique: true
         
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        validate: (value) => {
-            return validator.isEmail(value)
-        }   
-    },
-    password: {
-        type: String,
-        required: true,
-        unique: true
-    }
+	},
+	email: {
+		type: String,
+		required: true,
+		unique: true,
+		lowercase: true,
+		validate: (value) => {
+			return validator.isEmail(value);
+		}   
+	},
+	password: {
+		type: String,
+		required: true,
+		unique: true
+	}
 });
 
 //mongoose model, Find info, model is based on the Schema
