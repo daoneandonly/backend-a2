@@ -1,21 +1,21 @@
 <%- include('../partials/head'); %>
-<%- include('../partials/header'); %>
+<%- include('../partials/header-nav'); %>
 <h1>Your preferences</h1>
 <form action="/preferences" method="post">
 
-    <label for="genderSelect">Choose your gender:</label>
+    <label for="genderSelect">Choose your gender</label>
 
     <select name="genderSelect" id="genderSelect">
-        <option value="">--Please choose an option--</option>
+        <option value="">Your gender</option>
         <option value="He" >He</option>
         <option value="She"  >She</option>
         <option value="none">non-binary</option>
     </select>
 
-    <label for="genderPreference">Choose a preferred gender:</label>
+    <label for="genderPreference">Choose a preferred gender</label>
 
     <select name="genderPreference" id="genderPreference">
-        <option value="">--Please choose an option--</option>
+        <option value="">Preffered gender</option>
         <option value="He"  >He</option>
         <option value="She" >She</option>
         <option value="both" >both</option>
@@ -24,21 +24,21 @@
     <div>
 
         <label for="distance">Distance</label>
-        <input type="number" id="distance" name="distance" min="0" max="200" step="1" >
+        <input type="number" id="distance" name="distance" min="0" max="200" step="1" placeholder="Maximum distance">
 
     </div>
 
     <div>
 
         <label for="distance">Minimum age</label>
-        <input type="number" id="minAge" name="minAge" min="18" max="100" step="1">
+        <input type="number" id="minAge" name="minAge" min="18" max="100" step="1" placeholder="Minimum age">
 
     </div>
 
     <div>
 
         <label for="distance">Maximum age</label>
-        <input type="number" id="maxAge" name="maxAge" min="18" max="100" step="1">
+        <input type="number" id="maxAge" name="maxAge" min="18" max="100" step="1" placeholder="Maximum age">
 
     </div>
 

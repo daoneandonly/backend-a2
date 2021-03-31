@@ -1,0 +1,21 @@
+.countryResults {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+  
+  .oneCountry {
+    background-color: rgb(3, 101, 248);
+    font-size: 1em;
+    border-radius: 50px;
+  
+    margin-top: 0.5em;
+    padding: 1em;
+  }
+  
+  .countryDetailTitel {
+    font-size: 2em;
+    margin-top: 1em;
+  }
