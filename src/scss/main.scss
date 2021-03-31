@@ -7,35 +7,80 @@ html {
 body {
   margin: 0;
   padding: 0;
+  font-size: 1em;
+
+  h1 {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    font-size: 2vw;
+    font-family: roboto;
+    color: #0d0d0d;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: .5em;
+  }
+  
+  p {
+    font-size: 2em;
+    color: #0d0d0d;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}
+
+/* background */
+.home-bg {
   background-image: url(/img/background.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  font-size: 1em;
+
+  h1{
+    color: white;
+  }
+
+  p{
+    color:white;
+  }
 }
 
-h1 {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-row: 2 / 3;
-  font-size: 4vw;
-  font-family: catamaran;
-  color: white;
-  z-index: 1;
-  text-align: center;
-  margin-bottom: .2em;
+.register-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  h1{
+    color: white;
+  }
+
+  p{
+    color:white;
+  }
 }
 
-p {
-  font-size: 2em;
-  color: white;
-  text-align: center;
-}
+.login-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-a {
-  text-decoration: none;
-  color: white;
+  h1{
+    color: white;
+  }
+
+  p{
+    color:white;
+  }
 }
 
 .profilePicture {
@@ -55,9 +100,11 @@ form {
   display: grid;
   grid-gap: 1em;
 
-  background-color: rgba(255, 255, 255, .9);
-
-  border-radius: 0.1em;
+  background-color: rgb(252, 252, 252);
+  border-radius: 0.3em;
+  -webkit-box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
+  -moz-box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
+  box-shadow: 1px 12px 12px -13px rgba(199,199,199,1);
 }
 
 fieldset {
@@ -76,6 +123,8 @@ legend {
 }
 
 label {
+  font-family: roboto;
+  font-weight: 400;
   color: #0D0D0D;
   display: block;
   padding: 0 0 .5rem 0;
@@ -87,20 +136,33 @@ textarea {
   padding: 1em;
   margin: 0 0 1.5em;
 
-  border-color: #3654a5;
-  border-radius: 2em;
+  border: 0;
+  border-bottom: 2px solid #3654a5;
+  border-radius: .2em;
+  background-color: #FFFFFF;
 
   outline: none;
 }
 
+input:focus {
+  border-bottom: 2px solid #4CA536;
+}
+
+::placeholder {
+  font-family: roboto;
+  font-weight: 200;
+  color: #C7C7C7;
+}
 
 /* buttons */
 
 button {
-  font-family: catamaran;
-  font-size: 1.1em;
+  font-family: roboto;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-size: 1em;
 
-  width: 32em;
+  width: 35em;
   height: 2.5em;
 
   display: block;
@@ -108,10 +170,16 @@ button {
   outline: none;
   border: none;
 
-  border-radius: 1em;
+  border-radius: .2em;
 
   color: white;
   background-color: #3654a5;
+
+  border-radius: 0.6em;
+}
+
+button:hover {
+  background-color: #2A4795;
 }
 
 .buttonLogin1 {
@@ -120,31 +188,42 @@ button {
   margin-right: auto;
   margin-bottom: 2em;
   display: block;
-  width: 32em;
+  width: 35em;
 
   background-color: #252525;
 }
 
+.buttonLogin1:hover {
+  background-color: #000000;
+}
+
 .buttonLogin2 {
   margin-left: auto;
-  margin-right: 2em;
-  margin-bottom: 2em;
+  align-content: center;
 
-  display: block;
 
-  background-color: #252525;
+  border-radius: 0.6em;
+}
 
-  width: 7%;
+.buttonBucketlist {
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 0.6em;
+
+  margin-top: 2rem;
 }
 
 .buttonSignup {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 4em;
+  margin-top: 2em;
 
   display: block;
 
   width: 15em;
+
+  border-radius: 0.6em;
 }
 
 .imagesGrid {
@@ -219,4 +298,105 @@ button {
 .countryDetailTitel {
   font-size: 2em;
   margin-top: 1em;
+}
+/* headers */
+.headerNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  font-family: roboto;
+  font-size: 1.2em;
+
+  margin-bottom: 5rem;
+
+
+
+  nav {
+    background-color: #2A4795;
+
+  }
+
+  ul{
+    margin: 0;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+  }
+
+  li{
+    display: flex;
+    align-items: center;
+
+  }
+
+  li:first-child {
+    width: 70%;
+  }
+}
+.headerLogo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  margin-bottom: 3rem;
+
+
+  ul{
+    margin: 0;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+  }
+  
+}
+
+
+.headerLogin {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  
+  margin-bottom: 13rem;
+
+
+
+  ul{
+    margin: 0;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+  }
+
+  li{
+    display: flex;
+    align-items: center;
+
+  }
+
+  li:first-child {
+    margin-right: auto;
+  }
+
+
+  .buttonLogin2{
+    margin-left: auto;
+    display: block;
+    background-color: white;
+    color: blue;
+    width: 5.5em;
+    height: 2.4em;
+    border-radius: 0.6em;
+    
+  }
+
+  a{
+    color: #0d0d0d;
+  }
+}
+
+.oneCountry {
+  margin-bottom: 1.5rem;
 }

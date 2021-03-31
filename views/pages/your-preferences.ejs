@@ -1,17 +1,26 @@
 <%- include('../partials/head'); %>
-<%- include('../partials/header'); %>
+<%- include('../partials/header-nav'); %>
 
 
     <h1>Your preferences</h1>
 
 <div class="preferences-view">
     <section>
-        <h3>Gender: <%= preferences.genderSelect %> </h3>
-        <h3>Gender preference: <%= preferences.genderPreference %> </h3>
-        <h3>Distance: <%= preferences.distance %> </h3>
-        <h3>Minimum age: <%= preferences.minimumAge %> </h3>
-        <h3>Maximum age: <%= preferences.maximumAge %> </h3>
+        <h3>Gender </h3>
+        <p class="preference"><%= preferences.genderSelect %></p>
 
+        <h3>Gender preference</h3>
+        <p class="preference"><%= preferences.genderPreference %></p>
+
+        <h3>Distance</h3>
+        <p class="preference"><%= preferences.distance %></p>
+        
+        <h3>Minimum age</h3>
+        <p class="preference"><%= preferences.minimumAge %></p>
+
+        <h3>Maximum age</h3>
+        <p class="preference"><%= preferences.maximumAge %></p>
+        <button type="submit"><a href="/profile">Go back</a></button>
     </section>
 </div>
 

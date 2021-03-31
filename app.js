@@ -13,21 +13,11 @@ const upload = multer({
 });
 const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
 	},
@@ -44,6 +34,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
@@ -83,7 +74,7 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, async (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -105,7 +96,7 @@ app.post('/registerUsers', registerLimiter, async (req, res) => {
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
@@ -122,6 +113,7 @@ function loadWelcomePage(req, res) {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
+	
   console.log('req.body.name: ', req.body.name)
   Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
@@ -166,6 +158,7 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
