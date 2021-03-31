@@ -11,22 +11,13 @@ const request = require('request'); // package to handle http requests
 const upload = multer({
 	dest: 'static/img/'
 });
+const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
 	},
@@ -43,6 +34,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
@@ -82,30 +74,30 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
-	try {
-		const newUsers = new Users({
-			name: req.body.name,
-			email: req.body.email,
-			password: req.body.password
-		});
-		newUsers.save().then(() => {
-			console.log('Added Users');
-			res.redirect('/login');
-			return;
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const newUsers = new Users({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    })
+    newUsers.save().then(() => {
+      console.log('Added Users');
+      res.redirect('/login')
+      return;
 
-		});
+    })
 
-	} catch (error) {
-		console.log(error);
-	}
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
-app.get('/add-profile', checklogin);
 
 app.get('/login', (req, res) => {
 	res.render('pages/login/login', {
@@ -116,27 +108,26 @@ app.get('/login', (req, res) => {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-	console.log('req.body.name: ', req.body.name);
-	Users.find({
-		name: req.body.name
-	}, done); // searching for the name in the database, when its found it goes to functions done
+	
+  console.log('req.body.name: ', req.body.name)
+  Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
 
-	async function done(err, users) {
-		console.log(users);
+  async function done(err, users) {
+    //  console.log(users)
 
-		if (err) {
-			next(err);
-		} else {
-			if (users.password == req.body.password) { //  if name agrees with password then the login succeeds
-				console.log('Login geslaagd');
-				res.redirect('/add');
-			} else {
-				console.log('Login mislukt'); // if they dont agree then the login fails
-				res.redirect('/loginFailed'); // and the page loginFailed gets send to the user
-			}
-		}
-	}
-}
+    if (err) {
+      next(err)
+    } else {
+      const validPassword = await bcrypt.compare(req.body.password, users.password);
+      if (validPassword) { //If the name is connected to the password then the login is succesfull
+        console.log('Login geslaagd');
+        res.redirect('/add')
+      } else { //If these are not the same the login is failed 
+        res.redirect('/loginFailed') //and the user will be redirected to the login failed page
+      }
+    }
+  }
+};
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
@@ -161,6 +152,7 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
@@ -273,6 +265,58 @@ function showProfile(req, res) {
 	}
 }
 
+//preferences
+app.get('/preferences', showPreferences);
+app.post('/preferences', submitPreferences);
+app.get('/yourpreferences/:id', yourPreferences)
+
+
+
+function showPreferences(req, res) {
+	res.render('pages/preferences-form', {
+		title: 'preferences'
+	});
+}
+
+function submitPreferences(req, res) {
+
+	db.collection('preferences').insertOne({
+		genderSelect: req.body.genderSelect,
+		genderPreference: req.body.genderPreference,
+		distance: req.body.distance,
+		minimumAge: req.body.minAge,
+		maximumAge: req.body.maxAge
+	}, done);
+
+	function done(err, data) {
+		if (err) {
+			next(err);
+		} else {
+			res.redirect('/yourpreferences/' + data.insertedId);
+		}
+	}
+}
+
+function yourPreferences(req, res) {
+
+	const ObjectId = require('mongodb').ObjectId;
+	const id = req.params.id;
+
+	db.collection('preferences').findOne({
+		_id: new ObjectId(id)
+	}, done);
+
+	function done(err, data) {
+		if (err) {
+			next(err);
+		} else {
+			res.render('pages/your-preferences', {
+				title: 'Your preferences',
+				preferences: data
+			});
+		}
+	}
+}
 
 // if there is no page found give an error page as page
 app.get('*', (req, res) => {

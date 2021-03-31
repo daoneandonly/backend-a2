@@ -1,0 +1,42 @@
+.preferences-view {
+  max-width: 35em;
+  margin: auto;
+  padding: 2em;
+  margin-bottom: 2em;
+
+  display: grid;
+  grid-gap: 1em;
+
+  background-color: rgba(255, 255, 255);
+
+  border-radius: 0.1em;
+}
+
+#genderPreference {
+  margin-bottom: 2em;
+}
+
+#genderSelect, #genderPreference {
+  background-color: #FCFCFC;
+  height: 3.4em;
+  padding-left: .5em;
+
+  border-radius: 0.2em;
+  border: none;
+  border-bottom: 2px solid #3654a5;
+}
+
+.preference {
+  font-family: roboto;
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-align: left;
+  color: black;
+
+  padding: 1em;
+  background-color: #FCFCFC;
+  border-bottom: 2px solid #3654a5;
+  border-radius: 0.2em;
+  margin-bottom: 2em;
+}
