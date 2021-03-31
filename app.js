@@ -14,21 +14,11 @@ const upload = multer({
 });
 const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
 	},
@@ -45,6 +35,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
@@ -84,7 +75,7 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, async (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
 	try {
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -106,7 +97,7 @@ app.post('/registerUsers', registerLimiter, async (req, res) => {
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
@@ -115,11 +106,17 @@ app.get('/login', (req, res) => {
 	});
 });
 
+app.get('/welcome', loadWelcomePage);
+
+function loadWelcomePage(req, res) {
+	res.render('pages/welcome', {title: 'Welcome page'});
+}
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
+	
 	console.log('req.body.name: ', req.body.name);
-	Users.findOne({ email: req.body.name }, done); //Searching the name in the db, when this is found goes to done function
+	Users.findOne({ name: req.body.name }, done); //Searching the name in the db, when this is found goes to done function
 
 	async function done(err, users) {
 		//  console.log(users)
@@ -151,6 +148,7 @@ app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
 app.get('/bucketlistOverview/:id', singleCountryInfo);
 app.get('/imagesGrid', showImages);
+
 app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
@@ -161,6 +159,7 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
@@ -211,10 +210,12 @@ function singleCountryInfo(req, res) {
 
 // eslint-disable-next-line no-undef
 const api_key = process.env.API_KEY;
-const api_url = 'https://api.unsplash.com/photos?client_id=';
+const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
+//The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string.
 function showImages(req, res){
-	request(api_url + api_key, function (error, response, body){
+	const searchInspiration = req.query.searchinspiration;
+	request(api_url + api_key + 'query=' + searchInspiration, function (error, response, body){
 		if(error){
 			console.log(error);
 		}else{
@@ -298,6 +299,7 @@ function submitPreferences(req, res) {
 
 	function done(err, data) {
 		if (err) {
+			// eslint-disable-next-line no-undef
 			next(err);
 		} else {
 			res.redirect('/yourpreferences/' + data.insertedId);
@@ -316,6 +318,7 @@ function yourPreferences(req, res) {
 
 	function done(err, data) {
 		if (err) {
+			// eslint-disable-next-line no-undef
 			next(err);
 		} else {
 			res.render('pages/your-preferences', {
