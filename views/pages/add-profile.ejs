@@ -1,16 +1,18 @@
 <%- include('../partials/head'); %>
 <%- include('../partials/header-nav'); %>
-<h1>Add profile</h1>
-<form id="profileForm" method="POST" action="/add" enctype=multipart/form-data> <label>
-  photo
-  <input type="file" name="photo" accept=image/* required> </label> <label>Naam<input type="text" name="name" required></label>
-  <label>
-    age
-    <input type="text" name=age required>
+<h1>Add your profile</h1>
+<form id="profileForm" method="POST" action="/add" enctype=multipart/form-data> 
+  <label>Photo
+  <input type="file" name="photo" accept=image/* required> </label> <label>Name<input type="text" name="name" placeholder="Jane Doe"required>
   </label>
-  <label>
-    <textarea type="text" name=bio rows=5 required></textarea>
+
+  <label>Age<input type="text" name=age placeholder="Your age"required>
   </label>
-  <input type="submit" value="submit"/>
+
+  <label>Bio
+    <textarea type="text" name=bio rows=5 placeholder="Fill in your amazing and creative bio about you"required></textarea>
+  </label>
+
+ <button type="submit" class="buttonLogin2">Submit</a></button>
 </form>
 <%- include('../partials/footer'); %>

@@ -60,35 +60,59 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-image: url(/img/background.jpg);
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   font-size: 1em;
 }
-
-h1 {
+body h1 {
   display: grid;
   grid-column: 1/-1;
   grid-row: 2/3;
   font-size: 3vw;
   font-family: roboto;
-  color: white;
+  color: #0d0d0d;
   z-index: 1;
   text-align: center;
   margin-bottom: 0.3em;
 }
-
-p {
+body p {
   font-size: 2em;
-  color: white;
+  color: #0d0d0d;
   text-align: center;
+  margin-bottom: 1rem;
 }
-
-a {
+body a {
   text-decoration: none;
   color: white;
+}
+
+/* background */
+.home-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.home-bg h1 {
+  color: #0d0d0d;
+}
+.home-bg p {
+  color: #0d0d0d;
+}
+
+.register-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-bg {
+  background-image: url(/img/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .profilePicture {
@@ -189,11 +213,15 @@ button:hover {
 
 .buttonLogin2 {
   margin-left: auto;
-  margin-right: 2em;
-  margin-bottom: 2em;
-  display: block;
-  background-color: #252525;
-  width: 7%;
+  align-content: center;
+  border-radius: 0.6em;
+}
+
+.buttonBucketlist {
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.6em;
+  margin-top: 2rem;
 }
 
 .buttonSignup {
@@ -230,7 +258,7 @@ button:hover {
   position: sticky;
   top: 0;
   z-index: 10;
-  font-family: catamaran;
+  font-family: roboto;
   font-size: 1.2em;
   margin-bottom: 5rem;
 }
@@ -294,6 +322,10 @@ button:hover {
 }
 .headerLogin a {
   color: #0d0d0d;
+}
+
+.oneCountry {
+  margin-bottom: 1.5rem;
 }
 
 .preferences-view {
