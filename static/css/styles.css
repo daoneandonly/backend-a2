@@ -54,7 +54,8 @@ table {
 
 /* main */
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+  font-family: roboto, sans-serif;
 }
 
 body {
@@ -342,6 +343,7 @@ button:hover {
   color: #0d0d0d;
 }
 
+/* country */
 .oneCountry {
   margin-bottom: 1.5rem;
 }
