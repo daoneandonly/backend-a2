@@ -251,26 +251,6 @@ button:hover {
   border-radius: 0.6em;
 }
 
-.imagesGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 5px;
-}
-
-.imagesGrid img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.imagesGrid p {
-  font-size: 1.5em;
-  color: black;
-  text-align: left;
-  padding: 1em;
-  background-color: white;
-}
-
 /* headers */
 .headerNav {
   position: sticky;
@@ -383,6 +363,72 @@ button:hover {
   border-bottom: 2px solid #3654a5;
   border-radius: 0.2em;
   margin-bottom: 2em;
+}
+
+#bodyWelcome {
+  background-image: none;
+  background: #a5b4ff;
+  background: linear-gradient(90deg, #aab6f1 0%, #abb2f0 49%, #a4a1f5 100%);
+}
+#bodyWelcome .welcomeHeader {
+  margin-top: 1.5em;
+  font-size: 4em;
+}
+#bodyWelcome .welcomeLinks {
+  margin-top: 3em;
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: center;
+}
+#bodyWelcome .welcomeLinks a {
+  background-color: #0084ff;
+  border-radius: 25px;
+  padding: 1em;
+}
+#bodyWelcome .welcomeLinks a:nth-child(2) {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.countryResults {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.oneCountry {
+  background-color: #0365f8;
+  font-size: 1em;
+  border-radius: 50px;
+  margin-top: 0.5em;
+  padding: 1em;
+}
+
+.countryDetailTitel {
+  font-size: 2em;
+  margin-top: 1em;
+}
+
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+}
+
+.imagesGrid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagesGrid p {
+  font-size: 1.5em;
+  color: black;
+  text-align: left;
+  padding: 1em;
+  background-color: white;
 }
 
 /*# sourceMappingURL=styles.css.map */
