@@ -1,12 +1,16 @@
 <%- include('../../partials/head'); %>
 <%- include('../../partials/header'); %>
-<body id="bodyWelcome">
-<main>
 
-  <h1>My bucketlist <br> locations</h1>
-  <button class="buttonLogin1"><a href="/bucketlist">Add new bucketlist</a></button>
-  <div class="countryResults">
-  
+<body id="bodyWelcome">
+  <main>
+    <div class="welcomeLinks">
+      <a href="/welcome">Go back</a>
+    </div>
+
+    <h1>My bucketlist <br> locations</h1>
+    <button class="buttonLogin1"><a href="/bucketlist">Add new bucketlist</a></button>
+    <div class="countryResults">
+
       <!-- loop trough the schema object -->
 
       <% if (countryView.length > 0) { %>
@@ -23,9 +27,9 @@
       <% }%>
 
     </div>
- 
 
-</main>
 
-<%- include('../../partials/footer'); %>
+  </main>
+
+  <%- include('../../partials/footer'); %>
 </body>
