@@ -108,8 +108,8 @@ app.get('/login', (req, res) => {
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
-  res.render('pages/welcome', {title: 'Welcome page'});
-};
+	res.render('pages/welcome', {title: 'Welcome page'});
+}
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
