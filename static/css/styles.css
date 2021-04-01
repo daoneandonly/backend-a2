@@ -144,11 +144,11 @@ form {
   margin-bottom: 2em;
   display: grid;
   grid-gap: 1em;
-  background-color: #fcfcfc;
+  background-color: #f8f8f8;
   border-radius: 0.3em;
-  -webkit-box-shadow: 1px 12px 12px -13px #c7c7c7;
-  -moz-box-shadow: 1px 12px 12px -13px #c7c7c7;
-  box-shadow: 1px 12px 12px -13px #c7c7c7;
+  -webkit-box-shadow: 1px 12px 12px -13px #bebebe;
+  -moz-box-shadow: 1px 12px 12px -13px #bebebe;
+  box-shadow: 1px 12px 12px -13px #bebebe;
 }
 
 fieldset {
@@ -207,7 +207,7 @@ button {
   border: none;
   border-radius: 0.2em;
   color: white;
-  background-color: #3654a5;
+  background-color: #2b4796;
   border-radius: 0.6em;
 }
 
@@ -251,80 +251,24 @@ button:hover {
   border-radius: 0.6em;
 }
 
-/* headers */
-.headerNav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  font-family: roboto;
-  font-size: 1.2em;
-  margin-bottom: 5rem;
-}
-.headerNav nav {
-  background-color: #2A4795;
-}
-.headerNav ul {
-  margin: 0;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-.headerNav li {
-  display: flex;
-  align-items: center;
-}
-.headerNav li:first-child {
-  width: 70%;
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
 }
 
-.headerLogo {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin-bottom: 3rem;
-}
-.headerLogo ul {
-  margin: 0;
-  padding: 0.5rem 1rem 0.5rem 1rem;
+.imagesGrid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.headerLogin {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin-bottom: 13rem;
-}
-.headerLogin ul {
-  margin: 0;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-.headerLogin li {
-  display: flex;
-  align-items: center;
-}
-.headerLogin li:first-child {
-  margin-right: auto;
-}
-.headerLogin .buttonLogin2 {
-  margin-left: auto;
-  display: block;
+.imagesGrid p {
+  font-size: 1.5em;
+  color: black;
+  text-align: left;
+  padding: 1em;
   background-color: white;
-  color: blue;
-  width: 5.5em;
-  height: 2.4em;
-  border-radius: 0.6em;
-}
-.headerLogin a {
-  color: #0d0d0d;
-}
-
-/* country */
-.oneCountry {
-  margin-bottom: 1.5rem;
 }
 
 .preferences-view {
@@ -367,8 +311,6 @@ button:hover {
 
 #bodyWelcome {
   background-image: none;
-  background: #a5b4ff;
-  background: linear-gradient(90deg, #aab6f1 0%, #abb2f0 49%, #a4a1f5 100%);
 }
 #bodyWelcome .welcomeHeader {
   margin-top: 1.5em;
@@ -381,7 +323,7 @@ button:hover {
   justify-content: center;
 }
 #bodyWelcome .welcomeLinks a {
-  background-color: #0084ff;
+  background-color: #2A4795;
   border-radius: 25px;
   padding: 1em;
 }
@@ -396,10 +338,12 @@ button:hover {
   grid-gap: 10px;
   margin-left: 2em;
   margin-right: 2em;
+  margin-top: 5em;
 }
 
 .oneCountry {
-  background-color: #0365f8;
+  background-color: #2A4795;
+  color: white;
   font-size: 1em;
   border-radius: 50px;
   margin-top: 0.5em;
@@ -429,6 +373,87 @@ button:hover {
   text-align: left;
   padding: 1em;
   background-color: white;
+}
+
+.headerLogin {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 13rem;
+}
+.headerLogin ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.headerLogin li {
+  display: flex;
+  align-items: center;
+}
+.headerLogin li:first-child {
+  margin-right: auto;
+}
+.headerLogin .buttonLogin2 {
+  margin-left: auto;
+  display: block;
+  background-color: white;
+  color: blue;
+  width: 5.5em;
+  height: 2.4em;
+  border-radius: 0.6em;
+}
+.headerLogin a {
+  color: #0d0d0d;
+}
+
+.headerLogo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 3rem;
+}
+.headerLogo ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.headerNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-family: roboto;
+  font-size: 1.2em;
+  margin-bottom: 5rem;
+}
+.headerNav nav {
+  background-color: #425faf;
+}
+.headerNav ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.headerNav li {
+  display: flex;
+  align-items: center;
+}
+.headerNav li:first-child {
+  width: 70%;
+}
+
+.headerLogo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: 3rem;
+}
+.headerLogo ul {
+  margin: 0;
+  padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
 /*# sourceMappingURL=styles.css.map */
