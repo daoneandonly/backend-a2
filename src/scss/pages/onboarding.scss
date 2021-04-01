@@ -1,0 +1,39 @@
+.onboardingInfo {
+    
+background-color: grey;
+width: 550px;
+height: 500px;
+margin: auto;
+border-radius: 50px;
+
+    img{
+        padding-top: 3em;
+        display: block;
+        margin: auto;
+        justify-content: center;
+    }
+
+    h1 {
+        padding-top: 2em;
+        font-size: 2em;
+    }
+
+    p {
+        font-size: 1.5em;
+        width: 500px;
+        margin: auto;
+    }
+
+    button {
+        margin: auto;
+        margin-top: 5em;
+        
+        width: 200px;
+    }
+
+    button a {
+        text-align: center;
+    }
+}
+
+

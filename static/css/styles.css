@@ -456,4 +456,35 @@ button:hover {
   padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
+.onboardingInfo {
+  background-color: grey;
+  width: 550px;
+  height: 500px;
+  margin: auto;
+  border-radius: 50px;
+}
+.onboardingInfo img {
+  padding-top: 3em;
+  display: block;
+  margin: auto;
+  justify-content: center;
+}
+.onboardingInfo h1 {
+  padding-top: 2em;
+  font-size: 2em;
+}
+.onboardingInfo p {
+  font-size: 1.5em;
+  width: 500px;
+  margin: auto;
+}
+.onboardingInfo button {
+  margin: auto;
+  margin-top: 5em;
+  width: 200px;
+}
+.onboardingInfo button a {
+  text-align: center;
+}
+
 /*# sourceMappingURL=styles.css.map */

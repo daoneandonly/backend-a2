@@ -112,6 +112,7 @@ app.get('/login', (req, res) => {
 //onboarding
 app.get('/onboardingPageOne', onboardingPageOne);
 app.get('/onboardingPageTwo', onboardingPageTwo);
+app.get('/onboardingPageThree', onboardingPageThree);
 
 function onboardingPageOne(req, res) {
 	res.render('pages/onboarding/onboardingPageOne', {
@@ -122,6 +123,12 @@ function onboardingPageOne(req, res) {
 function onboardingPageTwo(req, res) {
 	res.render('pages/onboarding/onboardingPageTwo', {
 		title: 'onboarding step 2'
+	});
+}
+
+function onboardingPageThree(req, res) {
+	res.render('pages/onboarding/onboardingPageThree', {
+		title: 'onboarding step 3'
 	});
 }
 
