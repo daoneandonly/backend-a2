@@ -13,21 +13,11 @@ const upload = multer({
 });
 const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
 			title: 'Please try again later',
 		});
 	},
@@ -44,6 +34,7 @@ dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
@@ -83,29 +74,29 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, async (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const newUsers = new Users({
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
-    })
-    newUsers.save().then(() => {
-      console.log('Added Users');
-      res.redirect('/login')
-      return;
+	try {
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		const newUsers = new Users({
+			name: req.body.name,
+			email: req.body.email,
+			password: hashedPassword
+		});
+		newUsers.save().then(() => {
+			console.log('Added Users');
+			res.redirect('/login');
+			return;
 
-    })
+		});
 
-  } catch (error) {
-    console.log(error);
-  }
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
@@ -114,28 +105,34 @@ app.get('/login', (req, res) => {
 	});
 });
 
+app.get('/welcome', loadWelcomePage);
+
+function loadWelcomePage(req, res) {
+	res.render('pages/welcome', {title: 'Welcome page'});
+}
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-  console.log('req.body.name: ', req.body.name)
-  Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
+	
+	console.log('req.body.name: ', req.body.name);
+	Users.findOne({ name: req.body.name }, done); //Searching the name in the db, when this is found goes to done function
 
-  async function done(err, users) {
-    //  console.log(users)
+	async function done(err, users) {
+		//  console.log(users)
 
-    if (err) {
-      next(err)
-    } else {
-      const validPassword = await bcrypt.compare(req.body.password, users.password);
-      if (validPassword) { //If the name is connected to the password then the login is succesfull
-        console.log('Login geslaagd');
-        res.redirect('/add')
-      } else { //If these are not the same the login is failed 
-        res.redirect('/loginFailed') //and the user will be redirected to the login failed page
-      }
-    }
-  }
-};
+		if (err) {
+			next(err);
+		} else {
+			const validPassword = await bcrypt.compare(req.body.password, users.password);
+			if (validPassword) { //If the name is connected to the password then the login is succesfull
+				console.log('Login geslaagd');
+				res.redirect('/add');
+			} else { //If these are not the same the login is failed 
+				res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
+			}
+		}
+	}
+}
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
@@ -150,6 +147,7 @@ app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
 app.get('/bucketlistOverview/:id', singleCountryInfo);
 app.get('/imagesGrid', showImages);
+
 app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
@@ -160,6 +158,7 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
@@ -173,7 +172,7 @@ function saveBucketlistResults(req, res) {
 	country.save()
 		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
-			res.redirect('bucketlistOverview')
+			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
 			console.log(err);
@@ -210,10 +209,12 @@ function singleCountryInfo(req, res) {
 
 // eslint-disable-next-line no-undef
 const api_key = process.env.API_KEY;
-const api_url = 'https://api.unsplash.com/photos?client_id=';
+const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
+//The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string.
 function showImages(req, res){
-	request(api_url + api_key, function (error, response, body){
+const searchInspiration = req.query.searchinspiration;
+	request(api_url + api_key + '&query=' + searchInspiration, function (error, response, body){
 		if(error){
 			console.log(error);
 		}else{
@@ -253,7 +254,7 @@ function add(req, res, next) {
 }
 
 function showProfile(req, res) {
-	let id = '6061afeeb42e3d5664e276b8'
+	let id = '6061afeeb42e3d5664e276b8';
 	Profile.findOne({
 		_id: id
 	}, done);
@@ -275,7 +276,7 @@ function showProfile(req, res) {
 //preferences
 app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
-app.get('/yourpreferences/:id', yourPreferences)
+app.get('/yourpreferences/:id', yourPreferences);
 
 
 
@@ -297,6 +298,7 @@ function submitPreferences(req, res) {
 
 	function done(err, data) {
 		if (err) {
+			// eslint-disable-next-line no-undef
 			next(err);
 		} else {
 			res.redirect('/yourpreferences/' + data.insertedId);
@@ -315,6 +317,7 @@ function yourPreferences(req, res) {
 
 	function done(err, data) {
 		if (err) {
+			// eslint-disable-next-line no-undef
 			next(err);
 		} else {
 			res.render('pages/your-preferences', {
