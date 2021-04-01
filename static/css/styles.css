@@ -487,4 +487,14 @@ button:hover {
   text-align: center;
 }
 
+.profileButtonDiv {
+  text-align: center;
+}
+.profileButtonDiv .profileButton {
+  margin-left: 2em;
+  display: inline-block;
+  text-align: center;
+  width: 200px;
+}
+
 /*# sourceMappingURL=styles.css.map */
