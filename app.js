@@ -109,6 +109,22 @@ app.get('/login', (req, res) => {
 	});
 });
 
+//onboarding
+app.get('/onboardingPageOne', onboardingPageOne);
+app.get('/onboardingPageTwo', onboardingPageTwo);
+
+function onboardingPageOne(req, res) {
+	res.render('pages/onboarding/onboardingPageOne', {
+		title: 'onboarding step 1'
+	});
+}
+
+function onboardingPageTwo(req, res) {
+	res.render('pages/onboarding/onboardingPageTwo', {
+		title: 'onboarding step 2'
+	});
+}
+
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
@@ -141,7 +157,7 @@ function checklogin(req, res, next) {
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) { 
 					console.log('Login geslaagd');
-					res.redirect('/add');
+					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed 
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
 				}
@@ -156,6 +172,7 @@ app.get('/loginFailed', (req, res) => {
 		title: 'Log in failed'
 	});
 });
+
 
 
 // bucketlist
