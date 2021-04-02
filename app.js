@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 const request = require('request'); // package to handle http requests
 const multer = require('multer');
+const path = require("path");
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const port = process.env.PORT || 3000;
@@ -10,6 +11,8 @@ const upload = multer({
 	dest: 'static/img/'
 });
 const helmet = require('helmet');
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
@@ -173,7 +176,7 @@ function checklogin(req, res, next) {
 				if (validPassword) {
 					console.log('Login geslaagd');
 					res.redirect('/onboardingPageOne');
-				} else { //If these are not the same the login is failed 
+				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
 				}
 			}
