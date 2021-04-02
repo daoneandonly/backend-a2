@@ -3,18 +3,17 @@
 
 <main>
     <h1>
-        <%= profileData.name %>
+        <%= profileData.firstName %>
     </h1>
-    <% if (profileData.photo) { %>
-    <img class="profilePicture" alt src="/img/<%= profileData.photo %>">
-    <% } %>
+        <% if (profileData.profilePicturePath) { %>
+    <img class="profilePicture" alt src="/img/<%= profileData.profilePicturePath %>">
+        <% } %>
     <p>
-        <%= profileData.age %>
+     <%= profileData.age %>
     </p>
     <p id="bio">
         <%= profileData.bio %>
     </p>
-
     <div class="profileButtonDiv">
         <button class="profileButton"><a href="/add">Edit profile data</a></button>
         <button class="profileButton"><a href="/preferences">My Preferences</a></button>
