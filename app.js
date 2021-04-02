@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 const upload = multer({
 	dest: 'static/img/'
 });
-
+const helmet = require("helmet");
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
@@ -40,10 +40,18 @@ app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
+app.use(helmet({
+  hsts: false,
+	contentSecurityPolicy: false,
+}));
 
 const db = mongoose.connection;
 
-// Connect mongoose with the database
+// connect mongoose with the database
+// eslint-disable-next-line no-undef
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
@@ -128,7 +136,7 @@ function loadWelcomePage(req, res) {
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
 	console.log('Name being checked: ', req.body.email);
-	
+
 	// Searching the name in the db, when this is found goes to done function
 	Profile.findOne({ email: req.body.email }).then(
 		async (users, err) => {
@@ -137,17 +145,17 @@ function checklogin(req, res, next) {
 				next(err);
 			} else {
 				const validPassword = await bcrypt.compare(req.body.password, users.password);
-	
+
 				// If the name is connected to the password then the login is succesfull
-				if (validPassword) { 
+				if (validPassword) {
 					console.log('Login geslaagd');
 					res.redirect('/add');
-				} else { //If these are not the same the login is failed 
+				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
 				}
 			}
 		}
-	); 
+	);
 
 }
 
@@ -283,15 +291,13 @@ function showProfile(req, res) {
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findOne({
-		_id: id
-	}, (err, result) => {
+	Profile.findById(id, (err, result) => {
 		if (err) {
 			// eslint-disable-next-line no-undef
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-				profileData: result
+				profileData: result.profileData
 			});
 			console.log(result.photo);
 		}
