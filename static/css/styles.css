@@ -457,22 +457,25 @@ button:hover {
 }
 
 .onboardingInfo {
-  background-color: grey;
-  width: 550px;
-  height: 500px;
   margin: auto;
   border-radius: 50px;
   margin-top: 7em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5em;
+  max-width: 50%;
+  padding: 1em 0 3em;
+  box-shadow: 0 15px 15px 5px rgba(0, 0, 0, 0.1);
 }
 .onboardingInfo img {
-  padding-top: 3em;
+  background-color: grey;
+  padding: 1em;
+  border-radius: 0.25em;
   display: block;
   margin: auto;
   justify-content: center;
 }
 .onboardingInfo h1 {
-  padding-top: 2em;
-  font-size: 2em;
+  padding-top: 1.5em;
 }
 .onboardingInfo p {
   font-size: 1.5em;
@@ -481,7 +484,7 @@ button:hover {
 }
 .onboardingInfo button {
   margin: auto;
-  margin-top: 5em;
+  margin-top: 1.5em;
   width: 200px;
 }
 .onboardingInfo button a {
