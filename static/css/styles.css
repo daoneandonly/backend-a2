@@ -462,6 +462,7 @@ button:hover {
   height: 500px;
   margin: auto;
   border-radius: 50px;
+  margin-top: 7em;
 }
 .onboardingInfo img {
   padding-top: 3em;
