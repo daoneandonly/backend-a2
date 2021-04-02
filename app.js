@@ -7,9 +7,6 @@ const path = require("path");
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const port = process.env.PORT || 3000;
-const upload = multer({
-	dest: 'static/img/'
-});
 const helmet = require('helmet');
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -281,10 +278,42 @@ function showImages(req, res){
 	});
 }
 
+// Cloudinary functions
+const uploadToCloud = filePath => {
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader
+            .upload(filePath)
+            .then(result => {
+                fs.unlinkSync(filePath);
+               // Remove uploaded file from the server once it gets uploaded to cloudinary server.
+                resolve(result);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+};
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: 'static/img/',
+        filename: function(req, file, cb) {
+            cb(
+                null,
+                "myfile-" + Date.now() + path.parse(file.originalname).ext
+            );
+        }
+    })
+});
+
 // profile feature
 app.get('/add', profileForm);
 app.get('/profile', showProfile);
-app.post('/add', upload.single('photo'), add);
+app.post('/add',  upload.single('photo'), (req, res, next) => {
+    uploadToCloud(req.file.path)
+        .then(d => res.json(d))
+        .catch(e => next(e));
+});
 
 function profileForm(req, res) {
 	// TODO: get this ID from somewhere else
@@ -300,7 +329,7 @@ function profileForm(req, res) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function add(req, res) {
+function add(req, res, next) {
 	const additions = {
 		profileData: {
 			firstName: req.body.name,
@@ -309,6 +338,10 @@ function add(req, res) {
 			bio: req.body.bio
 		}
 	};
+
+	uploadToCloud(req.file.path)
+			.then(d => res.json(d))
+			.catch(e => next(e));
 
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
