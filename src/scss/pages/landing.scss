@@ -1,0 +1,44 @@
+  .headerLogin {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    margin-bottom: 13rem;
+  
+  
+    ul{
+      margin: 0;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+  
+    }
+  
+    li{
+      display: flex;
+      align-items: center;
+  
+    }
+  
+    li:first-child {
+      margin-right: auto;
+    }
+  
+  
+    .buttonLogin2{
+      margin-left: auto;
+      display: block;
+      background-color: white;
+      color: blue;
+      width: 5.5em;
+      height: 2.4em;
+      border-radius: 0.6em;
+      
+    }
+  
+    a{
+      color: #0d0d0d;
+    }
+  }
+  

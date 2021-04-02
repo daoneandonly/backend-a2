@@ -1,0 +1,28 @@
+
+#bodyWelcome {
+    background-image: none;
+  
+  .welcomeHeader {
+    margin-top: 1.5em;
+    font-size: 4em;
+  }
+  
+  .welcomeLinks {
+    margin-top: 3em;
+    margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .welcomeLinks a {
+    background-color: #2A4795;;
+    border-radius: 25px;
+    padding: 1em;
+  }
+  
+  .welcomeLinks a:nth-child(2) {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+
+}

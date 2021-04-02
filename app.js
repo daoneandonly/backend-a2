@@ -1,21 +1,23 @@
 const express = require('express');
 const app = express();
-// eslint-disable-next-line no-undef
-const port = process.env.PORT || 3000;
-const multer = require('multer');
-const rateLimit = require('express-rate-limit');
-const Country = require('./models/countryModel'); // import schema bucketlist
-const Profile = require('./models/profileModel'); // import schema profile
-const Users = require('./models/usersModel');  // import schema for users
+const dotenv = require('dotenv');
 const request = require('request'); // package to handle http requests
+const multer = require('multer');
+const bcrypt = require('bcrypt');
+const rateLimit = require('express-rate-limit');
+const port = process.env.PORT || 3000;
 const upload = multer({
 	dest: 'static/img/'
 });
-const bcrypt = require('bcrypt');
 
-const LoginLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
+
+// Models
+const Country = require('./models/countryModel'); // import schema bucketlist
+const Profile = require('./models/ProfileModel');  // import schema for users
+
+const postLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, //5 min
+	max: 3, //max 3 tries
 	handler: function(req, res /*, next*/ ) {
 		res.render('pages/errors/login-rate-limit', {
 			title: 'Please try again later',
@@ -23,35 +25,25 @@ const LoginLimiter = rateLimit({
 	},
 });
 
-const registerLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, //1 min
-	max: 3,
-	handler: function(req, res /*, next*/ ) {
-		res.render('pages/errors/register-rate-limit', {
-			title: 'Please try again later',
-		});
-	},
-});
-
 // mongoose
 const mongoose = require('mongoose');
-// eslint-disable-next-line no-unused-vars
-const validator = require('validator');
+
+// If we're gonna use a validator, we need to use it or not require it.
+// const validator = require('validator');
 
 // dotenv
-const dotenv = require('dotenv');
 dotenv.config();
 
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
+app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
 
 const db = mongoose.connection;
 
-// connect mongoose with the database
-// eslint-disable-next-line no-undef
+// Connect mongoose with the database
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
@@ -61,11 +53,11 @@ db.on('connected', () => {
 	console.log('Mongoose connected');
 });
 
-// ejs
+// Set ejs
 app.set('view engine', 'ejs');
 app.use(express.static('static'));
 
-// resolve GET request
+
 app.get('/', (req, res) => {
 	res.render('pages/index', {
 		title: 'home'
@@ -83,29 +75,32 @@ app.use(express.urlencoded({
 	extended: false
 }));
 
-app.post('/registerUsers', registerLimiter, async (req, res) => {
+app.post('/registerUsers', postLimiter, async (req, res) => {
 
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const newUsers = new Users({
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
-    })
-    newUsers.save().then(() => {
-      console.log('Added Users');
-      res.redirect('/login')
-      return;
+	try {
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		const newUser = new Profile({
+			email: req.body.email,
+			password: hashedPassword,
+			profileData: {
+				firstName: req.body.name,
+				preferences: {}
+			}
+		});
+		newUser.save().then(() => {
+			console.log('Added Users');
+			res.redirect('/login');
+			return;
 
-    })
+		});
 
-  } catch (error) {
-    console.log(error);
-  }
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 // login feature
-app.post('/login', LoginLimiter, checklogin);
+app.post('/login', postLimiter, checklogin);
 app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
@@ -114,27 +109,47 @@ app.get('/login', (req, res) => {
 	});
 });
 
+app.get('/welcome', loadWelcomePage);
+
+function loadWelcomePage(req, res) {
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
+
+	Profile.findById( id, (err, data) => {
+		console.log(data);
+		res.render('pages/welcome', {
+			title: 'Welcome page',
+			...data.profileData,
+			firstName: data.FirstName || 'New Traveler'
+		});
+	});
+}
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-  Users.findOne({ email: req.body.email }, done) //Searching the name in the db, when this is found goes to done function
+	console.log('Name being checked: ', req.body.name);
+	
+	// Searching the name in the db, when this is found goes to done function
+	Profile.findOne({ email: req.body.name }).then(
+		async (users, err) => {
+			if (err) {
+				console.log('An Error occured');
+				next(err);
+			} else {
+				const validPassword = await bcrypt.compare(req.body.password, users.password);
+	
+				// If the name is connected to the password then the login is succesfull
+				if (validPassword) { 
+					console.log('Login geslaagd');
+					res.redirect('/add');
+				} else { //If these are not the same the login is failed 
+					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
+				}
+			}
+		}
+	); 
 
-  async function done(err, users) {
-    //  console.log(users)
-
-    if (err) {
-      next(err)
-    } else {
-      const validPassword = await bcrypt.compare(req.body.password, users.password);
-      if (validPassword) { //If the name is connected to the password then the login is succesfull
-        console.log('Login geslaagd');
-        res.redirect('/add')
-      } else { //If these are not the same the login is failed 
-        res.redirect('/loginFailed') //and the user will be redirected to the login failed page
-      }
-    }
-  }
-};
+}
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
@@ -149,6 +164,7 @@ app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
 app.get('/bucketlistOverview/:id', singleCountryInfo);
 app.get('/imagesGrid', showImages);
+
 app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
@@ -159,11 +175,11 @@ function showBucketlistResults(req, res) {
 
 // function render bucketlistOverview page
 function showBucketlistOverview(req, res) {
+
 	res.render('pages/bucketlist/bucketlistOverview', {
 		title: 'bucketlist'
 	});
 }
-
 
 // save the form data to the database
 function saveBucketlistResults(req, res) {
@@ -172,7 +188,7 @@ function saveBucketlistResults(req, res) {
 	country.save()
 		// eslint-disable-next-line no-unused-vars
 		.then((result) => {
-			res.redirect('bucketlistOverview')
+			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
 			console.log(err);
@@ -209,13 +225,15 @@ function singleCountryInfo(req, res) {
 
 // eslint-disable-next-line no-undef
 const api_key = process.env.API_KEY;
-const api_url = 'https://api.unsplash.com/photos?client_id=';
+const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
+//The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string.
 function showImages(req, res){
-	request(api_url + api_key, function (error, response, body){
+	const searchInspiration = req.query.searchinspiration;
+	request(api_url + api_key + '&query=' + searchInspiration, function (error, response, body){
 		if(error){
 			console.log(error);
-		}else{
+		} else{
 			res.render('pages/bucketlist/imagesGrid', {title: 'images grid', imagesGridData: JSON.parse(body)});
 		}
 	});
@@ -227,23 +245,33 @@ app.get('/profile', showProfile);
 app.post('/add', upload.single('photo'), add);
 
 function profileForm(req, res) {
-	res.render('pages/add-profile.ejs', {
-		title: 'addprofile'
-	});
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
+
+	Profile.findById(id, (err, data) => {
+		res.render('pages/add-profile.ejs', {
+			title: 'addprofile',
+			preferences: data.profileData.preferences
+		});
+	}
+	);
 }
 
 // eslint-disable-next-line no-unused-vars
-function add(req, res, next) {
-	const profile = new Profile({
-		name: req.body.name,
-		photo: req.file ? req.file.filename : null,
-		age: req.body.age,
-		bio: req.body.bio
-	});
+function add(req, res) {
+	const additions = {
+		profileData: {
+			firstName: req.body.name,
+			profilePicturePath: req.file ? req.file.filename : null,
+			age: req.body.age,
+			bio: req.body.bio
+		}
+	};
 
-	profile.save()
-		// eslint-disable-next-line no-unused-vars
-		.then((result) => {
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
+	Profile.findByIdAndUpdate(id, additions)
+		.then(() => {
 			res.redirect('/profile');
 		})
 		.catch((err) => {
@@ -252,15 +280,14 @@ function add(req, res, next) {
 }
 
 function showProfile(req, res) {
-	let id = '6061afeeb42e3d5664e276b8'
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
+
 	Profile.findOne({
 		_id: id
-	}, done);
-
-	function done(err, result) {
+	}, (err, result) => {
 		if (err) {
 			// eslint-disable-next-line no-undef
-			next(err);
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
@@ -268,60 +295,81 @@ function showProfile(req, res) {
 			});
 			console.log(result.photo);
 		}
-	}
+	});
 }
 
 //preferences
 app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
-app.get('/yourpreferences/:id', yourPreferences)
+app.get('/yourpreferences', yourPreferences);
 
 
 
 function showPreferences(req, res) {
-	res.render('pages/preferences-form', {
-		title: 'preferences'
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
+
+	Profile.findById(id, (err, data) => {
+		if (data.profileData) {
+
+			res.render('pages/preferences-form', {
+				title: 'preferences',
+				...data.profileData
+			});
+		} else {
+			res.render('pages/preferences-form', {
+				title: 'preferences',
+				preferences: ''
+			});
+		}
 	});
 }
 
 function submitPreferences(req, res) {
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
 
-	db.collection('preferences').insertOne({
-		genderSelect: req.body.genderSelect,
-		genderPreference: req.body.genderPreference,
-		distance: req.body.distance,
-		minimumAge: req.body.minAge,
-		maximumAge: req.body.maxAge
-	}, done);
-
-	function done(err, data) {
-		if (err) {
-			next(err);
-		} else {
-			res.redirect('/yourpreferences/' + data.insertedId);
+	Profile.findByIdAndUpdate(id, {
+		gender: req.body.genderSelect,
+		profileData:{
+			preferences: {
+				gender:req.body.genderPreference,
+				maxDistance: req.body.distance,
+				minAge: req.body.minAge,
+				maxAge: req.body.maxAge
+			}
 		}
-	}
+	}, (err, data) => {
+		if (err) {
+			throw err;
+		} else {
+			res.redirect('/yourpreferences');
+		}
+	});
+
 }
 
 function yourPreferences(req, res) {
+	// TODO: get this ID from somewhere else
+	let id = '6064fc6f95fcc753d0e6bee2';
 
-	const ObjectId = require('mongodb').ObjectId;
-	const id = req.params.id;
+	Profile.findById(id, (err, data) => {
+		let preferences;
+		if (data.profileData) {
+			preferences = data.profileData.preferences;
+		} else {
+			preferences = {};
+		}
 
-	db.collection('preferences').findOne({
-		_id: new ObjectId(id)
-	}, done);
-
-	function done(err, data) {
 		if (err) {
-			next(err);
+			throw err;
 		} else {
 			res.render('pages/your-preferences', {
 				title: 'Your preferences',
-				preferences: data
+				preferences: preferences
 			});
 		}
-	}
+	});
 }
 
 // if there is no page found give an error page as page
