@@ -127,10 +127,10 @@ function loadWelcomePage(req, res) {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-	console.log('Name being checked: ', req.body.name);
+	console.log('Name being checked: ', req.body.email);
 	
 	// Searching the name in the db, when this is found goes to done function
-	Profile.findOne({ email: req.body.name }).then(
+	Profile.findOne({ email: req.body.email }).then(
 		async (users, err) => {
 			if (err) {
 				console.log('An Error occured');
