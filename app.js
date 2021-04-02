@@ -162,12 +162,12 @@ function checklogin(req, res, next) {
 
 	// Searching the name in the db, when this is found goes to done function
 	Profile.findOne({ email: req.body.email }).then(
-		async (users, err) => {
+		async (data, err) => {
 			if (err) {
 				console.log('An Error occured');
 				next(err);
 			} else {
-				const validPassword = await bcrypt.compare(req.body.password, users.password);
+				const validPassword = await bcrypt.compare(req.body.password, data.password);
 
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
