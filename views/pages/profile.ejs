@@ -3,10 +3,10 @@
 
 <main>
 <h1>
-<%= profileData.name %>
+<%= profileData.firstName %>
 </h1>
-<% if (profileData.photo) { %>
-<img class="profilePicture" alt src="/img/<%= profileData.photo %>">
+<% if (profileData.profilePicturePath) { %>
+<img class="profilePicture" alt src="/img/<%= profileData.profilePicturePath %>">
 <% } %>
 <p>
 <%= profileData.age %>

@@ -41,7 +41,8 @@ app.use(express.urlencoded({
 	extended: true
 }));
 app.use(helmet({
-  hsts: false
+  hsts: false,
+	contentSecurityPolicy: false,
 }));
 
 const db = mongoose.connection;
@@ -290,15 +291,13 @@ function showProfile(req, res) {
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findOne({
-		_id: id
-	}, (err, result) => {
+	Profile.findById(id, (err, result) => {
 		if (err) {
 			// eslint-disable-next-line no-undef
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-				profileData: result
+				profileData: result.profileData
 			});
 			console.log(result.photo);
 		}
