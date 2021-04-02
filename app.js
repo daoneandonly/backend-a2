@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 const upload = multer({
 	dest: 'static/img/'
 });
-const helmet = require("helmet");
+const helmet = require('helmet');
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
@@ -41,7 +41,7 @@ app.use(express.urlencoded({
 	extended: true
 }));
 app.use(helmet({
-  hsts: false,
+	hsts: false,
 	contentSecurityPolicy: false,
 }));
 
@@ -117,6 +117,29 @@ app.get('/login', (req, res) => {
 	});
 });
 
+//onboarding
+app.get('/onboardingPageOne', onboardingPageOne);
+app.get('/onboardingPageTwo', onboardingPageTwo);
+app.get('/onboardingPageThree', onboardingPageThree);
+
+function onboardingPageOne(req, res) {
+	res.render('pages/onboarding/onboardingPageOne', {
+		title: 'onboarding step 1'
+	});
+}
+
+function onboardingPageTwo(req, res) {
+	res.render('pages/onboarding/onboardingPageTwo', {
+		title: 'onboarding step 2'
+	});
+}
+
+function onboardingPageThree(req, res) {
+	res.render('pages/onboarding/onboardingPageThree', {
+		title: 'onboarding step 3'
+	});
+}
+
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
@@ -149,8 +172,8 @@ function checklogin(req, res, next) {
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
 					console.log('Login geslaagd');
-					res.redirect('/add');
-				} else { //If these are not the same the login is failed
+					res.redirect('/onboardingPageOne');
+				} else { //If these are not the same the login is failed 
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
 				}
 			}
@@ -164,6 +187,7 @@ app.get('/loginFailed', (req, res) => {
 		title: 'Log in failed'
 	});
 });
+
 
 
 // bucketlist
