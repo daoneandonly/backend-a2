@@ -117,8 +117,7 @@ app.get('/login', (req, res) => {
 
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
-  console.log('req.body.name: ', req.body.name)
-  Users.findOne({ name: req.body.name }, done) //Searching the name in the db, when this is found goes to done function
+  Users.findOne({ email: req.body.email }, done) //Searching the name in the db, when this is found goes to done function
 
   async function done(err, users) {
     //  console.log(users)
