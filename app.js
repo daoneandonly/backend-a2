@@ -52,6 +52,11 @@ app.use(helmet({
 	hsts: false,
 	contentSecurityPolicy: false,
 }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+	maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 const db = mongoose.connection;
 
