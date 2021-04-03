@@ -13,9 +13,9 @@
 
       <!-- loop trough the schema object -->
 
-      <%= countryView.countryQuestionOne %>
-      <%= countryView.countryQuestionTwo %>
-      <%= countryView.countryQuestionThree %>
+      <h2> To where: <%= countryView.countryQuestionOne %> </h2>
+      <h2> Why there: <%= countryView.countryQuestionTwo %> </h2>
+      <h2> With who: <%= countryView.countryQuestionThree %></h2>
 
       <% if (countryView.length > 0) { %>
       <% countryView.forEach(view => { %>
