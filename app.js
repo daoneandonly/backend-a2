@@ -323,7 +323,7 @@ function profileForm(req, res) {
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById(id, (err, data) => {
+	Profile.findById(req.session.profileId, (err, data) => {
 		res.render('pages/add-profile.ejs', {
 			title: 'addprofile',
 			preferences: data.profileData.preferences
@@ -347,7 +347,7 @@ function add(req, res, next) {
 
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
-	Profile.findByIdAndUpdate(id, additions)
+	Profile.findByIdAndUpdate(req.session.profileId, additions)
 		.then(() => {
 			res.redirect('/profile');
 		})
@@ -360,7 +360,7 @@ function showProfile(req, res) {
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById(id, (err, result) => {
+	Profile.findById(req.session.profileId, (err, result) => {
 		if (err) {
 			// eslint-disable-next-line no-undef
 		} else {
