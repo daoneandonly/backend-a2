@@ -249,11 +249,11 @@ function showInformation(req, res) {
 
 	Profile.findById(id, (err, result) => {
     if(err){
-
+      console.log('not working');
     } else{
       res.render('pages/bucketlist/bucketlistResults', {
 				title: 'Bucketlist',
-				countryView: result
+				countryView: result.countries
 			});
     }
 			

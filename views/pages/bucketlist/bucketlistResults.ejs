@@ -13,10 +13,14 @@
 
       <!-- loop trough the schema object -->
 
+      <%= countryView.countryQuestionOne %>
+      <%= countryView.countryQuestionTwo %>
+      <%= countryView.countryQuestionThree %>
+
       <% if (countryView.length > 0) { %>
       <% countryView.forEach(view => { %>
 
-      <a class='singleCountry' href="/bucketlistOverview/<%= view._id%>">
+      <a class='singleCountry' href="/bucketlistOverview/">
         <p class='oneCountry'> <%= view.countryQuestionOne %></p>
 
       </a>
