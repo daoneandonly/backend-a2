@@ -320,8 +320,6 @@ app.get('/profile', showProfile);
 app.post('/add',  upload.single('photo'), add);
 
 function profileForm(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
 	Profile.findById(req.session.profileId, (err, data) => {
 		res.render('pages/add-profile.ejs', {
@@ -345,8 +343,6 @@ function add(req, res, next) {
 
 	uploadToCloud(req.file.path);
 
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 	Profile.findByIdAndUpdate(req.session.profileId, additions)
 		.then(() => {
 			res.redirect('/profile');
@@ -357,8 +353,6 @@ function add(req, res, next) {
 }
 
 function showProfile(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
 	Profile.findById(req.session.profileId, (err, result) => {
 		if (err) {
