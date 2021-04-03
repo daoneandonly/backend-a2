@@ -160,7 +160,6 @@ function loadWelcomePage(req, res) {
 	let id = '6064fc6f95fcc753d0e6bee2';
 
 	Profile.findById( id, (err, data) => {
-		console.log(data);
 		res.render('pages/welcome', {
 			title: 'Welcome page',
 			...data.profileData,
@@ -332,24 +331,24 @@ function profileForm(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
-	const additions = {
-		profileData: {
-			firstName: req.body.name,
-			profilePicturePath: req.file ? req.file.filename : null,
-			age: req.body.age,
-			bio: req.body.bio
-		}
-	};
-
-	uploadToCloud(req.file.path);
-
-	Profile.findByIdAndUpdate(req.session.profileId, additions)
-		.then(() => {
-			res.redirect('/profile');
+	uploadToCloud(req.file.path)
+	.then(result => {
+		req.session.profilePicturePath = result.url;
+		Profile.findByIdAndUpdate(req.session.profileId, {
+			profileData: {
+				firstName: req.body.name,
+				profilePicturePath: req.session.profilePicturePath,
+				age: req.body.age,
+				bio: req.body.bio
+			}
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+			.then(() => {
+				res.redirect('/profile');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	});
 }
 
 function showProfile(req, res) {
