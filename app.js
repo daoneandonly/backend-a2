@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 const helmet = require('helmet');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const cookieSession = require('cookie-session');
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
@@ -51,6 +52,11 @@ app.use(helmet({
 	hsts: false,
 	contentSecurityPolicy: false,
 }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2'],
+	maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 const db = mongoose.connection;
 
@@ -154,7 +160,6 @@ function loadWelcomePage(req, res) {
 	let id = '6064fc6f95fcc753d0e6bee2';
 
 	Profile.findById( id, (err, data) => {
-		console.log(data);
 		res.render('pages/welcome', {
 			title: 'Welcome page',
 			...data.profileData,
@@ -179,6 +184,7 @@ function checklogin(req, res, next) {
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
 					console.log('Login geslaagd');
+					req.session.profileId = users.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
@@ -312,10 +318,8 @@ app.get('/profile', showProfile);
 app.post('/add',  upload.single('photo'), add);
 
 function profileForm(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById(id, (err, data) => {
+	Profile.findById(req.session.profileId, (err, data) => {
 		res.render('pages/add-profile.ejs', {
 			title: 'addprofile',
 			preferences: data.profileData.preferences
@@ -326,33 +330,29 @@ function profileForm(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
-	const additions = {
-		profileData: {
-			firstName: req.body.name,
-			profilePicturePath: req.file ? req.file.filename : null,
-			age: req.body.age,
-			bio: req.body.bio
-		}
-	};
-
-	uploadToCloud(req.file.path);
-
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
-	Profile.findByIdAndUpdate(id, additions)
-		.then(() => {
-			res.redirect('/profile');
+	uploadToCloud(req.file.path)
+	.then(result => {
+		req.session.profilePicturePath = result.url;
+		Profile.findByIdAndUpdate(req.session.profileId, {
+			profileData: {
+				firstName: req.body.name,
+				profilePicturePath: req.session.profilePicturePath,
+				age: req.body.age,
+				bio: req.body.bio
+			}
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+			.then(() => {
+				res.redirect('/profile');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	});
 }
 
 function showProfile(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById(id, (err, result) => {
+	Profile.findById(req.session.profileId, (err, result) => {
 		if (err) {
 			// eslint-disable-next-line no-undef
 		} else {
