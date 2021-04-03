@@ -360,7 +360,6 @@ function showProfile(req, res) {
 				title: 'Profile',
 				profileData: result.profileData
 			});
-			console.log(result.photo);
 		}
 	});
 }
