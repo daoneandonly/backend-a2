@@ -185,7 +185,6 @@ function checklogin(req, res, next) {
 				if (validPassword) {
 					console.log('Login geslaagd');
 					req.session.profileId = users.id;
-					console.log(req.session.profileId);
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
