@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 const helmet = require('helmet');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const cookieSession = require('cookie-session');
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
