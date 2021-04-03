@@ -39,7 +39,15 @@ const newProfileSchema = new Schema({
 			type: String
 		}, 
 		countries: { 
-			type: Array
+			countryQuestionOne: {
+				type: String
+			},
+			countryQuestionTwo: {
+				type: String
+			},
+			countryQuestionThree: {
+				type: String
+			}
 		},
 		profilePicturePath: {
 			type: String
