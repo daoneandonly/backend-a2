@@ -309,11 +309,7 @@ const upload = multer({
 // profile feature
 app.get('/add', profileForm);
 app.get('/profile', showProfile);
-app.post('/add',  upload.single('photo'), (req, res, next) => {
-    uploadToCloud(req.file.path)
-        .then(d => res.json(d))
-        .catch(e => next(e));
-});
+app.post('/add',  upload.single('photo'), add)
 
 function profileForm(req, res) {
 	// TODO: get this ID from somewhere else
@@ -340,8 +336,6 @@ function add(req, res, next) {
 	};
 
 	uploadToCloud(req.file.path)
-			.then(d => res.json(d))
-			.catch(e => next(e));
 
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
