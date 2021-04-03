@@ -3,17 +3,17 @@ const app = express();
 const dotenv = require('dotenv');
 const request = require('request'); // package to handle http requests
 const multer = require('multer');
-const path = require("path");
+const path = require('path');
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const port = process.env.PORT || 3000;
 const helmet = require('helmet');
-const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
-const Profile = require('./models/ProfileModel');  // import schema for users
+const Profile = require('./models/profileModel');  // import schema for users
 
 const postLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, //5 min
@@ -36,9 +36,9 @@ dotenv.config();
 
 // cloudinary configuration
 cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.CLOUD_API_KEY,
+	api_secret: process.env.CLOUD_API_SECRET
 });
 
 app.set('view engine', 'ejs');
@@ -280,36 +280,36 @@ function showImages(req, res){
 
 // Cloudinary functions
 const uploadToCloud = filePath => {
-    return new Promise((resolve, reject) => {
-        cloudinary.uploader
-            .upload(filePath)
-            .then(result => {
-                fs.unlinkSync(filePath);
-               // Remove uploaded file from the server once it gets uploaded to cloudinary server.
-                resolve(result);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
+	return new Promise((resolve, reject) => {
+		cloudinary.uploader
+			.upload(filePath)
+			.then(result => {
+				fs.unlinkSync(filePath);
+				// Remove uploaded file from the server once it gets uploaded to cloudinary server.
+				resolve(result);
+			})
+			.catch(error => {
+				reject(error);
+			});
+	});
 };
 
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: 'static/img/',
-        filename: function(req, file, cb) {
-            cb(
-                null,
-                "myfile-" + Date.now() + path.parse(file.originalname).ext
-            );
-        }
-    })
+	storage: multer.diskStorage({
+		destination: 'static/img/',
+		filename: function(req, file, cb) {
+			cb(
+				null,
+				'myfile-' + Date.now() + path.parse(file.originalname).ext
+			);
+		}
+	})
 });
 
 // profile feature
 app.get('/add', profileForm);
 app.get('/profile', showProfile);
-app.post('/add',  upload.single('photo'), add)
+app.post('/add',  upload.single('photo'), add);
 
 function profileForm(req, res) {
 	// TODO: get this ID from somewhere else
@@ -335,7 +335,7 @@ function add(req, res, next) {
 		}
 	};
 
-	uploadToCloud(req.file.path)
+	uploadToCloud(req.file.path);
 
 	// TODO: get this ID from somewhere else
 	let id = '6064fc6f95fcc753d0e6bee2';
