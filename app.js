@@ -222,11 +222,19 @@ function showBucketlistOverview(req, res) {
 
 // save the form data to the database
 function saveBucketlistResults(req, res) {
-	const country = new Country(req.body);
+  const countryAddition = {
+      countries:{
+        countryQuestionOne: req.body.countryQuestionOne,
+        countryQuestionTwo: req.body.countryQuestionTwo,
+        countryQuestionThree: req.body.countryQuestionThree,
+      }
+  };
+  
 
-	country.save()
+  let id = '6064fc6f95fcc753d0e6bee2';
+	Profile.findByIdAndUpdate(id, countryAddition)
 		// eslint-disable-next-line no-unused-vars
-		.then((result) => {
+		.then(() => {
 			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
@@ -236,19 +244,26 @@ function saveBucketlistResults(req, res) {
 
 // function to find the saved data and show it
 function showInformation(req, res) {
-	Country.find()
-		.then((result) => {
-			res.render('pages/bucketlist/bucketlistResults', {
+
+  let id = '6064fc6f95fcc753d0e6bee2';
+
+	Profile.findById(id, (err, result) => {
+    if(err){
+
+    } else{
+      res.render('pages/bucketlist/bucketlistResults', {
 				title: 'Bucketlist',
 				countryView: result
 			});
+    }
+			
 		});
 }
 
 // function to show detail page for each created ID
 function singleCountryInfo(req, res) {
 	const id = req.params.id;
-	Country.findById(id)
+	Profile.findById(id)
 		.then(result => {
 			res.render('pages/bucketlist/countryDetails', {
 				title: 'country details',
