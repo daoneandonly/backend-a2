@@ -330,6 +330,7 @@ button:hover {
 
 .countryResults {
   display: grid;
+  grid-template-columns: auto;
   font-size: 1.5em;
   grid-gap: 10px;
   justify-content: center;
