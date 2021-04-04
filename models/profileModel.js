@@ -53,7 +53,10 @@ const newProfileSchema = new Schema({
 			type: String
 		},
 		preferences: {
-			gender: { 
+			ownGender: { 
+				type: String
+			},
+			preferredGender: { 
 				type: String
 			},
 			minAge: { 
