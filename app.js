@@ -53,10 +53,10 @@ app.use(helmet({
 	contentSecurityPolicy: false,
 }));
 app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
+	name: 'session',
+	keys: ['key1', 'key2'],
 	maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+}));
 
 const db = mongoose.connection;
 
@@ -156,15 +156,16 @@ function onboardingPageThree(req, res) {
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById( id, (err, data) => {
-		res.render('pages/welcome', {
-			title: 'Welcome page',
-			...data.profileData,
-			firstName: data.FirstName || 'New Traveler'
-		});
+	Profile.findById( req.session.profileId, (err, result) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('pages/welcome', {
+				title: 'Welcome page',
+				profileData: result.profileData
+			});
+		}
 	});
 }
 
@@ -228,11 +229,17 @@ function showBucketlistOverview(req, res) {
 
 // save the form data to the database
 function saveBucketlistResults(req, res) {
-	const country = new Country(req.body);
-
-	country.save()
+	const countryAddition = {
+		countries:{
+			countryToWhere: req.body.countryToWhere,
+			countryWhyThere: req.body.countryWhyThere,
+			countryWithWho: req.body.countryWithWho,
+		}
+	};
+  
+	Profile.findByIdAndUpdate(req.session.profileId, countryAddition)
 		// eslint-disable-next-line no-unused-vars
-		.then((result) => {
+		.then(() => {
 			res.redirect('bucketlistOverview');
 		})
 		.catch((err) => {
@@ -242,19 +249,24 @@ function saveBucketlistResults(req, res) {
 
 // function to find the saved data and show it
 function showInformation(req, res) {
-	Country.find()
-		.then((result) => {
+
+	Profile.findById(req.session.profileId, (err, result) => {
+		if(err){
+			console.log('not working');
+		} else{
 			res.render('pages/bucketlist/bucketlistResults', {
 				title: 'Bucketlist',
-				countryView: result
+				countryView: result.countries
 			});
-		});
+		}
+			
+	});
 }
 
 // function to show detail page for each created ID
 function singleCountryInfo(req, res) {
 	const id = req.params.id;
-	Country.findById(id)
+	Profile.findById(id)
 		.then(result => {
 			res.render('pages/bucketlist/countryDetails', {
 				title: 'country details',
@@ -331,23 +343,23 @@ function profileForm(req, res) {
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
 	uploadToCloud(req.file.path)
-	.then(result => {
-		req.session.profilePicturePath = result.url;
-		Profile.findByIdAndUpdate(req.session.profileId, {
-			profileData: {
-				firstName: req.body.name,
-				profilePicturePath: req.session.profilePicturePath,
-				age: req.body.age,
-				bio: req.body.bio
-			}
-		})
-			.then(() => {
-				res.redirect('/profile');
+		.then(result => {
+			req.session.profilePicturePath = result.url;
+			Profile.findByIdAndUpdate(req.session.profileId, {
+				profileData: {
+					firstName: req.body.name,
+					profilePicturePath: req.session.profilePicturePath,
+					age: req.body.age,
+					bio: req.body.bio
+				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
-	});
+				.then(() => {
+					res.redirect('/profile');
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
 }
 
 function showProfile(req, res) {

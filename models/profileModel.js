@@ -17,6 +17,17 @@ const newProfileSchema = new Schema({
 	password: {
 		type: String,
 	},
+	countries: { 
+		countryToWhere: {
+			type: String
+		},
+		countryWhyThere: {
+			type: String
+		},
+		countryWithWho: {
+			type: String
+		}
+	},
 	profileData: {
 		firstName: { 
 			type: String,
@@ -38,9 +49,6 @@ const newProfileSchema = new Schema({
 		gender: { 
 			type: String
 		}, 
-		countries: { 
-			type: Array
-		},
 		profilePicturePath: {
 			type: String
 		},

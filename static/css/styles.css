@@ -313,7 +313,7 @@ button:hover {
   background-image: none;
 }
 #bodyWelcome .welcomeHeader {
-  margin-top: 1.5em;
+  margin-top: 3.5em;
   font-size: 4em;
 }
 #bodyWelcome .welcomeLinks {
@@ -327,18 +327,17 @@ button:hover {
   border-radius: 25px;
   padding: 1em;
 }
-#bodyWelcome .welcomeLinks a:nth-child(2) {
-  margin-left: 2em;
-  margin-right: 2em;
-}
 
 .countryResults {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: auto;
+  font-size: 1.5em;
   grid-gap: 10px;
-  margin-left: 2em;
-  margin-right: 2em;
-  margin-top: 5em;
+  justify-content: center;
+}
+
+.countryResults h2 {
+  margin-top: 2em;
 }
 
 .oneCountry {
