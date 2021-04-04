@@ -10,6 +10,7 @@ const upload = multer({
 	dest: 'static/img/'
 });
 const helmet = require('helmet');
+const cookieSession = require('cookie-session');
 
 // Models
 const Country = require('./models/countryModel'); // import schema bucketlist
@@ -180,7 +181,7 @@ function checklogin(req, res, next) {
 		}
 	);
 
-}
+} 
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
