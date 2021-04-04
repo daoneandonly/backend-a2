@@ -237,8 +237,7 @@ function saveBucketlistResults(req, res) {
   };
   
 
-  let id = '6064fc6f95fcc753d0e6bee2';
-	Profile.findByIdAndUpdate(id, countryAddition)
+	Profile.findByIdAndUpdate(req.session.profileId, countryAddition)
 		// eslint-disable-next-line no-unused-vars
 		.then(() => {
 			res.redirect('bucketlistOverview');
@@ -251,9 +250,9 @@ function saveBucketlistResults(req, res) {
 // function to find the saved data and show it
 function showInformation(req, res) {
 
-  let id = '6064fc6f95fcc753d0e6bee2';
+  
 
-	Profile.findById(id, (err, result) => {
+	Profile.findById(req.session.profileId, (err, result) => {
     if(err){
       console.log('not working');
     } else{
