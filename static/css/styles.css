@@ -497,4 +497,19 @@ button:hover {
   width: 200px;
 }
 
+.profileCountries {
+  font-size: 0.8em;
+  text-align: center;
+  padding: 1em;
+  margin: auto;
+  margin-bottom: 3em;
+  border-width: 20px;
+  width: 400px;
+}
+.profileCountries h2 {
+  margin-top: 1em;
+  font-size: 2.5em;
+  padding-bottom: 1em;
+}
+
 /*# sourceMappingURL=styles.css.map */
