@@ -313,7 +313,7 @@ button:hover {
   background-image: none;
 }
 #bodyWelcome .welcomeHeader {
-  margin-top: 1.5em;
+  margin-top: 3.5em;
   font-size: 4em;
 }
 #bodyWelcome .welcomeLinks {
@@ -326,10 +326,6 @@ button:hover {
   background-color: #2A4795;
   border-radius: 25px;
   padding: 1em;
-}
-#bodyWelcome .welcomeLinks a:nth-child(2) {
-  margin-left: 2em;
-  margin-right: 2em;
 }
 
 .countryResults {
