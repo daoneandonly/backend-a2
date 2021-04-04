@@ -376,7 +376,7 @@ function showProfile(req, res) {
 	});
 }
 
-//preferences
+//preferences feature
 app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
 app.get('/yourpreferences', yourPreferences);
@@ -384,15 +384,15 @@ app.get('/yourpreferences', yourPreferences);
 
 
 function showPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+	
+	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
 		if (data.profileData) {
 
 			res.render('pages/preferences-form', {
 				title: 'preferences',
-				...data.profileData
+				preferences: data.profileData.preferences
 			});
 		} else {
 			res.render('pages/preferences-form', {
@@ -404,14 +404,16 @@ function showPreferences(req, res) {
 }
 
 function submitPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+
+	const id = req.session.profileId;
 
 	Profile.findByIdAndUpdate(id, {
 		gender: req.body.genderSelect,
 		profileData:{
 			preferences: {
-				gender:req.body.genderPreference,
+
+				ownGender: req.body.genderSelect,
+				preferredGender: req.body.genderPreference,
 				maxDistance: req.body.distance,
 				minAge: req.body.minAge,
 				maxAge: req.body.maxAge
@@ -428,8 +430,8 @@ function submitPreferences(req, res) {
 }
 
 function yourPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+
+	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
 		let preferences;
