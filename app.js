@@ -53,10 +53,10 @@ app.use(helmet({
 	contentSecurityPolicy: false,
 }));
 app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
+	name: 'session',
+	keys: ['key1', 'key2'],
 	maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+}));
 
 const db = mongoose.connection;
 
@@ -158,14 +158,14 @@ app.get('/welcome', loadWelcomePage);
 function loadWelcomePage(req, res) {
 
 	Profile.findById( req.session.profileId, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-		res.render('pages/welcome', {
-			title: 'Welcome page',
-			profileData: result.profileData
-    });
-  }
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('pages/welcome', {
+				title: 'Welcome page',
+				profileData: result.profileData
+			});
+		}
 	});
 }
 
@@ -229,13 +229,13 @@ function showBucketlistOverview(req, res) {
 
 // save the form data to the database
 function saveBucketlistResults(req, res) {
-  const countryAddition = {
-      countries:{
-        countryToWhere: req.body.countryToWhere,
-        countryWhyThere: req.body.countryWhyThere,
-        countryWithWho: req.body.countryWithWho,
-      }
-  };
+	const countryAddition = {
+		countries:{
+			countryToWhere: req.body.countryToWhere,
+			countryWhyThere: req.body.countryWhyThere,
+			countryWithWho: req.body.countryWithWho,
+		}
+	};
   
 	Profile.findByIdAndUpdate(req.session.profileId, countryAddition)
 		// eslint-disable-next-line no-unused-vars
@@ -251,16 +251,16 @@ function saveBucketlistResults(req, res) {
 function showInformation(req, res) {
 
 	Profile.findById(req.session.profileId, (err, result) => {
-    if(err){
-      console.log('not working');
-    } else{
-      res.render('pages/bucketlist/bucketlistResults', {
+		if(err){
+			console.log('not working');
+		} else{
+			res.render('pages/bucketlist/bucketlistResults', {
 				title: 'Bucketlist',
 				countryView: result.countries
 			});
-    }
+		}
 			
-		});
+	});
 }
 
 // function to show detail page for each created ID
@@ -343,23 +343,23 @@ function profileForm(req, res) {
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
 	uploadToCloud(req.file.path)
-	.then(result => {
-		req.session.profilePicturePath = result.url;
-		Profile.findByIdAndUpdate(req.session.profileId, {
-			profileData: {
-				firstName: req.body.name,
-				profilePicturePath: req.session.profilePicturePath,
-				age: req.body.age,
-				bio: req.body.bio
-			}
-		})
-			.then(() => {
-				res.redirect('/profile');
+		.then(result => {
+			req.session.profilePicturePath = result.url;
+			Profile.findByIdAndUpdate(req.session.profileId, {
+				profileData: {
+					firstName: req.body.name,
+					profilePicturePath: req.session.profilePicturePath,
+					age: req.body.age,
+					bio: req.body.bio
+				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
-	});
+				.then(() => {
+					res.redirect('/profile');
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
 }
 
 function showProfile(req, res) {
