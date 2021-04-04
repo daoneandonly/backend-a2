@@ -1,10 +1,13 @@
 .countryResults {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: auto;
+    font-size: 1.5em;
     grid-gap: 10px;
-    margin-left: 2em;
-    margin-right: 2em;
-    margin-top: 5em;
+    justify-content: center;
+   
+  }
+  .countryResults h2 {
+    margin-top: 2em;
   }
   
   .oneCountry {
