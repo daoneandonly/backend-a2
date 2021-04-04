@@ -370,7 +370,8 @@ function showProfile(req, res) {
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-				profileData: result.profileData
+        profileData: result.profileData,
+        countryView: result.countries
 			});
 		}
 	});
