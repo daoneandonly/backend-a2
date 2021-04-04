@@ -8,7 +8,7 @@
     <label for="genderSelect">Choose your gender:</label>
   
     <select name="genderSelect" id="genderSelect">
-        <option value="">--Please choose an option--</option>
+        <option value="">Your gender</option>
         <option value="He" <%= preferences.ownGender == 'He' ? 'selected' : '' %> >He</option>
         <option value="She" <%= preferences.ownGender == 'She' ? 'selected' : '' %> >She</option>
         <option value="none" <%= preferences.ownGender == 'none' ? 'selected' : '' %> >non-binary</option>
@@ -17,7 +17,7 @@
     <label for="genderPreference">Choose a preferred gender:</label>
   
     <select name="genderPreference" id="genderPreference">
-        <option value="">--Please choose an option--</option>
+        <option value="">Preferred gender</option>
         <option value="He" <%= preferences.preferredGender == 'He' ? 'selected' : '' %> >He</option>
         <option value="She" <%= preferences.preferredGender == 'She' ? 'selected' : '' %> >She</option>
         <option value="both" <%= preferences.preferredGender == 'both' ? 'selected' : '' %> >both</option>
@@ -26,21 +26,21 @@
     <div>
   
       <label for="distance">Distance</label>
-      <input type="number" id="distance" name="distance" min="0" max="200" step="1" value="<%= preferences.maxDistance %>">
+      <input type="number" id="distance" name="distance" min="0" max="200" step="1" value="<%= preferences.maxDistance %>" placeholder="Maximum distance">
   
     </div>
   
     <div>
   
       <label for="distance">Minimum age</label>
-      <input type="number" id="minAge" name="minAge" min="18" max="100" step="1" value="<%= preferences.minAge %>">
+      <input type="number" id="minAge" name="minAge" min="18" max="100" step="1" value="<%= preferences.minAge %>" placeholder="Minimum age">
   
     </div>
   
     <div>
   
       <label for="distance">Maximum age</label>
-      <input type="number" id="maxAge" name="maxAge" min="18" max="100" step="1" value="<%= preferences.maxAge %>">
+      <input type="number" id="maxAge" name="maxAge" min="18" max="100" step="1" value="<%= preferences.maxAge %>" placeholder="Maximum age">
   
     </div>
   
