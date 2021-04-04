@@ -18,13 +18,13 @@ const newProfileSchema = new Schema({
 		type: String,
 	},
 	countries: { 
-		countryQuestionOne: {
+		countryToWhere: {
 			type: String
 		},
-		countryQuestionTwo: {
+		countryWhyThere: {
 			type: String
 		},
-		countryQuestionThree: {
+		countryWithWho: {
 			type: String
 		}
 	},

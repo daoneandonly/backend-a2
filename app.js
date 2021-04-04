@@ -231,9 +231,9 @@ function showBucketlistOverview(req, res) {
 function saveBucketlistResults(req, res) {
   const countryAddition = {
       countries:{
-        countryQuestionOne: req.body.countryQuestionOne,
-        countryQuestionTwo: req.body.countryQuestionTwo,
-        countryQuestionThree: req.body.countryQuestionThree,
+        countryToWhere: req.body.countryToWhere,
+        countryWhyThere: req.body.countryWhyThere,
+        countryWithWho: req.body.countryWithWho,
       }
   };
   
