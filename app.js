@@ -175,17 +175,17 @@ function checklogin(req, res, next) {
 
 	// Searching the name in the db, when this is found goes to done function
 	Profile.findOne({ email: req.body.email }).then(
-		async (users, err) => {
+		async (data, err) => {
 			if (err) {
 				console.log('An Error occured');
 				next(err);
 			} else {
-				const validPassword = await bcrypt.compare(req.body.password, users.password);
+				const validPassword = await bcrypt.compare(req.body.password, data.password);
 
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
 					console.log('Login geslaagd');
-					req.session.profileId = users.id;
+					req.session.profileId = data.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
@@ -194,7 +194,7 @@ function checklogin(req, res, next) {
 		}
 	);
 
-}
+} 
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
