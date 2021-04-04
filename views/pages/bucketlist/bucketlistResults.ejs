@@ -8,27 +8,15 @@
     </div>
 
     <h1>Your bucketlist locations</h1>
-    <button class="buttonLogin1"><a href="/bucketlist">Add new bucketlist</a></button>
+    <button class="buttonLogin1"><a href="/bucketlist">Change your bucketlist location</a></button>
     <div class="countryResults">
 
-      <!-- loop trough the schema object -->
 
       <h2> To where: <%= countryView.countryQuestionOne %> </h2>
       <h2> Why there: <%= countryView.countryQuestionTwo %> </h2>
       <h2> With who: <%= countryView.countryQuestionThree %></h2>
 
-      <% if (countryView.length > 0) { %>
-      <% countryView.forEach(view => { %>
-
-      <a class='singleCountry' href="/bucketlistOverview/">
-        <p class='oneCountry'> <%= view.countryQuestionOne %></p>
-
-      </a>
-
-      <% }) %>
-      <% } else {%>
-      <p>no bucketlist locations added yet</p>
-      <% }%>
+   
 
     </div>
 

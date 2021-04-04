@@ -236,7 +236,6 @@ function saveBucketlistResults(req, res) {
       }
   };
   
-
 	Profile.findByIdAndUpdate(req.session.profileId, countryAddition)
 		// eslint-disable-next-line no-unused-vars
 		.then(() => {
@@ -249,8 +248,6 @@ function saveBucketlistResults(req, res) {
 
 // function to find the saved data and show it
 function showInformation(req, res) {
-
-  
 
 	Profile.findById(req.session.profileId, (err, result) => {
     if(err){
