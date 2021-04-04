@@ -156,15 +156,16 @@ function onboardingPageThree(req, res) {
 app.get('/welcome', loadWelcomePage);
 
 function loadWelcomePage(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
 
-	Profile.findById( id, (err, data) => {
+	Profile.findById( req.session.profileId, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
 		res.render('pages/welcome', {
 			title: 'Welcome page',
-			...data.profileData,
-			firstName: data.FirstName || 'New Traveler'
-		});
+			profileData: result.profileData
+    });
+  }
 	});
 }
 
