@@ -53,10 +53,10 @@ app.use(helmet({
 	contentSecurityPolicy: false,
 }));
 app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
+	name: 'session',
+	keys: ['key1', 'key2'],
 	maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+}));
 
 const db = mongoose.connection;
 
@@ -184,7 +184,7 @@ function checklogin(req, res, next) {
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
 					console.log('Login geslaagd');
-					req.session.profileId = users.id;
+					req.session.profileId = data.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
@@ -331,23 +331,23 @@ function profileForm(req, res) {
 // eslint-disable-next-line no-unused-vars
 function add(req, res, next) {
 	uploadToCloud(req.file.path)
-	.then(result => {
-		req.session.profilePicturePath = result.url;
-		Profile.findByIdAndUpdate(req.session.profileId, {
-			profileData: {
-				firstName: req.body.name,
-				profilePicturePath: req.session.profilePicturePath,
-				age: req.body.age,
-				bio: req.body.bio
-			}
-		})
-			.then(() => {
-				res.redirect('/profile');
+		.then(result => {
+			req.session.profilePicturePath = result.url;
+			Profile.findByIdAndUpdate(req.session.profileId, {
+				profileData: {
+					firstName: req.body.name,
+					profilePicturePath: req.session.profilePicturePath,
+					age: req.body.age,
+					bio: req.body.bio
+				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
-	});
+				.then(() => {
+					res.redirect('/profile');
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
 }
 
 function showProfile(req, res) {
