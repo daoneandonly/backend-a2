@@ -497,7 +497,7 @@ button:hover {
   width: 200px;
 }
 
-.profileCountries {
+.profileCountries, .profilePreferences {
   font-size: 0.8em;
   text-align: center;
   padding: 1em;
@@ -506,7 +506,7 @@ button:hover {
   border-width: 20px;
   width: 400px;
 }
-.profileCountries h2 {
+.profileCountries h2, .profilePreferences h2 {
   margin-top: 1em;
   font-size: 2.5em;
   padding-bottom: 1em;

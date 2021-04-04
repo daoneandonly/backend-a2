@@ -15,6 +15,17 @@
         <%= profileData.bio %>
     </p>
     
+
+    <div class="profilePreferences">
+        <h2>Your Preferences</h2>
+        <p> My gender: <%= preferences.ownGender %> </p>
+        <p> Prefererd gender <%= preferences.prefferedGender %> </p>
+        <p> minimal age <%= preferences.minAge %> </p>
+        <p> maximal age <%= preferences.maxAge %> </p>
+        <p> maximal distance <%= preferences.maxDistance %> </p>
+    </div>
+  
+
     <div class="profileCountries">
         <h2>Your bucketlist</h2>
         <p> To where: <%= countryView.countryToWhere %> </p>

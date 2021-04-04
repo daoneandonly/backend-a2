@@ -28,6 +28,23 @@ const newProfileSchema = new Schema({
 			type: String
 		}
 	},
+	preferences: {
+		ownGender: { 
+			type: String
+		},
+		preferredGender: { 
+			type: String
+		},
+		minAge: { 
+			type: Number
+		},
+		maxAge: { 
+			type: Number
+		},
+		maxDistance: { 
+			type: String
+		}
+	},
 	profileData: {
 		firstName: { 
 			type: String,
@@ -51,23 +68,6 @@ const newProfileSchema = new Schema({
 		}, 
 		profilePicturePath: {
 			type: String
-		},
-		preferences: {
-			ownGender: { 
-				type: String
-			},
-			preferredGender: { 
-				type: String
-			},
-			minAge: { 
-				type: Number
-			},
-			maxAge: { 
-				type: Number
-			},
-			maxDistance: { 
-				type: String
-			}
 		}
 	}
 });
