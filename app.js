@@ -370,7 +370,9 @@ function showProfile(req, res) {
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-				profileData: result.profileData
+        profileData: result.profileData,
+        countryView: result.countries,
+        preferences: result.preferences,
 			});
 		}
 	});
@@ -388,11 +390,11 @@ function showPreferences(req, res) {
 	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
-		if (data.profileData) {
+		if (data.preferences) {
 
 			res.render('pages/preferences-form', {
 				title: 'preferences',
-				preferences: data.profileData.preferences
+				preferences: data.preferences
 			});
 		} else {
 			res.render('pages/preferences-form', {
@@ -409,7 +411,6 @@ function submitPreferences(req, res) {
 
 	Profile.findByIdAndUpdate(id, {
 		gender: req.body.genderSelect,
-		profileData:{
 			preferences: {
 
 				ownGender: req.body.genderSelect,
@@ -418,7 +419,7 @@ function submitPreferences(req, res) {
 				minAge: req.body.minAge,
 				maxAge: req.body.maxAge
 			}
-		}
+		
 	}, (err, data) => {
 		if (err) {
 			throw err;
@@ -435,8 +436,8 @@ function yourPreferences(req, res) {
 
 	Profile.findById(id, (err, data) => {
 		let preferences;
-		if (data.profileData) {
-			preferences = data.profileData.preferences;
+		if (data.showPreferences) {
+			preferences = data.preferences;
 		} else {
 			preferences = {};
 		}

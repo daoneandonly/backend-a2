@@ -492,9 +492,34 @@ button:hover {
 }
 .profileButtonDiv .profileButton {
   margin-left: 2em;
+  margin-bottom: 2em;
   display: inline-block;
   text-align: center;
   width: 200px;
+}
+
+.profileCountries, .profilePreferences, .basicProfileInfo {
+  font-size: 0.8em;
+  padding: 1em;
+  margin: auto;
+  margin-bottom: 3em;
+  border-width: 20px;
+  width: 400px;
+}
+.profileCountries h1, .profilePreferences h1, .basicProfileInfo h1 {
+  font-size: 3em;
+  text-align: left;
+}
+.profileCountries img, .profilePreferences img, .basicProfileInfo img {
+  padding-bottom: 1em;
+}
+.profileCountries h2, .profilePreferences h2, .basicProfileInfo h2 {
+  font-size: 2.5em;
+  padding-bottom: 1em;
+  text-align: left;
+}
+.profileCountries p, .profilePreferences p, .basicProfileInfo p {
+  text-align: left;
 }
 
 /*# sourceMappingURL=styles.css.map */

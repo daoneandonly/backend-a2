@@ -2,23 +2,43 @@
 <%- include('../partials/header-nav'); %>
 
 <main>
-    <h1>
-        <%= profileData.firstName %>
-    </h1>
+    <div class="basicProfileInfo">
+        <h1>
+            <%= profileData.firstName %>
+        </h1>
         <% if (profileData.profilePicturePath) { %>
-    <img class="profilePicture" alt src="<%= profileData.profilePicturePath %>">
+        <img class="profilePicture" alt src="<%= profileData.profilePicturePath %>">
         <% } %>
-    <p>
-     <%= profileData.age %>
-    </p>
-    <p id="bio">
-        <%= profileData.bio %>
-    </p>
-    
+        <p> Age:
+            <%= profileData.age %>
+        </p>
+        <p id="bio">
+            Bio:
+            <%= profileData.bio %>
+        </p>
+    </div>
+
+    <div class="profilePreferences">
+        <h2>Your Preferences</h2>
+        <p> My gender: <%= preferences.ownGender %> </p>
+        <p> Prefererd gender: <%= preferences.preferredGender %> </p>
+        <p> minimal age: <%= preferences.minAge %> </p>
+        <p> maximal age: <%= preferences.maxAge %> </p>
+        <p> maximal distance: <%= preferences.maxDistance %> </p>
+    </div>
+
+
+    <div class="profileCountries">
+        <h2>Your bucketlist</h2>
+        <p> To where: <%= countryView.countryToWhere %> </p>
+        <p> Why there: <%= countryView.countryWhyThere %> </p>
+        <p> With who: <%= countryView.countryWithWho %></p>
+    </div>
+
     <div class="profileButtonDiv">
         <button class="profileButton"><a href="/add">Edit profile data</a></button>
-        <button class="profileButton"><a href="/preferences">My Preferences</a></button>
-        <button class="profileButton"><a href="/bucketlistOverview">My Bucketlist</a></button>
+        <button class="profileButton"><a href="/preferences">Edit Preferences</a></button>
+        <button class="profileButton"><a href="/bucketlistOverview">Edit Bucketlist</a></button>
     </div>
 
 </main>
