@@ -120,16 +120,6 @@ app.post('/registerUsers', postLimiter, async (req, res) => {
 	}
 });
 
-// login feature
-app.post('/login', postLimiter, checklogin);
-app.get('/loginFailed', checklogin);
-
-app.get('/login', (req, res) => {
-	res.render('pages/login/login', {
-		title: 'Log in'
-	});
-});
-
 //onboarding
 app.get('/onboardingPageOne', onboardingPageOne);
 app.get('/onboardingPageTwo', onboardingPageTwo);
@@ -169,6 +159,16 @@ function loadWelcomePage(req, res) {
 	});
 }
 
+// login feature
+app.post('/login', postLimiter, checklogin);
+
+app.get('/login', (req, res) => {
+	res.render('pages/login/login', {
+		title: 'Log in'
+	});
+});
+
+
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
 	console.log('Name being checked: ', req.body.email);
@@ -184,7 +184,7 @@ function checklogin(req, res, next) {
 
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
-					console.log('Login geslaagd');
+					console.log('Login succes');
 					req.session.profileId = data.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
@@ -201,8 +201,6 @@ app.get('/loginFailed', (req, res) => {
 		title: 'Log in failed'
 	});
 });
-
-
 
 // bucketlist
 app.get('/bucketlist', showBucketlistOverview);
@@ -465,3 +463,4 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
 	console.log(`App.js starting at http://localhost:${port}`);
 });
+
