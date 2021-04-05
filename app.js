@@ -175,17 +175,17 @@ function checklogin(req, res, next) {
 
 	// Searching the name in the db, when this is found goes to done function
 	Profile.findOne({ email: req.body.email }).then(
-		async (users, err) => {
+		async (data, err) => {
 			if (err) {
 				console.log('An Error occured');
 				next(err);
 			} else {
-				const validPassword = await bcrypt.compare(req.body.password, users.password);
+				const validPassword = await bcrypt.compare(req.body.password, data.password);
 
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
 					console.log('Login geslaagd');
-					req.session.profileId = users.id;
+					req.session.profileId = data.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
@@ -194,7 +194,8 @@ function checklogin(req, res, next) {
 		}
 	);
 
-}
+} 
+
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
 		title: 'Log in failed'
@@ -367,13 +368,15 @@ function showProfile(req, res) {
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-				profileData: result.profileData
+        profileData: result.profileData,
+        countryView: result.countries,
+        preferences: result.preferences,
 			});
 		}
 	});
 }
 
-//preferences
+//preferences feature
 app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
 app.get('/yourpreferences', yourPreferences);
@@ -381,15 +384,15 @@ app.get('/yourpreferences', yourPreferences);
 
 
 function showPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+	
+	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
-		if (data.profileData) {
+		if (data.preferences) {
 
 			res.render('pages/preferences-form', {
 				title: 'preferences',
-				...data.profileData
+				preferences: data.preferences
 			});
 		} else {
 			res.render('pages/preferences-form', {
@@ -401,19 +404,20 @@ function showPreferences(req, res) {
 }
 
 function submitPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+
+	const id = req.session.profileId;
 
 	Profile.findByIdAndUpdate(id, {
 		gender: req.body.genderSelect,
-		profileData:{
 			preferences: {
-				gender:req.body.genderPreference,
+
+				ownGender: req.body.genderSelect,
+				preferredGender: req.body.genderPreference,
 				maxDistance: req.body.distance,
 				minAge: req.body.minAge,
 				maxAge: req.body.maxAge
 			}
-		}
+		
 	}, (err, data) => {
 		if (err) {
 			throw err;
@@ -425,13 +429,13 @@ function submitPreferences(req, res) {
 }
 
 function yourPreferences(req, res) {
-	// TODO: get this ID from somewhere else
-	let id = '6064fc6f95fcc753d0e6bee2';
+
+	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
 		let preferences;
-		if (data.profileData) {
-			preferences = data.profileData.preferences;
+		if (data.showPreferences) {
+			preferences = data.preferences;
 		} else {
 			preferences = {};
 		}
