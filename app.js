@@ -184,7 +184,7 @@ function checklogin(req, res, next) {
 
 				// If the name is connected to the password then the login is succesfull
 				if (validPassword) {
-					console.log('Login geslaagd');
+					console.log('Login succes');
 					req.session.profileId = data.id;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
