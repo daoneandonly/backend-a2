@@ -2,49 +2,40 @@
     position: sticky;
     top: 0;
     z-index: 10;
-  
     font-family: roboto;
     font-size: 1.2em;
-  
     margin-bottom: 5rem;
-  
-  
   
     nav {
       background-color: #425faf;
-  
     }
   
-    ul{
+    ul {
       margin: 0;
       padding: 0.5rem 1rem 0.5rem 1rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-  
     }
   
-    li{
+    li {
       display: flex;
       align-items: center;
-  
     }
   
     li:first-child {
       width: 70%;
     }
   }
+
   .headerLogo {
     position: sticky;
     top: 0;
     z-index: 10;
-  
     margin-bottom: 3rem;
   
-  
-    ul{
+    ul {
       margin: 0;
       padding: 0.5rem 1rem 0.5rem 1rem;
     }
-    
   }

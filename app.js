@@ -48,20 +48,22 @@ app.set('trust proxy', 1); //to make rate-limit in heroku
 app.use(express.urlencoded({
 	extended: true
 }));
+
 app.use(helmet({
 	hsts: false,
 	contentSecurityPolicy: false,
 }));
+
 app.use(cookieSession({
 	name: 'session',
 	keys: ['key1', 'key2'],
+	isLoggedIn: false,
 	maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
 const db = mongoose.connection;
 
 // connect mongoose with the database
-// eslint-disable-next-line no-undef
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -81,13 +83,13 @@ app.use(express.static('static'));
 
 app.get('/', (req, res) => {
 	res.render('pages/index', {
-		title: 'home'
+		title: 'home',
 	});
 });
 
 app.get('/register', (req, res) => {
 	res.render('pages/register', {
-		title: 'register'
+		title: 'register',
 	});
 });
 
@@ -127,19 +129,19 @@ app.get('/onboardingPageThree', onboardingPageThree);
 
 function onboardingPageOne(req, res) {
 	res.render('pages/onboarding/onboardingPageOne', {
-		title: 'onboarding step 1'
+		title: 'onboarding step 1',
 	});
 }
 
 function onboardingPageTwo(req, res) {
 	res.render('pages/onboarding/onboardingPageTwo', {
-		title: 'onboarding step 2'
+		title: 'onboarding step 2',
 	});
 }
 
 function onboardingPageThree(req, res) {
 	res.render('pages/onboarding/onboardingPageThree', {
-		title: 'onboarding step 3'
+		title: 'onboarding step 3',
 	});
 }
 
@@ -152,8 +154,8 @@ function loadWelcomePage(req, res) {
 			console.log(err);
 		} else {
 			res.render('pages/welcome', {
-				title: 'Welcome page',
-				profileData: result.profileData
+				title: 'Welcome',
+				profileData: result.profileData,
 			});
 		}
 	});
@@ -186,6 +188,7 @@ function checklogin(req, res, next) {
 				if (validPassword) {
 					console.log('Login succes');
 					req.session.profileId = data.id;
+					req.session.isLoggedIn = true;
 					res.redirect('/onboardingPageOne');
 				} else { //If these are not the same the login is failed
 					res.redirect('/loginFailed'); //and the user will be redirected to the login failed page
@@ -198,7 +201,7 @@ function checklogin(req, res, next) {
 
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
-		title: 'Log in failed'
+		title: 'Log in failed',
 	});
 });
 
@@ -213,7 +216,7 @@ app.post('/bucketlistOverview', saveBucketlistResults);
 
 function showBucketlistResults(req, res) {
 	res.render('pages/bucketlist/bucketlistResults', {
-		title: 'bucketlistResults'
+		title: 'bucketlistResults',
 	});
 }
 
@@ -221,7 +224,7 @@ function showBucketlistResults(req, res) {
 function showBucketlistOverview(req, res) {
 
 	res.render('pages/bucketlist/bucketlistOverview', {
-		title: 'bucketlist'
+		title: 'bucketlist',
 	});
 }
 
@@ -231,12 +234,11 @@ function saveBucketlistResults(req, res) {
 		countries:{
 			countryToWhere: req.body.countryToWhere,
 			countryWhyThere: req.body.countryWhyThere,
-			countryWithWho: req.body.countryWithWho,
+			countryWithWho: req.body.countryWithWho, 
 		}
 	};
   
 	Profile.findByIdAndUpdate(req.session.profileId, countryAddition)
-		// eslint-disable-next-line no-unused-vars
 		.then(() => {
 			res.redirect('bucketlistOverview');
 		})
@@ -251,10 +253,11 @@ function showInformation(req, res) {
 	Profile.findById(req.session.profileId, (err, result) => {
 		if(err){
 			console.log('not working');
-		} else{
+			res.redirect('/login');
+		} else {
 			res.render('pages/bucketlist/bucketlistResults', {
 				title: 'Bucketlist',
-				countryView: result.countries
+				countryView: result.countries,
 			});
 		}
 			
@@ -268,17 +271,15 @@ function singleCountryInfo(req, res) {
 		.then(result => {
 			res.render('pages/bucketlist/countryDetails', {
 				title: 'country details',
-				countryInfo: result
+				countryInfo: result,
 			});
 		})
-		// eslint-disable-next-line no-unused-vars
 		.catch(error => {
 			res.render('pages/404.ejs');
 		});
 
 }
 
-// eslint-disable-next-line no-undef
 const api_key = process.env.API_KEY;
 const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 // function to show the images from the unsplash API on the imagesGrid page
@@ -286,10 +287,14 @@ const api_url = 'https://api.unsplash.com/search/photos?client_id=';
 function showImages(req, res){
 	const searchInspiration = req.query.searchinspiration;
 	request(api_url + api_key + '&query=' + searchInspiration, function (error, response, body){
-		if(error){
+		if (error){
 			console.log(error);
+			res.redirect('/login');
 		} else{
-			res.render('pages/bucketlist/imagesGrid', {title: 'images grid', imagesGridData: JSON.parse(body)});
+			res.render('pages/bucketlist/imagesGrid', {
+				title: 'images grid', 
+				imagesGridData: JSON.parse(body),
+			});
 		}
 	});
 }
@@ -332,14 +337,12 @@ function profileForm(req, res) {
 	Profile.findById(req.session.profileId, (err, data) => {
 		res.render('pages/add-profile.ejs', {
 			title: 'addprofile',
-			preferences: data.profileData.preferences
+			preferences: data.profileData.preferences,
 		});
-	}
-	);
+	});
 }
 
-// eslint-disable-next-line no-unused-vars
-function add(req, res, next) {
+function add(req, res) {
 	uploadToCloud(req.file.path)
 		.then(result => {
 			req.session.profilePicturePath = result.url;
@@ -356,21 +359,23 @@ function add(req, res, next) {
 				})
 				.catch((err) => {
 					console.log(err);
+					res.redirect('/login');
 				});
 		});
 }
 
 function showProfile(req, res) {
-
-	Profile.findById(req.session.profileId, (err, result) => {
+	const id = req.session.profileId;
+	Profile.findById(id, (err, result) => {
 		if (err) {
-			// eslint-disable-next-line no-undef
+			console.log(err);
+			res.redirect('/login');
 		} else {
 			res.render('pages/profile', {
 				title: 'Profile',
-        profileData: result.profileData,
-        countryView: result.countries,
-        preferences: result.preferences,
+				profileData: result.profileData,
+				countryView: result.countries,
+				preferences: result.preferences,
 			});
 		}
 	});
@@ -381,55 +386,46 @@ app.get('/preferences', showPreferences);
 app.post('/preferences', submitPreferences);
 app.get('/yourpreferences', yourPreferences);
 
-
-
 function showPreferences(req, res) {
-	
 	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
 		if (data.preferences) {
-
 			res.render('pages/preferences-form', {
 				title: 'preferences',
-				preferences: data.preferences
+				preferences: data.preferences,
 			});
 		} else {
 			res.render('pages/preferences-form', {
 				title: 'preferences',
-				preferences: ''
+				preferences: '',
 			});
 		}
 	});
 }
 
 function submitPreferences(req, res) {
-
 	const id = req.session.profileId;
 
 	Profile.findByIdAndUpdate(id, {
 		gender: req.body.genderSelect,
-			preferences: {
-
-				ownGender: req.body.genderSelect,
-				preferredGender: req.body.genderPreference,
-				maxDistance: req.body.distance,
-				minAge: req.body.minAge,
-				maxAge: req.body.maxAge
-			}
-		
+		preferences: {
+			ownGender: req.body.genderSelect,
+			preferredGender: req.body.genderPreference,
+			maxDistance: req.body.distance,
+			minAge: req.body.minAge,
+			maxAge: req.body.maxAge
+		}
 	}, (err, data) => {
 		if (err) {
-			throw err;
+			res.redirect('/login');
 		} else {
-			res.redirect('/yourpreferences');
+			res.redirect('/profile');
 		}
 	});
-
 }
 
 function yourPreferences(req, res) {
-
 	const id = req.session.profileId;
 
 	Profile.findById(id, (err, data) => {
@@ -441,11 +437,11 @@ function yourPreferences(req, res) {
 		}
 
 		if (err) {
-			throw err;
+			res.redirect('/login');
 		} else {
 			res.render('pages/your-preferences', {
 				title: 'Your preferences',
-				preferences: preferences
+				preferences: preferences,
 			});
 		}
 	});
@@ -455,10 +451,10 @@ function yourPreferences(req, res) {
 app.get('/logout' , logOut);
 
 function logOut (req, res){
-  req.session.destroy((err) =>{
-    if(err) throw err;
-    res.redirect('/login');
-  })
+	if (req.session) {
+		req.session = null;
+	}
+	res.redirect('/login');
 }
 
 // if there is no page found give an error page as page
