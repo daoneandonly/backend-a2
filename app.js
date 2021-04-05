@@ -455,24 +455,6 @@ app.get('*', (req, res) => {
 	});
 });
 
-// app.get('/logout', stopSession);
-
-// function stopSession (req, res){
-// 	if(req.session) {
-// 	  req.session.cookie.maxAge = 0;
-// 	  delete req.session;
-// 	}
-// 	res.redirect('/');
-// 	console.log('je bent uitgelogd')
-// }
-
-app.get('/logout', async function(req, res, next) {
-	req.session.destroy(function(err) {
-		console.log('Destroyed session');
-	});
-	res.redirect('/');
-});
-
 // listen to port 3000
 app.listen(port, () => {
 	console.log(`App.js starting at http://localhost:${port}`);
