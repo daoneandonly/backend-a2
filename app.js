@@ -209,7 +209,6 @@ app.get('/loginFailed', (req, res) => {
 app.get('/bucketlist', showBucketlistOverview);
 app.get('/bucketlistResults', showBucketlistResults);
 app.get('/bucketlistOverview', showInformation);
-app.get('/bucketlistOverview/:id', singleCountryInfo);
 app.get('/imagesGrid', showImages);
 
 app.post('/bucketlistOverview', saveBucketlistResults);
@@ -262,22 +261,6 @@ function showInformation(req, res) {
 		}
 			
 	});
-}
-
-// function to show detail page for each created ID
-function singleCountryInfo(req, res) {
-	const id = req.params.id;
-	Profile.findById(id)
-		.then(result => {
-			res.render('pages/bucketlist/countryDetails', {
-				title: 'country details',
-				countryInfo: result,
-			});
-		})
-		.catch(error => {
-			res.render('pages/404.ejs');
-		});
-
 }
 
 const api_key = process.env.API_KEY;
