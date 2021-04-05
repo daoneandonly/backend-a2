@@ -4,6 +4,7 @@
 
 .profileButton {
     margin-left: 2em;
+    margin-bottom: 2em;
 
     display: inline-block;
     text-align: center;
@@ -13,9 +14,8 @@
 
 }
 
-.profileCountries, .profilePreferences {
+.profileCountries, .profilePreferences, .basicProfileInfo {
     font-size: 0.8em;
-    text-align: center;
 
     padding: 1em;
     margin: auto;
@@ -24,10 +24,22 @@
     border-width: 20px;
     width: 400px;
     
+    h1 {
+        font-size: 3em;
+        text-align: left;
+    }
+
+    img {
+        padding-bottom: 1em;
+    }
 
     h2 {
-        margin-top: 1em;
         font-size: 2.5em;
         padding-bottom: 1em;
+        text-align: left;
+    }
+
+    p {
+        text-align: left;
     }
 }
