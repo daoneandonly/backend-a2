@@ -451,6 +451,16 @@ function yourPreferences(req, res) {
 	});
 }
 
+// Logout session destroy
+app.get('/logout' , logOut);
+
+function logOut (req, res){
+  req.session.destroy((err) =>{
+    if(err) throw err;
+    res.redirect('/login');
+  })
+}
+
 // if there is no page found give an error page as page
 app.get('*', (req, res) => {
 	res.status(404).render('pages/404', {
