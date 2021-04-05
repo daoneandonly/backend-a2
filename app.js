@@ -122,7 +122,7 @@ app.post('/registerUsers', postLimiter, async (req, res) => {
 
 // login feature
 app.post('/login', postLimiter, checklogin);
-app.get('/loginFailed', checklogin);
+// app.get('/loginFailed', checklogin);
 
 app.get('/login', (req, res) => {
 	res.render('pages/login/login', {
@@ -202,6 +202,14 @@ app.get('/loginFailed', (req, res) => {
 	});
 });
 
+app.post('/logout' , logOut);
+
+function logOut (req, res){
+  req.session.destroy((err) =>{
+    if(err) throw err;
+    res.redirect('/login');
+  })
+}
 
 
 // bucketlist
