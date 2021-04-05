@@ -120,16 +120,6 @@ app.post('/registerUsers', postLimiter, async (req, res) => {
 	}
 });
 
-// login feature
-app.post('/login', postLimiter, checklogin);
-app.get('/loginFailed', checklogin);
-
-app.get('/login', (req, res) => {
-	res.render('pages/login/login', {
-		title: 'Log in'
-	});
-});
-
 //onboarding
 app.get('/onboardingPageOne', onboardingPageOne);
 app.get('/onboardingPageTwo', onboardingPageTwo);
@@ -169,6 +159,16 @@ function loadWelcomePage(req, res) {
 	});
 }
 
+// login feature
+app.post('/login', postLimiter, checklogin);
+
+app.get('/login', (req, res) => {
+	res.render('pages/login/login', {
+		title: 'Log in'
+	});
+});
+
+
 // checks username and password with the database and if they agree
 function checklogin(req, res, next) {
 	console.log('Name being checked: ', req.body.email);
@@ -195,14 +195,11 @@ function checklogin(req, res, next) {
 	);
 
 }
-
 app.get('/loginFailed', (req, res) => {
 	res.render('pages/login/loginFailed', {
 		title: 'Log in failed'
 	});
 });
-
-
 
 // bucketlist
 app.get('/bucketlist', showBucketlistOverview);
@@ -458,7 +455,26 @@ app.get('*', (req, res) => {
 	});
 });
 
+// app.get('/logout', stopSession);
+
+// function stopSession (req, res){
+// 	if(req.session) {
+// 	  req.session.cookie.maxAge = 0;
+// 	  delete req.session;
+// 	}
+// 	res.redirect('/');
+// 	console.log('je bent uitgelogd')
+// }
+
+app.get('/logout', async function(req, res, next) {
+	req.session.destroy(function(err) {
+		console.log('Destroyed session');
+	});
+	res.redirect('/');
+});
+
 // listen to port 3000
 app.listen(port, () => {
 	console.log(`App.js starting at http://localhost:${port}`);
 });
+
